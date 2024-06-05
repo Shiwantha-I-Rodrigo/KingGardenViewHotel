@@ -1,0 +1,246 @@
+# sync server root
+rsync -avu --delete "KingGardenViewHotel/" "../lighttpd/http/"
+
+
+# install web servers
+sudo pacman -S mariadb lighttpd fcgi php php-cgi
+sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+
+
+# configure php-cgi
+sudo cp /usr/share/doc/lighttpd/config/conf.d/fastcgi.conf /etc/lighttpd/conf.d/fastcgi.conf
+
+----------------------------------------------------------------/etc/lighttpd/conf.d/fastcgi.conf
+
+    server.modules += ("mod_fastcgi")
+
+    index-file.names += ("index.php")
+    fastcgi.server = ( 
+        # Load-balance requests for this path...
+        ".php" => (
+            # ... among the following FastCGI servers. The string naming each
+            # server is just a label used in the logs to identify the server.
+            "localhost" => ( 
+                "bin-path" => "/usr/bin/php-cgi",
+                "socket" => "/tmp/php-fastcgi.sock",
+                # breaks SCRIPT_FILENAME in a way that PHP can extract PATH_INFO
+                # from it 
+                "broken-scriptfilename" => "enable",
+                # Launch (max-procs + (max-procs * PHP_FCGI_CHILDREN)) procs, where
+                # max-procs are "watchers" and the rest are "workers". See:
+                # https://wiki.lighttpd.net/frequentlyaskedquestions#How-many-php-CGI-processes-will-lighttpd-spawn 
+                "max-procs" => "4", # default value
+                "bin-environment" => (
+                    "PHP_FCGI_CHILDREN" => "1" # default value
+                )
+            )
+        )   
+    )
+----------------------------------------------------------------
+
+----------------------------------------------------------------/etc/lighttpd/lighttpd.conf
+
+    include "conf.d/fastcgi.conf"
+
+----------------------------------------------------------------
+
+
+#locate php.ini
+php --ini
+
+
+# enable extentions
+uncomment required extention lines
+    ;extension=mysqli
+
+
+# start web servers
+sudo systemctl start mariadb.service
+sudo systemctl start lighttpd.service
+
+
+# set server password
+sudo mariadb -u root
+SET PASSWORD FOR 'root@shiva = PASSWORD("wolverine910916")';
+! when sudo is used the server will trust OS credentials and login user as root even without any password. even after setting the password.
+! however non sudoers cannot access without the password.
+
+
+# database
+sudo mariadb -u root -p
+
+CREATE DATABASE kgvh;
+use kgvh;
+
+CREATE TABLE users (UserId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, UserName VARCHAR(255) NOT NULL, Password VARCHAR(255) NOT NULL, Email VARCHAR(255) NOT NULL, Type INT(1), Status INT(1));
+CREATE TABLE customers (CustomerId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, FirstName VARCHAR(255) NOT NULL, LastName VARCHAR(255) NOT NULL, AddressLine1 VARCHAR(255), AddressLine2 VARCHAR(255), AddressLine3 VARCHAR(255), Telephone VARCHAR(255), Mobile VARCHAR(255), Title VARCHAR(255), RegNo VARCHAR(255) NOT NULL, ProfilePic VARCHAR(255), UserId INT(11) NOT NULL, Token VARCHAR(255), Status INT(1), CONSTRAINT `UserIdCustomers` FOREIGN KEY (UserId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT);
+CREATE TABLE employees (EmployeeId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, FirstName VARCHAR(255) NOT NULL, LastName VARCHAR(255) NOT NULL, AddressLine1 VARCHAR(255), AddressLine2 VARCHAR(255), AddressLine3 VARCHAR(255), Telephone VARCHAR(255), Mobile VARCHAR(255), Title VARCHAR(255), RegNo VARCHAR(255), ProfilePic VARCHAR(255), UserId INT(11) NOT NULL, Token VARCHAR(255), Status INT(1),CONSTRAINT `UserIdEmployees` FOREIGN KEY (UserId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT);
+CREATE TABLE messages (MessageId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, MessageText VARCHAR(255) NOT NULL, Date VARCHAR(255), FromId INT(11) NOT NULL, ToId INT(11) NOT NULL, Thread INT(11) NOT NULL, Status INT(1), CONSTRAINT `FromIdMessages` FOREIGN KEY (FromId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT, CONSTRAINT `ToIdMessages` FOREIGN KEY (ToId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT);
+CREATE TABLE notifications (NotificationId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, NotificationText VARCHAR(255) NOT NULL, NotificationTitle VARCHAR(255) NOT NULL, Date VARCHAR(255), FromId INT(11) NOT NULL, ToId INT(11) NOT NULL, Status INT(1), CONSTRAINT `FromIdNotifications` FOREIGN KEY (FromId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT,CONSTRAINT `ToIdNotifications` FOREIGN KEY (ToId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT);
+CREATE TABLE modules (ModuleId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, ModuleName VARCHAR(255) NOT NULL, ModulePath VARCHAR(255) NOT NULL, ModuleClasses VARCHAR(255) NOT NULL, Status INT(1));
+CREATE TABLE user_modules (PrivilegeId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, UserId INT(11) NOT NULL, ModuleId INT(11) NOT NULL, Status INT(1),  CONSTRAINT `UserIdUserModules` FOREIGN KEY (UserId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT, CONSTRAINT `ModuleIdUserModules` FOREIGN KEY (ModuleId) REFERENCES modules (ModuleId) ON DELETE CASCADE ON UPDATE RESTRICT);
+CREATE TABLE reservations (ReservationId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, GuestId INT(11) NOT NULL, StaffId INT(11), RoomId INT(11) NOT NULL, TimeSlotStart INT(11), TimeSlotEnd INT(11), Status INT(1), CONSTRAINT `GuestIdReservations` FOREIGN KEY (GuestId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT, CONSTRAINT `StaffIdReservations` FOREIGN KEY (StaffId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT, CONSTRAINT `RoomIdReservations` FOREIGN KEY (RoomId) REFERENCES rooms (RoomId) ON DELETE CASCADE ON UPDATE RESTRICT);
+CREATE TABLE items (ItemId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, ReservationId INT(11) NOT NULL, ItemName VARCHAR(255), ItemPrice INT(11), ItemPaid INT(11), ItemStatus INT(1), ItemDiscount INT(3), ItemComments VARCHAR(255), Status INT(1), CONSTRAINT `ReservationIdItems` FOREIGN KEY (ReservationId) REFERENCES reservations (ReservationId) ON DELETE CASCADE ON UPDATE RESTRICT);
+CREATE TABLE reviews (ReviewId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, ReservationId INT(11) NOT NULL, ReviewTitle VARCHAR(255), ReviewText VARCHAR(511), Status INT(1), CONSTRAINT `ReservationIdReviews` FOREIGN KEY (ReservationId) REFERENCES reservations (ReservationId) ON DELETE CASCADE ON UPDATE RESTRICT);
+CREATE TABLE rooms (RoomId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, RoomName VARCHAR(255) NOT NULL, RoomPrice INT(11), RoomAC INT(1), RoomWIFI INT(1), RoomBalcony INT(1), RoomPicture VARCHAR(255), Status INT(1));
+CREATE TABLE blogs (BlogId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, BlogText VARCHAR(4095), BlogTitle VARCHAR(255), BlogPicture VARCHAR(255), Status INT(1));
+
+# INT codes
+- all - Status
+    0 = inactive
+    1 = active
+    2 = unavailable
+    3 = unauthorized
+    4 = invalid
+    9 = forbidden
+
+- users - Type
+    0 = guest
+    1 = customer
+    2 = taxi
+    3 = receptionist
+    4 = manager
+    9 = admin
+
+- items - ItemStatus
+    0 = unpaid
+    1 = paid
+    2 = pending
+    3 = rejected
+    4 = refunded
+    5 = cancelled
+    7 = partial
+
+# columns
+- users
+    UserId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
+    UserName VARCHAR(255) NOT NULL
+    Password VARCHAR(255) NOT NULL
+    Email VARCHAR(255) NOT NULL
+    Type INT(1)
+    Status INT(1)
+
+- customers
+    CustomerId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
+    FirstName VARCHAR(255) NOT NULL
+    LastName VARCHAR(255) NOT NULL
+    AddressLine1 VARCHAR(255)
+    AddressLine2 VARCHAR(255)
+    AddressLine3 VARCHAR(255)
+    Telephone VARCHAR(255)
+    Mobile VARCHAR(255)
+    Title VARCHAR(255)
+    RegNo VARCHAR(255) NOT NULL
+    ProfilePic VARCHAR(255)
+    UserId INT(11) NOT NULL
+    Token VARCHAR(255)
+    Status INT(1)
+
+- employees
+    EmployeeId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
+    FirstName VARCHAR(255) NOT NULL
+    LastName VARCHAR(255) NOT NULL
+    AddressLine1 VARCHAR(255)
+    AddressLine2 VARCHAR(255)
+    AddressLine3 VARCHAR(255)
+    Telephone VARCHAR(255)
+    Mobile VARCHAR(255)
+    Title VARCHAR(255)
+    RegNo VARCHAR(255)
+    ProfilePic VARCHAR(255)
+    UserId INT(11) NOT NULL
+    Token VARCHAR(255)
+    Status INT(1)
+
+- messages
+    MessageId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
+    MessageText VARCHAR(255) NOT NULL
+    Date VARCHAR(255)
+    FromId INT(11) NOT NULL
+    ToId INT(11) NOT NULL
+    Thread INT(11) NOT NULL
+    Status INT(1)
+
+- notifications
+    NotificationId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
+    NotificationText VARCHAR(255) NOT NULL
+    NotificationTitle VARCHAR(255) NOT NULL
+    Date VARCHAR(255)
+    FromId INT(11) NOT NULL
+    ToId INT(11) NOT NULL
+    Status INT(1)
+
+- modules
+    ModuleId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
+    ModuleName VARCHAR(255) NOT NULL
+    ModulePath VARCHAR(255) NOT NULL
+    ModuleClasses VARCHAR(255) NOT NULL
+    Status INT(1)
+
+- user_modules
+    PrivilegeId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
+    UserId INT(11) NOT NULL
+    ModuleId INT(11) NOT NULL
+    Status INT(1)
+
+- reservations
+    ReservationId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
+    GuestId INT(11) NOT NULL
+    StaffId INT(11)
+    RoomId INT(11) NOT NULL
+    TimeSlotStart INT(11)
+    TimeSlotEnd INT(11)
+    Status INT(1)
+
+- items
+    ItemId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
+    ReservationId INT(11) NOT NULL
+    ItemName VARCHAR(255)
+    ItemPrice INT(11)
+    ItemPaid INT(11)
+    ItemStatus INT(1)
+    ItemDiscount INT(3)
+    ItemComments VARCHAR(255)
+    Status INT(1)
+
+- reviews
+    ReviewId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
+    ReservationId INT(11) NOT NULL
+    ReviewTitle VARCHAR(255)
+    ReviewText VARCHAR(511)
+    Status INT(1)
+
+- rooms
+    RoomId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
+    RoomName VARCHAR(255) NOT NULL
+    RoomPrice INT(11)
+    RoomAC INT(1)
+    RoomWIFI INT(1)
+    RoomBalcony INT(1)
+    RoomPicture VARCHAR(255)
+    Status INT(1)
+
+- blogs
+    BlogId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
+    BlogText VARCHAR(4095)
+    BlogTitle VARCHAR(255)
+    BlogPicture VARCHAR(255)
+    Status INT(1)
+
+
+# setup email
+login to gmail 
+go to account (manage google accout)
+security
+2 step verification must be enabled
+search for 'app password' in settings security
+use project name as app name
+create
+copy app password
+
+
+# php error report
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+?>
