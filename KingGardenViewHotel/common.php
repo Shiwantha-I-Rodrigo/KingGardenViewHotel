@@ -14,3 +14,20 @@ function dbConn()
     }
 
 }
+
+//Redirect---------------------------------------------
+function reDirect($data = null)
+{
+    echo '<script type="text/javascript">window.location = "' . $data . '";</script>';
+}
+
+//Authorize---------------------------------------------
+function authorize($user_id = null, $module_id = null)
+{
+    $db = dbConn();
+    $sql = "SELECT * FROM user_modules WHERE UserId='$user_id' AND ModuleId ='$module_id'";
+    $result = $db->query($sql);
+    if ($result->num_rows < 1) {
+        reDirect(SYSTEM_BASE_URL . "401.php");
+    };
+}

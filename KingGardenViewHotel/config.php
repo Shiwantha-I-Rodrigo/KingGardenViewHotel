@@ -13,3 +13,4 @@ $_EMAIL_PASSWORD = "leuhzcveszxehuei";
 
 define('SYSTEM_BASE_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/system/');
 define('WEB_BASE_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/web/');
+define('BASE_URL', 'http://' . $_SERVER['SERVER_NAME'] . '/');

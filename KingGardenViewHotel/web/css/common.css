@@ -1,0 +1,215 @@
+/* variables */
+
+:root {
+
+    --primary: #3aafa9;
+    --primary_font: #feffff;
+    --secondary: #2b7a78;
+    --secondary_font: #3aafa9;
+
+    --buttonx: #3aafa9;
+    --buttonx_font: #feffff;
+    --buttony: #17252a;
+    --buttony_font: #feffff;
+
+    --success: #14a098;
+    --success_font: #feffff;
+    --fail: #cb2d6f;
+    --fail_font: #feffff;
+
+    --background: #17252a;
+    --foreground: #feffff;
+    --glow: #3aafa9;
+    --shadow: #17252a;
+    --overlay: #17252a;
+
+}
+
+/*
+
+metalicblue
+7091e6
+3d52a0
+adbbda
+8697c4
+ede8f5
+
+blackblue
+0b0c10
+66fcf1
+1f2833
+c5c6c7
+45a29e
+
+green
+3aafa9
+feffff
+2b7a78
+3aafa9
+17252a
+
+royal
+2d283e
+802bb1
+564f6f
+d1d7e0
+4c495d
+
+red cb2d6f
+green 14a098
+
+*/
+
+/* selectors */
+
+h1 {
+    color: var(--primary_font);
+}
+
+h2 {
+    color: var(--primary_font);
+}
+
+h3 {
+    color: var(--primary_font);
+}
+
+p {
+    color: var(--primary_font);
+}
+
+a {
+    color: var(--primary_font);
+}
+
+button {
+    color: var(--primary_font);
+}
+
+label {
+    color: var(--primary_font);
+}
+
+input {
+    color: var(--primary_font);
+}
+
+img {
+    color: var(--primary_font);
+}
+
+ul {
+    color: var(--primary_font);
+}
+
+ol {
+    color: var(--primary_font);
+}
+
+i {
+    color: var(--primary_font);
+    vertical-align: middle;
+    margin-inline: 10px;
+}
+
+/* element id */
+
+#spinner {
+    color: var(--primary);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+#overlay {
+    background-color: var(--background);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+#navbar {
+    color: var(--primary);
+    background-color: var(--background);
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    height: 10%;
+    top: 0%;
+    left: 0%;
+}
+
+#footer {
+    color: var(--primary);
+    background-color: var(--background);
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    position: fixed;
+    width: 100%;
+    height: 10%;
+    top: 90%;
+    left: 0%;
+}
+
+/* element class */
+
+.success-btn {
+    color: var(--success_font);
+    background-color: var(--success);
+    border: 2px solid var(--success_font);
+    border-radius: 5px;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.fail-btn {
+    color: var(--fail_font);
+    background-color: var(--fail);
+    border: 2px solid var(--fail_font);
+    border-radius: 5px;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.nav-item {
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+}
+
+.nav-selected {
+    border-top: 10px solid var(--background);
+    border-bottom: 10px solid var(--primary);
+}
+
+/* effects */
+
+.success-btn:focus,
+.success-btn:hover {
+    color: var(--success);
+    background-color: var(--success_font);
+    box-shadow: 0 0 15px var(--success_font);
+    transition: ease-in 0.5s;
+    cursor: pointer;
+}
+
+.fail-btn:focus,
+.fail-btn:hover {
+    color: var(--fail);
+    background-color: var(--fail_font);
+    box-shadow: 0 0 15px var(--fail_font);
+    transition: ease-in 0.5s;
+    cursor: pointer;
+}
+
+.nav-item:focus,
+.nav-item:hover {
+    color: var(--primary_font);
+    text-shadow: 1px 1px 10px var(--primary_font), 1px 1px 10px var(--primary_font);
+    transition: ease-in 0.5s;
+    cursor: pointer;
+}

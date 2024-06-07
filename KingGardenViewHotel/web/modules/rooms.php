@@ -3,7 +3,7 @@ session_start();
 ob_start();
 ?>
 
-Dashboard
+Gallery
 
 <?php
 $page_content = ob_get_clean();
