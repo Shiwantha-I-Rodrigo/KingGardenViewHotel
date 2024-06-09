@@ -67,14 +67,12 @@ addEventListener("DOMContentLoaded", (event) => {
 
     if (typeof (login) != 'undefined' && login != null) {
         login.addEventListener("click", () => {
-            sessionStorage.setItem("current_page","home");
             window.location.href="/web/modules/login.php";
         });
     }
 
     if (typeof (register) != 'undefined' && register != null) {
         register.addEventListener("click", () => {
-            sessionStorage.setItem("current_page","home");
             window.location.href="/web/modules/register.php";
         });
     }
