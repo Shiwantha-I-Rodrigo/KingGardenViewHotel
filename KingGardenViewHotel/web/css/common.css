@@ -25,6 +25,12 @@
 
 }
 
+@font-face {
+    font-family: teko;
+    src: url(Teko.ttf);
+    font-weight: bold;
+}
+
 /*
 
 metalicblue
@@ -61,12 +67,28 @@ green 14a098
 */
 
 /* selectors */
+
+* {
+    font-family: teko;
+}
+
 body {
     background-color: var(--background);
 }
 
 h1 {
-    color: var(--primary_font);
+    display: inline-block;
+    margin: 0;
+    font-size: 80px;
+    background-color: var(--background);
+    background-image: url('../../img/common/mountains_2.png');
+    background-repeat: repeat;
+    background-size: 600px 600px;
+    background-position: center;
+    color: transparent;
+    background-clip: text;
+    -webkit-background-clip: text;
+    text-shadow: 4px 4px;
 }
 
 h2 {
@@ -246,6 +268,12 @@ select {
     box-shadow: 0 0 15px var(--success_font);
     transition: ease-in 0.5s;
     cursor: pointer;
+}
+
+.success-btn:disabled,
+.success-btn[disabled] {
+    background-color: #818181;
+    color: #8b8b8b;
 }
 
 .fail-btn:focus,

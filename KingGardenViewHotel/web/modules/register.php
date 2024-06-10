@@ -20,11 +20,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 
     <div class="container mt-5 p-5">
         <div class="card">
-            <div class="row m-5">
-                <div class="col-12 d-flex justify-content-center">
-                    <img src="<?= BASE_URL . '/img/common/logo_big_embosed.png' ?>" alt="logo" style="height:75px;">
-                </div>
+            <div class="col-12 d-flex justify-content-center mt-4">
+                <img src="<?= BASE_URL . '/img/common/logo_logo.png' ?>" alt="logo" style="height:75px;">
             </div>
+            <h1 class="d-flex justify-content-center align-items-center my-2">REGISTRATION</h1>
             <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form" novalidate>
 
                 <div class="row mx-5">
@@ -48,10 +47,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
                         </select>
                     </div>
                     <div class="col-5 d-flex justify-content-end align-items-center">
-                        <input type="text" name="first_name" id="first_name" placeholder="First Name" required />
+                        <input type="text" class="fail-glow" name="first_name" id="first_name" placeholder="First Name" required />
                     </div>
                     <div class="col-6 d-flex justify-content-end align-items-center">
-                        <input type="text" name="last_name" id="last_name" placeholder="Last Name" required />
+                        <input type="text" class="fail-glow" name="last_name" id="last_name" placeholder="Last Name" required />
                     </div>
                 </div>
 
@@ -65,10 +64,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
                 </div>
                 <div class="row mx-5">
                     <div class="col-6 d-flex justify-content-end align-items-center">
-                        <input type="text" name="user_name" id="user_name" placeholder="Username" required />
+                        <input type="text" class="fail-glow" name="user_name" id="user_name" placeholder="Username (at least 4 characters long)" required />
                     </div>
                     <div class="col-6 d-flex justify-content-end align-items-center">
-                        <input type="text" name="email" id="email" placeholder="Email" required />
+                        <input type="text" class="fail-glow" name="email" id="email" placeholder="Email" required />
                     </div>
                 </div>
 
@@ -82,10 +81,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
                 </div>
                 <div class="row mx-5">
                     <div class="col-6 d-flex justify-content-end align-items-center">
-                        <input type="text" name="password" id="password" placeholder="Password" required />
+                        <input type="text" class="fail-glow" name="password" id="password" placeholder="Password" required />
                     </div>
                     <div class="col-6 d-flex justify-content-end align-items-center">
-                        <input type="text" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required />
+                        <input type="text" class="fail-glow" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required />
                     </div>
                 </div>
 
@@ -167,12 +166,17 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 
                 <div class="row my-4 mx-5">
                     <div class="col-12 d-flex justify-content-end">
-                        <button class="success-btn px-5 mx-4" id="submit_btn">Submit</button>
+                        <button class="success-btn px-5 mx-4" id="submit_btn" disabled>Submit</button>
                         <button class="fail-btn px-5" id="cancel_btn">Cancel</button>
                     </div>
                 </div>
 
             </form>
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <img src="<?= BASE_URL . '/img/common/logo_white_outline.png' ?>" alt="logo" style="height:70px;position:absolute;bottom:10px;left:10px;z-index: 9;">
+                </div>
+            </div>
             <div class="row">
                 <div class="col-12 d-flex justify-content-center">
                     <img src="<?= BASE_URL . '/img/common/mountains_4.png' ?>" alt="mountains_1" style="width:100%; border-radius: 10px;">

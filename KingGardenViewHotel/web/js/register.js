@@ -28,7 +28,7 @@ addEventListener("DOMContentLoaded", (event) => {
 	const telephone = document.getElementById("telephone");
 	var [t1, m1, a1, a2, a3] = [true, true, true, true, true];
 
-	function validatePasswords() {
+	function validatePassword() {
 		const value = password.value;
 		const hasLength = value.length >= 8;
 		const hasUpperCase = /[A-Z]/.test(value);
@@ -76,23 +76,26 @@ addEventListener("DOMContentLoaded", (event) => {
 			char_cross.classList.remove("d-none");
 		}
 
-		const isValid = hasLength && hasUpperCase && hasLowerCase && hasNumber && hasChar;
-		const isEqual = password.value == confirm_password.value;
+		p1 = hasLength && hasUpperCase && hasLowerCase && hasNumber && hasChar;
 
 		password_meter.classList.remove("d-none");
 
-		password.classList.toggle("success-glow", isValid);
-		password.classList.toggle("fail-glow", !isValid);
-		confirm_password.classList.toggle("success-glow", isValid && isEqual);
-		confirm_password.classList.toggle("fail-glow", !isValid || !isEqual);
-		p1 = isValid && isEqual;
+		password.classList.toggle("success-glow", p1);
+		password.classList.toggle("fail-glow", !p1);
+		sub_enable();
+	};
+
+	function confirm_passwords() {
+		p2 = password.value == confirm_password.value;
+		confirm_password.classList.toggle("success-glow", p1 && p2);
+		confirm_password.classList.toggle("fail-glow", !p1 || !p2);
 		sub_enable();
 	};
 
 	function validateUserName() {
-		n1 = user_name.value != "" && !user_name.value.includes(" ");
-		user_name.classList.toggle("success-glow", n1);
-		user_name.classList.toggle("fail-glow", !n1);
+		u1 = user_name.value != "" && !user_name.value.includes(" ") && user_name.value.length >= 4;
+		user_name.classList.toggle("success-glow", u1);
+		user_name.classList.toggle("fail-glow", !u1);
 		sub_enable();
 	};
 
@@ -173,11 +176,11 @@ addEventListener("DOMContentLoaded", (event) => {
 	};
 
 	password.addEventListener("focus", () => {
-		validatePasswords();
+		validatePassword();
 	});
 
 	// password2.addEventListener("focus", () => {
-	// 	validatePasswords();
+	// 	validatePassword();
 	// });
 	// userName.addEventListener("focus", () => {
 	// 	validateUserName();
@@ -211,10 +214,10 @@ addEventListener("DOMContentLoaded", (event) => {
 	// });
 
 	password.addEventListener("input", () => {
-		validatePasswords();
+		validatePassword();
 	});
 	confirm_password.addEventListener("input", () => {
-		validatePasswords();
+		confirm_passwords();
 	});
 	user_name.addEventListener("input", () => {
 		validateUserName();
