@@ -73,7 +73,7 @@ green 14a098
 }
 
 body {
-    background-color: var(--background);
+    background-color: white;
 }
 
 h1 {
@@ -245,7 +245,7 @@ select {
 }
 
 .row {
-    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .success-glow {

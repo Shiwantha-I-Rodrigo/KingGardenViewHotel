@@ -28,7 +28,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 
     <!-- Nav Start -->
     <div class="row" id="navbar">
-        <div class="col-3" id="logo"><img src="<?= BASE_URL . '/img/common/logo.png' ?>" alt="logo"></div>
+        <div class="col-3" id="logo"><img src="<?= BASE_URL . '/img/common/logo_white_outline_bold.png' ?>" alt="logo" style="width:50%;"></div>
         <div class="col-1 nav-item" id="home">Home</div>
         <div class="col-1 nav-item" id="about">About Us</div>
         <div class="col-1 nav-item" id="rooms">Rooms</div>

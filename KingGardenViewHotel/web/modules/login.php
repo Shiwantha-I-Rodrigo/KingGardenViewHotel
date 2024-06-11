@@ -20,7 +20,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 
     <div class="container mt-5 p-5">
         <div class="card">
-            <h1 class="d-flex justify-content-center align-items-center my-5">LOG IN</h1>
+            <h1 class="d-flex justify-content-center align-items-center my-3">LOG IN</h1>
             <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form" style="z-index:1;" novalidate>
                 <div class="row my-2">
                     <div class="col-4 d-flex justify-content-end align-items-center">
