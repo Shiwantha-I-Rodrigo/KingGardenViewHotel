@@ -14,6 +14,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="<?= WEB_BASE_URL ?>css/bootstrap.min.css" rel="stylesheet">
     <link href="<?= WEB_BASE_URL ?>css/common.css" rel="stylesheet">
+    <?= $extra_css; ?>
+    <script src="<?= WEB_BASE_URL ?>js/jquery-3.7.1.min.js"></script>
 </head>
 
 <body>
@@ -27,7 +29,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
     <!-- Spinner End -->
 
     <!-- Nav Start -->
-    <div class="row" id="navbar">
+    <div class="row" id="navbar" style="z-index:99;">
         <div class="col-3" id="logo"><img src="<?= BASE_URL . '/img/common/logo_white_outline_bold.png' ?>" alt="logo" style="width:50%;"></div>
         <div class="col-1 nav-item" id="home">Home</div>
         <div class="col-1 nav-item" id="about">About Us</div>
@@ -45,7 +47,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
     <!-- Page End -->
 
     <!-- Footer Start -->
-    <div class="row" id="footer">
+    <div class="row" id="footer" style="z-index:99;">
         <div class="col-1 nav-item"></div>
         <div class="col-2 nav-item" id="call"><i class="material-icons">call</i>+94-35-22-34654</div>
         <div class="col-2 nav-item" id="email"><i class="material-icons">alternate_email</i>kinggardenviewhotel@mail.com</div>
@@ -56,9 +58,9 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 
     <!-- JavaScript -->
     <script src="<?= WEB_BASE_URL ?>js/bootstrap.min.js"></script>
-    <script src="<?= WEB_BASE_URL ?>js/jquery-3.7.1.min.js"></script>
     <script src="<?= WEB_BASE_URL ?>js/sweetalert2@11.js"></script>
     <script src="<?= WEB_BASE_URL ?>js/common.js"></script>
+    <?= $extra_js; ?>
 
 </body>
 

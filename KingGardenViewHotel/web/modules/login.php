@@ -47,7 +47,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
             </form>
             <div class="row">
                 <div class="col-12 d-flex justify-content-center">
-                    <img src="<?= BASE_URL . '/img/common/logo_white_outline.png' ?>" alt="logo" style="height:70px;position:absolute;bottom:10px;left:10px;z-index: 9;">
+                    <img src="<?= BASE_URL . '/img/common/logo_white_outline.png' ?>" alt="logo" style="height:70px;position:absolute;bottom:10px;left:10px;z-index: 2;">
                 </div>
             </div>
             <div class="row">

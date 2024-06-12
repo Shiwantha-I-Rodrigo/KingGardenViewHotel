@@ -259,6 +259,44 @@ select {
     transition: ease-in 0.5s;
 }
 
+.banner {
+    top:10%;
+    width: 100%;
+    height: 700px;
+    overflow: hidden;
+}
+
+/* slider */
+
+.slide-in {
+    animation: slide-in 2s ease-in;
+}
+
+.slide-out {
+    animation: slide-out 2s ease-in;
+    left: 100%;
+}
+
+@keyframes slide-in {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-out {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
 /* effects */
 
 .success-btn:focus,
