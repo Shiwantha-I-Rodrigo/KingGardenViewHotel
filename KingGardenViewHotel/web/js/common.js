@@ -7,7 +7,15 @@ addEventListener("DOMContentLoaded", (event) => {
 
     const current_page = sessionStorage.getItem("current_page");
     const nav_item = document.getElementById(current_page);
-    nav_item.classList.toggle("nav-selected");
+    if (typeof (nav_item) != 'undefined' && nav_item != null) {
+        nav_item.classList.toggle("nav-selected");
+    }else{
+        console.log("session reset")
+        sessionStorage.setItem("current_page","home");
+        const current_page_start = sessionStorage.getItem("current_page");
+        const nav_item = document.getElementById(current_page_start);
+        nav_item.classList.toggle("nav-selected");
+    }
 
     const logo = document.getElementById("logo");
     const home = document.getElementById("home");
