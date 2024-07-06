@@ -3,7 +3,7 @@
 :root {
 
     --primary: #3aafa9;
-    --primary_font: #feffff;
+    --primary_font: #ffffff;
     --secondary: #2b7a78;
     --secondary_font: #3aafa9;
 
@@ -18,16 +18,32 @@
     --fail_font: #feffff;
 
     --background: #17252a;
+    --background_transparent: #3aafa991;
     --foreground: #feffff;
     --glow: #3aafa9;
     --shadow: #17252a;
     --overlay: #17252a;
 
+    --background_img_01: url('../../img/common/banner0.jpg');
+    --background_img_02: url('../../img/common/mountains_4.png');
+
 }
 
 @font-face {
-    font-family: teko;
-    src: url(Teko.ttf);
+    font-family: RobotoCondensed;
+    src: url(RobotoCondensed.ttf);
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: Lobster;
+    src: url(Lobster.ttf);
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: GreatVibes;
+    src: url(GreatVibes.ttf);
     font-weight: bold;
 }
 
@@ -69,7 +85,8 @@ green 14a098
 /* selectors */
 
 * {
-    font-family: teko;
+    font-family: RobotoCondensed;
+    font-size: large;
 }
 
 body {
@@ -77,26 +94,31 @@ body {
 }
 
 h1 {
+    color: transparent;
+    font-family: RobotoCondensed;
+    font-size: 10vh;
     display: inline-block;
     margin: 0;
-    font-size: 80px;
     background-color: var(--background);
-    background-image: url('../../img/common/mountains_2.png');
+    background-image: var(--background_img_01);
     background-repeat: repeat;
-    background-size: 600px 600px;
+    background-size: 30vh 30vw;
     background-position: center;
-    color: transparent;
     background-clip: text;
     -webkit-background-clip: text;
-    text-shadow: 4px 4px;
+    text-shadow: 0.1vh 0.1vw;
 }
 
 h2 {
     color: var(--primary_font);
+    font-family: Lobster;
+    font-size: 10vh;
 }
 
 h3 {
     color: var(--primary_font);
+    font-family: GreatVibes;
+    font-size: 10vh;
 }
 
 p {
@@ -118,22 +140,24 @@ label {
 input {
     color: var(--primary_font);
     border: none;
-    border-bottom: 3px solid var(--primary_font);
+    border-bottom: 0.5vh solid var(--primary_font);
     width: 100%;
-    background-color: var(--primary);
-    margin-bottom: 10px;
+    background-color: #ffffff00;
+    margin-bottom: 1vh;
 }
 
 input[type="file"]::file-selector-button {
-    border: 2px solid var(--primary_font);
+    border: 0.1vh solid var(--primary_font);
     background-color: var(--primary);
     color: var(--primary_font);
     border: none;
-    border-right: 3px solid var(--primary_font);
+    border-right: 0.1vh solid var(--primary_font);
 }
 
 img {
     color: var(--primary_font);
+    margin: 0;
+    padding: 0;
 }
 
 ul {
@@ -147,11 +171,11 @@ ol {
 i {
     color: var(--primary_font);
     vertical-align: middle;
-    margin-inline: 10px;
+    margin-inline: 0.5vh;
 }
 
 select {
-    border: 2px solid var(--primary_font);
+    border: 0.1vh solid var(--primary_font);
     background-color: var(--primary);
     color: var(--primary_font);
     border: none;
@@ -162,15 +186,15 @@ select {
 #spinner {
     color: var(--primary);
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 50vh;
+    left: 50vw;
 }
 
 #overlay {
     background-color: var(--background);
     position: absolute;
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
 }
 
 #navbar {
@@ -180,10 +204,10 @@ select {
     align-items: center;
     text-align: center;
     position: fixed;
-    width: 100%;
-    height: 10%;
-    top: 0%;
-    left: 0%;
+    width: 100vw;
+    height: 10vh;
+    top: 0vh;
+    left: 0vw;
 }
 
 #footer {
@@ -193,10 +217,10 @@ select {
     align-items: center;
     text-align: center;
     position: fixed;
-    width: 100%;
-    height: 10%;
-    top: 90%;
-    left: 0%;
+    width: 100vw;
+    height: 10vh;
+    top: 90vh;
+    left: 0vw;
 }
 
 /* element class */
@@ -204,18 +228,27 @@ select {
 .success-btn {
     color: var(--success_font);
     background-color: var(--success);
-    border: 2px solid var(--success_font);
-    border-radius: 5px;
-    padding: 5px;
+    border: 0.1vh solid var(--success_font);
+    border-radius: 1vh;
+    padding: 0.2vh;
     font-weight: bold;
 }
 
 .fail-btn {
     color: var(--fail_font);
     background-color: var(--fail);
-    border: 2px solid var(--fail_font);
-    border-radius: 5px;
-    padding: 5px;
+    border: 0.1vh solid var(--fail_font);
+    border-radius: 1vh;
+    padding: 0.2vh;
+    font-weight: bold;
+}
+
+.tiny-btn {
+    color: var(--success_font);
+    background-color: rgba(255, 255, 255, 0);
+    border: 0.1vh solid var(--success_font);
+    border-radius: 1vh;
+    padding: 0.2vh;
     font-weight: bold;
 }
 
@@ -234,6 +267,16 @@ select {
 .card {
     border-radius: 10px;
     background-color: var(--primary);
+    margin-top: 2vh;
+    margin-left: 1vh;
+}
+
+.card_transparent {
+    border-radius: 10px;
+    background-color: var(--background_transparent);
+    margin-top: 2vh;
+    margin-left: 1vh;
+    padding: 1vh;
 }
 
 .fail {
@@ -245,25 +288,48 @@ select {
 }
 
 .row {
-    margin-bottom: 10px;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 0.5vh;
+}
+
+.col-12 {
+    margin: 0;
+    padding: 0;
 }
 
 .success-glow {
-    border-bottom: 5px solid var(--success);
+    border-bottom: 0.5vh solid var(--success);
     transition: ease-in 0.5s;
 }
 
 .fail-glow {
     color: var(--fail);
-    border-bottom: 5px solid var(--fail);
+    border-bottom: 0.5vh solid var(--fail);
     transition: ease-in 0.5s;
 }
 
 .banner {
-    top:10%;
-    width: 100%;
-    height: 700px;
+    position: absolute;
+    top: 10vh;
+    width: 100vw;
+    height: 80vh;
     overflow: hidden;
+    background-image: var(--background_img_01);
+    background-repeat: no-repeat;
+    background-size: cover;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.row {
+    margin: 0;
+    padding: 0;
+}
+
+.datepickers {
+    background-color: rgba(255, 255, 255, 0);
+    color: var(--primary_font);
 }
 
 /* slider */
@@ -333,4 +399,9 @@ select {
 
 input:focus {
     outline: none;
+}
+
+.datepickers:focus {
+    background-color: rgba(255, 255, 255, 0);
+    color: var(--primary_font);
 }

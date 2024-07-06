@@ -1,6 +1,6 @@
 # sync server root
 rsync -avu --delete "KingGardenViewHotel/" "../lighttpd/http/"
-
+rsync -avu --delete "KingGardenViewHotel/" "../lighttpd_root/"
 
 # install web servers
 sudo pacman -S mariadb lighttpd fcgi php php-cgi

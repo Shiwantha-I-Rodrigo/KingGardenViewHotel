@@ -20,14 +20,21 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 
     <div class="container mt-5 p-5">
         <div class="card">
-            <h1 class="d-flex justify-content-center align-items-center my-3">LOG IN</h1>
+            <div class="row">
+                <div class="col-2 p-4">
+                    <a href="/index.php"><i class="material-icons">home</i>Back Home</a>
+                </div>
+                <div class="col-8 d-flex justify-content-center mt-4">
+                    <h2 class="d-flex justify-content-center align-items-center my-5">Log In</h2>
+                </div>
+            </div>
             <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form" style="z-index:1;" novalidate>
                 <div class="row my-2">
                     <div class="col-4 d-flex justify-content-end align-items-center">
                         <label>Username</label>
                     </div>
                     <div class="col-6 d-flex">
-                        <input type="text"  name="user_name" id="user_name" placeholder="Username or Email" required />
+                        <input type="text" name="user_name" id="user_name" placeholder="Username or Email" required />
                     </div>
                 </div>
                 <div class="row my-4">
@@ -35,10 +42,10 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
                         <label>Password</label>
                     </div>
                     <div class="col-6 d-flex">
-                        <input type="text"  name="user_name" id="user_name" placeholder="Password" required />
+                        <input type="text" name="user_name" id="user_name" placeholder="Password" required />
                     </div>
                 </div>
-                <div class="row my-4">
+                <div class="row my-5">
                     <div class="col-10 d-flex justify-content-end">
                         <button class="success-btn px-5 mx-4">Login</button>
                         <button class="fail-btn px-5">Cancel</button>
@@ -47,7 +54,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
             </form>
             <div class="row">
                 <div class="col-12 d-flex justify-content-center">
-                    <img src="<?= BASE_URL . '/img/common/logo_white_outline.png' ?>" alt="logo" style="height:70px;position:absolute;bottom:10px;left:10px;z-index: 2;">
+                    <img src="<?= BASE_URL . '/img/common/logo_white_outline.png' ?>" alt="logo" style="height:8vh;position:absolute;bottom:10px;left:10px;z-index: 2;">
                 </div>
             </div>
             <div class="row">

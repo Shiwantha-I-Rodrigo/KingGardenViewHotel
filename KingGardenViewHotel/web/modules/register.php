@@ -20,10 +20,15 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 
     <div class="container mt-5 p-5">
         <div class="card">
-            <div class="col-12 d-flex justify-content-center mt-4">
-                <img src="<?= BASE_URL . '/img/common/logo_logo.png' ?>" alt="logo" style="height:75px;">
+            <div class="row">
+                <div class="col-2 p-4">
+                    <a href="/index.php"><i class="material-icons">home</i>Back Home</a>
+                </div>
+                <div class="col-8 d-flex justify-content-center mt-4">
+                    <img src="<?= BASE_URL . '/img/common/logo_logo.png' ?>" alt="logo" style="height:75px;">
+                </div>
             </div>
-            <h1 class="d-flex justify-content-center align-items-center my-2">REGISTRATION</h1>
+            <h2 class="d-flex justify-content-center align-items-center my-5">Registration</h2>
             <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form" novalidate>
 
                 <div class="row mx-5">
@@ -173,12 +178,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 
             </form>
             <div class="row">
-                <div class="col-12 d-flex justify-content-center">
+                <div class="col-12">
                     <img src="<?= BASE_URL . '/img/common/logo_white_outline.png' ?>" alt="logo" style="height:70px;position:absolute;bottom:10px;left:10px;z-index: 2;">
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 d-flex justify-content-center">
+                <div class="col-12">
                     <img src="<?= BASE_URL . '/img/common/mountains_4.png' ?>" alt="mountains_1" style="width:100%; border-radius: 10px;">
                 </div>
             </div>
