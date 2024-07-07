@@ -19,6 +19,7 @@
 
     --background: #17252a;
     --background_transparent: #3aafa991;
+    --background_translucent: #17252ac4;
     --foreground: #feffff;
     --glow: #3aafa9;
     --shadow: #17252a;
@@ -158,6 +159,8 @@ img {
     color: var(--primary_font);
     margin: 0;
     padding: 0;
+    overflow: hidden;
+    object-fit: cover;
 }
 
 ul {
@@ -188,6 +191,7 @@ select {
     position: absolute;
     top: 50vh;
     left: 50vw;
+    z-index: 99;
 }
 
 #overlay {
@@ -195,6 +199,7 @@ select {
     position: absolute;
     height: 100vh;
     width: 100vw;
+    z-index: 98;
 }
 
 #navbar {
@@ -221,6 +226,17 @@ select {
     height: 10vh;
     top: 90vh;
     left: 0vw;
+}
+
+#booknow {
+    position: absolute;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    width: 10vw;
+    bottom: 15vh;
+    right: 5vw;
+    z-index: 97;
 }
 
 /* element class */
@@ -330,6 +346,13 @@ select {
 .datepickers {
     background-color: rgba(255, 255, 255, 0);
     color: var(--primary_font);
+}
+
+.clear_btn {
+    background-color: rgba(255, 255, 255, 0);
+    padding: 0;
+    margin: 0;
+    border: none;
 }
 
 /* slider */

@@ -8,7 +8,7 @@ ob_start();
 
 <div class="banner">
     <div class="row mt-2">
-        <div class="col-7">
+        <div class="col-6">
             <div class="row mt-5">
                 <div class="col">
                     <h2>Welcome<br>King Garden</h2>
@@ -20,29 +20,29 @@ ob_start();
                 </div>
             </div>
         </div>
-        <div class="col-5">
-            <div class="card_transparent mt-5">
+        <div class="col-6">
+            <div class="card_transparent mt-5 me-5 ms-5">
                 <form class="p-0 m-0">
                     <div class="row py-3 border-bottom">
                         <div class="col-12 d-flex justify-content-center align-items-center">
                             <h2 style="font-size:5vh;">Search for Accomadations</h2>
                         </div>
                     </div>
-                    <div class="row py-3 px-5 ms-4">
+                    <div class="row py-4 px-5 d-flex justify-content-between">
                         <div class="col-2 p-0 m-0">
                             <label>Check-in</label>
                         </div>
-                        <div class="col-3 p-0 m-0 me-4">
+                        <div class="col-3 p-0 m-0">
                             <input name="start_date" id="start_date" class="form-control datepickers" type="date" required/>
                         </div>
-                        <div class="col-2 p-0 m-0">
+                        <div class="col-2 p-0 m-0 ms-5">
                             <label>Check-out</label>
                         </div>
                         <div class="col-3 p-0 m-0">
                             <input name="end_date" id="end_date" class="form-control datepickers" type="date" required/>
                         </div>
                     </div>
-                    <div class="row py-3 px-5 ms-4 border-bottom">
+                    <div class="row py-4 px-5 d-flex justify-content-between border-bottom">
                         <div class="col-2 p-0 m-0">
                             <label>Rooms</label>
                         </div>
@@ -52,10 +52,10 @@ ob_start();
                         <div class="col-1 p-0 m-0">
                             <input type="text" name="rooms_count" id="rooms_count" style="text-align:center;" required />
                         </div>
-                        <div class="col-1 p-0 m-0 me-4">
+                        <div class="col-1 p-0 m-0">
                             <button class="tiny-btn px-1 mx-1" name="rooms_count_plus" id="rooms_count_plus"><i class="material-icons">add</i></button>
                         </div>
-                        <div class="col-2 p-0 m-0">
+                        <div class="col-2 p-0 m-0 ms-5">
                             <label>Guests</label>
                         </div>
                         <div class="col-1 p-0 m-0">
@@ -68,7 +68,7 @@ ob_start();
                             <button class="tiny-btn px-1 mx-1" name="guest_count_plus" id="guest_count_plus"><i class="material-icons">add</i></button>
                         </div>
                     </div>
-                    <div class="row py-3 px-5 ms-4 border-bottom d-flex justify-content-center">
+                    <div class="row py-4 px-5 border-bottom d-flex justify-content-end">
                         <div class="form-check form-check-inline col-3  p-0 m-0">
                             <input class="form-check-input" type="checkbox" id="available" value="1" checked>
                             <label class="form-check-label mx-3" for="available">Available</label>
