@@ -1,9 +1,124 @@
 <?php
 session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+$extra_js = '<script src="' . WEB_BASE_URL . 'js/dashboard.js"></script>';
+$extra_css = '';
 ob_start();
 ?>
 
-Dashboard
+<section>
+    <div class="container py-5">
+        <div class="row mt-5">
+            <div class="col-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <img src="<?= BASE_URL . '/img/common/logo_logo.png' ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                        <h5 class="my-3">John Smith</h5>
+                        <p class="text-muted mb-1">Full Stack Developer</p>
+                        <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                        <div class="d-flex justify-content-center mb-2">
+                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Edit</button>
+                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-1">Deactivate</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <ul class="list-group list-group-flush rounded-3">
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center p-3" style="background-color: var(--primary);">
+                            <label>Message 1</label>
+                        </li>
+
+                    </ul>
+                    <div class="d-flex justify-content-between align-items-center p-3">
+                        <i class="material-icons">arrow_back</i>
+                        <i class="material-icons">arrow_forward</i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="mb-0">Full Name</p>
+                            </div>
+                            <div class="col-9">
+                                <p class="text-muted mb-0">Johnatan Smith</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="mb-0">Email</p>
+                            </div>
+                            <div class="col-9">
+                                <p class="text-muted mb-0">example@example.com</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="mb-0">Phone</p>
+                            </div>
+                            <div class="col-9">
+                                <p class="text-muted mb-0">(097) 234-5678</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="mb-0">Mobile</p>
+                            </div>
+                            <div class="col-9">
+                                <p class="text-muted mb-0">(098) 765-4321</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-3">
+                                <p class="mb-0">Address</p>
+                            </div>
+                            <div class="col-9">
+                                <p class="text-muted mb-0">Bay Area, San Francisco, CA</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+
+                                <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status</p>
+                                <p class="mb-1" style="font-size: .77rem;">Web Design</p>
+
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center p-3">
+                                <i class="material-icons">arrow_back</i>
+                                <i class="material-icons">arrow_forward</i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card mb-4">
+                            <div class="card-body">
+
+                                <p class="mb-4"><span class="text-primary font-italic me-1">assigment</span> Project Status</p>
+                                <p class="mb-1" style="font-size: .77rem;">Web Design</p>
+
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center p-3">
+                                <i class="material-icons">arrow_back</i>
+                                <i class="material-icons">arrow_forward</i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <?php
 $page_content = ob_get_clean();

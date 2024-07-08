@@ -14,3 +14,15 @@ function change() {
 }
 
 setInterval(change, 1000);
+
+let elements = document.querySelectorAll('.room');
+
+elements.forEach((item) => {
+    item.addEventListener('click', () => {
+        let room_id = item.id;
+        let text = item.innerHTML;
+        $("#room-id").html(room_id);
+        $("#room-details").html(text);
+        $('#Reservation').modal('show');
+    })
+});

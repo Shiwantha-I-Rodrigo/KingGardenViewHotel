@@ -17,7 +17,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 </head>
 
 <body>
-
     <div class="container mt-5 p-5">
         <div class="card">
             <div class="row">
@@ -58,7 +57,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
                         <input type="text" class="fail-glow" name="last_name" id="last_name" placeholder="Last Name" required />
                     </div>
                 </div>
-
                 <div class="row mx-5">
                     <div class="col-6 d-flex justify-content-start align-items-bottom">
                         <label>Username</label>
@@ -75,7 +73,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
                         <input type="text" class="fail-glow" name="email" id="email" placeholder="Email" required />
                     </div>
                 </div>
-
                 <div class="row mx-5">
                     <div class="col-6 d-flex justify-content-start align-items-bottom">
                         <label>Password</label>
@@ -92,7 +89,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
                         <input type="text" class="fail-glow" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required />
                     </div>
                 </div>
-
                 <div class="row mx-5">
                     <div class="alert col-12 d-none" role="alert" id="password_meter">
                         <ul class="list-unstyled">
@@ -124,7 +120,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
                         </ul>
                     </div>
                 </div>
-
                 <div class="row mx-5">
                     <div class="col-6 d-flex justify-content-start align-items-bottom">
                         <label>Address</label>
@@ -151,7 +146,6 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
                         <input type="text" name="address_3" id="address_3" placeholder="Province" required />
                     </div>
                 </div>
-
                 <div class="row mx-5">
                     <div class="col-6 d-flex justify-content-start align-items-bottom">
                         <label>Telephone</label>
@@ -168,14 +162,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
                         <input type="text" name="mobile" id="mobile" placeholder="Mobile" required />
                     </div>
                 </div>
-
                 <div class="row my-4 mx-5">
                     <div class="col-12 d-flex justify-content-end">
                         <button class="success-btn px-5 mx-4" id="submit_btn" disabled>Submit</button>
                         <button class="fail-btn px-5" id="cancel_btn">Cancel</button>
                     </div>
                 </div>
-
             </form>
             <div class="row">
                 <div class="col-12">

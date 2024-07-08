@@ -37,7 +37,7 @@ ob_start();
     </div>
 </div>
 
-<!-- Spinner Start -->
+<!-- Book Now Button -->
 <div id="booknow">
     <div class="success-btn" id="book_btn">Book Now!</div>
 </div>
@@ -51,7 +51,7 @@ ob_start();
                 <label class="mx-3" style="font-size:3vh;">Sustainability Policy</label>
                 <button type="button" class="clear_btn" data-bs-dismiss="modal"><i class="material-icons">cancel</i></button>
             </div>
-            <div class="modal-body" style="color:var(--primary_font); text-align: justify; text-justify: inter-word;">
+            <div class="modal-body" style="font-weight: normal; color:var(--primary_font); text-align: justify; text-justify: inter-word;">
                 Cinnamon Grand will strive to conduct its activities in accordance with the highest standards of corporate
                 best practice and in compliance with all applicable local and international regulatory requirements and
                 conventions.<br>
@@ -86,7 +86,7 @@ ob_start();
                 <label class="mx-3" style="font-size:3vh;">Food Safety Policy</label>
                 <button type="button" class="clear_btn" data-bs-dismiss="modal"><i class="material-icons">cancel</i></button>
             </div>
-            <div class="modal-body" style="color:var(--primary_font); text-align: justify; text-justify: inter-word;">
+            <div class="modal-body" style="font-weight: normal; color:var(--primary_font); text-align: justify; text-justify: inter-word;">
                 “Cinnamon Grand Colombo” will take required steps to ensure that her products are safe and fit
                 for human consumption.<br>
                 The policy of Food Safety extends to all related activities ranging from supply of ingredients,
@@ -128,7 +128,7 @@ ob_start();
                 <label class="mx-3" style="font-size:3vh;">Environmental Policy</label>
                 <button type="button" class="clear_btn" data-bs-dismiss="modal"><i class="material-icons">cancel</i></button>
             </div>
-            <div class="modal-body" style="color:var(--primary_font); text-align: justify; text-justify: inter-word;">
+            <div class="modal-body" style="font-weight: normal; color:var(--primary_font); text-align: justify; text-justify: inter-word;">
                 “Cinnamon Grand Colombo” stand committed to continuously provide services surpassing the
                 needs and expectations of her customers. During our operations, we strive to protect, preserve
                 and nurture the environment on which our hotels activities have a significant impact.<br>
@@ -163,7 +163,7 @@ ob_start();
                 <label class="mx-3" style="font-size:3vh;">Child Protection Policy</label>
                 <button type="button" class="clear_btn" data-bs-dismiss="modal"><i class="material-icons">cancel</i></button>
             </div>
-            <div class="modal-body" style="color:var(--primary_font); text-align: justify; text-justify: inter-word;">
+            <div class="modal-body" style="font-weight: normal; color:var(--primary_font); text-align: justify; text-justify: inter-word;">
                 The Cinnamon Grand shall monitor all matters that concern the safety and protection of children
                 and their rights.<br>
                 We are aware that sexual exploitation and other forms of child abuse can occur in the tourism

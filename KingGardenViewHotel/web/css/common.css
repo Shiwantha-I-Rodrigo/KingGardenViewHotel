@@ -27,6 +27,7 @@
 
     --background_img_01: url('../../img/common/banner0.jpg');
     --background_img_02: url('../../img/common/mountains_4.png');
+    --background_img_03: url('../../img/common/banner5.jpg');
 
 }
 
@@ -155,12 +156,21 @@ input[type="file"]::file-selector-button {
     border-right: 0.1vh solid var(--primary_font);
 }
 
+textarea{
+    color: var(--primary_font);
+    border: none;
+    border-bottom: 0.5vh solid var(--primary_font);
+    width: 100%;
+    background-color: #ffffff00;
+    margin: 1vh;
+    resize: none;
+}
+
 img {
     color: var(--primary_font);
     margin: 0;
     padding: 0;
     overflow: hidden;
-    object-fit: cover;
 }
 
 ul {
@@ -229,7 +239,7 @@ select {
 }
 
 #booknow {
-    position: absolute;
+    position: fixed;
     align-content: center;
     align-items: center;
     text-align: center;
@@ -427,4 +437,12 @@ input:focus {
 .datepickers:focus {
     background-color: rgba(255, 255, 255, 0);
     color: var(--primary_font);
+}
+
+.room:focus,
+.room:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--foreground);
+    transition: ease-in 0.5s;
+    cursor: pointer;
 }
