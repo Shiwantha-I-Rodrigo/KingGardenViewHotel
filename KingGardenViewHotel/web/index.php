@@ -50,7 +50,7 @@ ob_start();
                             <button class="tiny-btn px-1 mx-1" name="rooms_count_minus" id="rooms_count_minus"><i class="material-icons">remove</i></button>
                         </div>
                         <div class="col-1 p-0 m-0">
-                            <input type="text" name="rooms_count" id="rooms_count" style="text-align:center;" required />
+                            <input type="text" name="rooms_count" id="rooms_count" style="text-align:center; border:none;" required />
                         </div>
                         <div class="col-1 p-0 m-0">
                             <button class="tiny-btn px-1 mx-1" name="rooms_count_plus" id="rooms_count_plus"><i class="material-icons">add</i></button>
@@ -62,7 +62,7 @@ ob_start();
                             <button class="tiny-btn px-1 mx-1" name="guest_count_minus" id="guest_count_minus"><i class="material-icons">remove</i></button>
                         </div>
                         <div class="col-1 p-0 m-0">
-                            <input type="text" name="guest_count" id="guest_count" style="text-align:center;" required />
+                            <input type="text" name="guest_count" id="guest_count" style="text-align:center;border:none;" required />
                         </div>
                         <div class="col-1 p-0 m-0">
                             <button class="tiny-btn px-1 mx-1" name="guest_count_plus" id="guest_count_plus"><i class="material-icons">add</i></button>

@@ -22,7 +22,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
         <div class="card">
             <div class="row m-5">
                 <div class="col-12 d-flex justify-content-center">
-                    <div class="col-2 nav-item" id="call"><i class="material-icons" style="font-size: 96px;">not_listed_location</i></div>
+                    <div class="col-2 nav-item" id="call"><i class="material-icons" style="font-size: 96px; color: var(--fail);">not_listed_location</i></div>
                 </div>
             </div>
             <div class="row m-1">
@@ -32,7 +32,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
             </div>
             <div class="row m-1">
                 <div class="col-12 d-flex justify-content-center">
-                    <h3>Can't seem to find the page you're looking for.</h3>
+                    <h2 style="font-size:5vh;">Can't seem to find the page you're looking for.</h2>
                 </div>
             </div>
             <div class="row">

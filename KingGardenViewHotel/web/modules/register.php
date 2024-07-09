@@ -2,6 +2,7 @@
 <html lang="en">
 
 <?php
+session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -12,42 +13,55 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $sql = "SELECT * FROM users WHERE Email='$email'";
     $result = $db->query($sql);
     if ($result->num_rows > 0) {
+        $_SESSION['alert_color'] = "var(--fail)";
+        $_SESSION['alert_icon'] = "error";
+        $_SESSION['alert_title'] = "Error";
+        $_SESSION['alert_msg'] = 'The email address provided has an account associated,<br> please <a href="/web/modules/login.php">log in</a> to continue, or use another email address.';
         reDirect('/web/sub/alert.php');
+    } else {
+        $db = dbConn();
+        $sql = "SELECT * FROM users WHERE UserName='$user_name'";
+        $result = $db->query($sql);
+        if ($result->num_rows > 0) {
+            $_SESSION['alert_color'] = "var(--fail)";
+            $_SESSION['alert_icon'] = "error";
+            $_SESSION['alert_title'] = "Error";
+            $_SESSION['alert_msg'] =  'The username provided has an account associated,<br> please <a href="/web/modules/login.php">log in</a> to continue, or use another username.';
+            reDirect('/web/sub/alert.php');
+        } else {
+            $file = "";
+
+            if (isset($_FILES['file_upload'])) {
+                $path =  $_SERVER['DOCUMENT_ROOT'] . '/img/users/';
+                $file = uploadFile($path, $_FILES);
+            }
+
+            $pw_hash = password_hash($password, PASSWORD_BCRYPT);
+            $db = dbConn();
+            $sql = "INSERT INTO `users`(`UserName`, `Password`,`Email`,`Type`,`Status`) VALUES ('$user_name','$pw_hash','$email',1,0)";
+            $db->query($sql);
+
+            $user_id = $db->insert_id;
+            $reg_no = date('Y') . date('m') . $user_id;
+            $token = md5(uniqid());
+
+            $sql = "INSERT INTO `customers`(`FirstName`, `LastName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `Telephone`, `Mobile`, `Title`, `RegNo`,`ProfilePic`, `UserId`, `Token`, `Status`) VALUES ('$first_name','$last_name','$address_1','$address_2','$address_3','$telephone','$mobile','$title','$reg_no','$file','$user_id','$token',0)";
+            $db->query($sql);
+
+            $msg = "<h1>SUCCESS</h1>";
+            $msg .= "<h2>Congratulations</h2>";
+            $msg .= "<p>Your account has been successfully created</p>";
+            $msg .= "Click the following link to verify your email:\n";
+            $msg .= $_SERVER['SERVER_NAME'] . "/web/sub/verify.php?token=$token";
+            sendEmail($email, $first_name, "Account Verification", $msg);
+            $_SESSION['alert_color'] = "var(--primary)";
+            $_SESSION['alert_icon'] = "task_alt";
+            $_SESSION['alert_title'] = "Registration Succesful !";
+            $_SESSION['alert_msg'] = "Hi, " . $user_name . " your registration was submitted succesfully,<br>please complete account verification using<br>instructions sent to the provided email address.<br>Registration no : " . $reg_no;
+            reDirect('/web/sub/alert.php');
+
+        }
     }
-
-    $db = dbConn();
-    $sql = "SELECT * FROM users WHERE UserName='$user_name'";
-    $result = $db->query($sql);
-    if ($result->num_rows > 0) {
-        reDirect('/web/sub/alert.php');
-    }
-
-    $file = "";
-
-    if (isset($_FILES['file_upload'])) {
-        $path =  $_SERVER['DOCUMENT_ROOT'] . '/img/users/';
-        $file = uploadFile($path, $_FILES);
-    }
-
-    $pw_hash = password_hash($password, PASSWORD_BCRYPT);
-    $db = dbConn();
-    $sql = "INSERT INTO `users`(`UserName`, `Password`,`Email`,`Type`,`Status`) VALUES ('$user_name','$pw_hash','$email',1,0)";
-    $db->query($sql);
-
-    $user_id = $db->insert_id;
-    $reg_no = date('Y') . date('m') . $user_id;
-    $token = md5(uniqid());
-
-    $sql = "INSERT INTO `customers`(`FirstName`, `LastName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `Telephone`, `Mobile`, `Title`, `RegNo`,`ProfilePic`, `UserId`, `Token`, `Status`) VALUES ('$first_name','$last_name','$address_1','$address_2','$address_3','$telephone','$mobile','$title','$reg_no','$file','$user_id','$token',0)";
-    $db->query($sql);
-
-    $msg = "<h1>SUCCESS</h1>";
-    $msg .= "<h2>Congratulations</h2>";
-    $msg .= "<p>Your account has been successfully created</p>";
-    $msg .= "Click the following link to verify your email:\n";
-    $msg .= $_SERVER['SERVER_NAME'] . "/web/sub/verify.php?token=$token";
-    sendEmail($email, $first_name, "Account Verification", $msg);
-    reDirect('/web/sub/alert.php');
 }
 
 ?>
@@ -243,7 +257,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="modal-content" style="background-color:var(--background);">
                 <div class="modal-header d-flex justify-content-between">
                     <img src="<?= BASE_URL . '/img/common/logo_logo.png' ?>" alt="" style="width: 3vw; height: 5vh; object-fit: cover;">
-                    <label class="mx-3" style="font-size:3vh;">Sustainability Policy</label>
+                    <label class="mx-3" style="font-size:3vh;">Confirmation</label>
                     <button type="button" class="clear_btn" data-bs-dismiss="modal"><i class="material-icons">cancel</i></button>
                 </div>
                 <div class="modal-body" style="font-weight: normal; color:var(--primary_font); text-align: justify; text-justify: inter-word;">
