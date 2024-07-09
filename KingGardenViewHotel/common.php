@@ -33,14 +33,28 @@ function authorize($user_id = null, $module_id = null)
     };
 }
 
-//Alerts---------------------------------------------
+//upload---------------------------------------------
 
-function successAlert($op = null, $msg = null)
+function uploadFile($path = null, $files = null)
 {
-    echo '<script type="text/javascript">success_alert(' . $op . ',' . $msg . ');</script>';
-}
+    $extensions = ['jpg', 'jpeg', 'png', 'gif'];
 
-function failAlert($op = null, $msg = null)
-{
-    echo '<script type="text/javascript">fail_alert(' . $op . ',' . $msg . ');</script>';
+    $file_name = $files['file_upload']['name'];
+    $file_tmp = $files['file_upload']['tmp_name'];
+    $file_size = $files['file_upload']['size'];
+    $file_ext = strtolower(end(explode('.', $files['file_upload']['name'])));
+    $random = substr(md5(time() . $file_name), 0, 128);
+    $file = $path . $random . "." . $file_ext;
+
+    if (!in_array($file_ext, $extensions)) {
+        reDirect('/web/sub/alert.php');
+    }
+
+    if ($file_size > 1500000) {
+        reDirect('/web/sub/alert.php');
+    }
+
+    move_uploaded_file($file_tmp, $file);
+
+    return $file;
 }

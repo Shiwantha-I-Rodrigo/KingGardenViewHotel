@@ -56,6 +56,9 @@ uncomment required extention lines
 # enable file uploads
     file_uploads = On
 
+# file trasnfer permissions for destination folder (server root)
+    sudo chmod 777 destination_folder
+! remeber to change permissions of source folder (git) also if using 'sync' to copy files to server root as 'sync' will reset permissions of the folders to that of source.
 
 # start web servers
 sudo systemctl start mariadb.service

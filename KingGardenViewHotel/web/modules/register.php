@@ -7,46 +7,47 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     extract($_POST);
-    $message = array();
 
     $db = dbConn();
     $sql = "SELECT * FROM users WHERE Email='$email'";
     $result = $db->query($sql);
     if ($result->num_rows > 0) {
-        $message['email'] = "This Email address already exsist...!";
+        reDirect('/web/sub/alert.php');
     }
 
     $db = dbConn();
     $sql = "SELECT * FROM users WHERE UserName='$user_name'";
     $result = $db->query($sql);
     if ($result->num_rows > 0) {
-        $message['user_name'] = "This user name address already exsist...!";
+        reDirect('/web/sub/alert.php');
     }
 
-    if (empty($message)) {
+    $file = "";
 
-        $pw_hash = password_hash($password, PASSWORD_BCRYPT);
-        $db = dbConn();
-        $sql = "INSERT INTO `users`(`UserName`, `Password`,`Email`,`Type`,`Status`) VALUES ('$user_name','$pw_hash','$email',1,0)";
-        $db->query($sql);
-
-        $user_id = $db->insert_id;
-        $reg_no = date('Y') . date('m') . $user_id;
-        $token = md5(uniqid());
-
-        $sql = "INSERT INTO `customers`(`FirstName`, `LastName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `Telephone`, `Mobile`, `Title`, `RegNo`,`ProfilePic`, `UserId`, `Token`, `Status`) VALUES ('$first_name','$last_name','$address_1','$address_2','$address_3','$telephone','$mobile','$title','$reg_no','$target_file','$user_id','$token',0)";
-        $db->query($sql);
-
-        $msg = "<h1>SUCCESS</h1>";
-        $msg .= "<h2>Congratulations</h2>";
-        $msg .= "<p>Your account has been successfully created</p>";
-        $msg .= "Click the following link to verify your email:\n";
-        $msg .= $_SERVER['DOCUMENT_ROOT'] . "/web/modules/sub/verify.php?token=$token";
-        sendEmail($email, $first_name, "Account Verification", $msg);
-
-        $alert = "Hi, " . $user_name . " your registration number is," + $reg_no + ". please verify the account using the email sent to the provided email address to complete the registration.";
-        reDirect('sub/alert.php');
+    if (isset($_FILES['file_upload'])) {
+        $path =  $_SERVER['DOCUMENT_ROOT'] . '/img/users/';
+        $file = uploadFile($path, $_FILES);
     }
+
+    $pw_hash = password_hash($password, PASSWORD_BCRYPT);
+    $db = dbConn();
+    $sql = "INSERT INTO `users`(`UserName`, `Password`,`Email`,`Type`,`Status`) VALUES ('$user_name','$pw_hash','$email',1,0)";
+    $db->query($sql);
+
+    $user_id = $db->insert_id;
+    $reg_no = date('Y') . date('m') . $user_id;
+    $token = md5(uniqid());
+
+    $sql = "INSERT INTO `customers`(`FirstName`, `LastName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `Telephone`, `Mobile`, `Title`, `RegNo`,`ProfilePic`, `UserId`, `Token`, `Status`) VALUES ('$first_name','$last_name','$address_1','$address_2','$address_3','$telephone','$mobile','$title','$reg_no','$file','$user_id','$token',0)";
+    $db->query($sql);
+
+    $msg = "<h1>SUCCESS</h1>";
+    $msg .= "<h2>Congratulations</h2>";
+    $msg .= "<p>Your account has been successfully created</p>";
+    $msg .= "Click the following link to verify your email:\n";
+    $msg .= $_SERVER['SERVER_NAME'] . "/web/sub/verify.php?token=$token";
+    sendEmail($email, $first_name, "Account Verification", $msg);
+    reDirect('/web/sub/alert.php');
 }
 
 ?>
@@ -74,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
             </div>
             <h2 class="d-flex justify-content-center align-items-center my-5">Registration</h2>
-            <form id="reg_form" action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form" novalidate>
+            <form id="reg_form" enctype="multipart/form-data" action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form" novalidate>
 
                 <div class="row mx-5">
                     <div class="col-6 d-flex justify-content-start align-items-bottom">
@@ -87,13 +88,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="row mx-5">
                     <div class="col-1 d-flex justify-content-start align-items-center">
                         <select name="title" id="title">
-                            <option selected>Title</option>
+                            <option selected value="0">Title</option>
                             <option value="1">Mr.</option>
                             <option value="2">Mrs.</option>
                             <option value="3">Ms.</option>
-                            <option value="3">Dr.</option>
-                            <option value="3">Ven.</option>
-                            <option value="3">Other.</option>
+                            <option value="4">Dr.</option>
+                            <option value="5">Ven.</option>
+                            <option value="6">Other.</option>
                         </select>
                     </div>
                     <div class="col-5 d-flex justify-content-end align-items-center">
@@ -129,10 +130,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 <div class="row mx-5">
                     <div class="col-6 d-flex justify-content-end align-items-center">
-                        <input type="text" class="fail-glow" name="password" id="password" placeholder="Password" required />
+                        <input type="password" class="fail-glow" name="password" id="password" placeholder="Password" required />
                     </div>
                     <div class="col-6 d-flex justify-content-end align-items-center">
-                        <input type="text" class="fail-glow" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required />
+                        <input type="password" class="fail-glow" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required />
                     </div>
                 </div>
                 <div class="row mx-5">
@@ -218,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="row my-4 mx-5">
                 <div class="col-12">
                     <p class="text-muted"> Already have an account ? <a href="login.php"> Login here </a></p>
-                    <p class="text-muted"> Required fields are indicated with a '*' mark </p>
+                    <p class="text-muted"> Required fields are indicated by red color </p>
                     <a href="index.php" class="small text-muted">Terms of use.</a>
                     <a href="index.php" class="small text-muted">Privacy policy</a>
                 </div>
@@ -248,11 +249,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="modal-body" style="font-weight: normal; color:var(--primary_font); text-align: justify; text-justify: inter-word;">
                     <p>By submitting the registration, you are agreeing to the terms and conditions of registration !</p>
                     <p>Are you sure you want to submit the registration ?</p>
-                    <a href="index.php" class="small text-muted"><p>Terms of use.</p></a>
-                    <a href="index.php" class="small text-muted"><p>Privacy policy</p></a>
+                    <a href="index.php" class="small">Terms of use.</a>
+                    <a href="index.php" class="small">Privacy policy.</a>
                 </div>
                 <div class="modal-footer">
-                    <button class="success-btn" type="submit" form="reg_form" formmethod="post">Confirm</button>
+                    <button class="success-btn px-3" type="submit" form="reg_form" formmethod="post">Confirm</button>
                 </div>
             </div>
         </div>
