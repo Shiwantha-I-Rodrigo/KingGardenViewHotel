@@ -2,7 +2,53 @@
 <html lang="en">
 
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    extract($_POST);
+    $message = array();
+
+    $db = dbConn();
+    $sql = "SELECT * FROM users WHERE Email='$email'";
+    $result = $db->query($sql);
+    if ($result->num_rows > 0) {
+        $message['email'] = "This Email address already exsist...!";
+    }
+
+    $db = dbConn();
+    $sql = "SELECT * FROM users WHERE UserName='$user_name'";
+    $result = $db->query($sql);
+    if ($result->num_rows > 0) {
+        $message['user_name'] = "This user name address already exsist...!";
+    }
+
+    if (empty($message)) {
+
+        $pw_hash = password_hash($password, PASSWORD_BCRYPT);
+        $db = dbConn();
+        $sql = "INSERT INTO `users`(`UserName`, `Password`,`Email`,`Type`,`Status`) VALUES ('$user_name','$pw_hash','$email',1,0)";
+        $db->query($sql);
+
+        $user_id = $db->insert_id;
+        $reg_no = date('Y') . date('m') . $user_id;
+        $token = md5(uniqid());
+
+        $sql = "INSERT INTO `customers`(`FirstName`, `LastName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `Telephone`, `Mobile`, `Title`, `RegNo`,`ProfilePic`, `UserId`, `Token`, `Status`) VALUES ('$first_name','$last_name','$address_1','$address_2','$address_3','$telephone','$mobile','$title','$reg_no','$target_file','$user_id','$token',0)";
+        $db->query($sql);
+
+        $msg = "<h1>SUCCESS</h1>";
+        $msg .= "<h2>Congratulations</h2>";
+        $msg .= "<p>Your account has been successfully created</p>";
+        $msg .= "Click the following link to verify your email:\n";
+        $msg .= $_SERVER['DOCUMENT_ROOT'] . "/web/modules/sub/verify.php?token=$token";
+        sendEmail($email, $first_name, "Account Verification", $msg);
+
+        $alert = "Hi, " . $user_name . " your registration number is," + $reg_no + ". please verify the account using the email sent to the provided email address to complete the registration.";
+        reDirect('sub/alert.php');
+    }
+}
+
 ?>
 
 <head>
@@ -28,7 +74,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
                 </div>
             </div>
             <h2 class="d-flex justify-content-center align-items-center my-5">Registration</h2>
-            <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form" novalidate>
+            <form id="reg_form" action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form" novalidate>
 
                 <div class="row mx-5">
                     <div class="col-6 d-flex justify-content-start align-items-bottom">
@@ -40,7 +86,7 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
                 </div>
                 <div class="row mx-5">
                     <div class="col-1 d-flex justify-content-start align-items-center">
-                        <select>
+                        <select name="title" id="title">
                             <option selected>Title</option>
                             <option value="1">Mr.</option>
                             <option value="2">Mrs.</option>
@@ -130,20 +176,20 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
                 </div>
                 <div class="row mx-5">
                     <div class="col-6 d-flex justify-content-end align-items-center">
-                        <input type="text" name="address_1" id="address_1" placeholder="House No. & Street" required />
+                        <input type="text" name="address_1" id="address_1" placeholder="House No. & Street" />
                     </div>
                     <div class="col-6 d-flex justify-content-end align-items-center">
-                        <input type="file" id="formFile">
-                    </div>
-                </div>
-                <div class="row mx-5">
-                    <div class="col-6 d-flex justify-content-end align-items-center">
-                        <input type="text" name="address_2" id="address_2" placeholder="City" required />
+                        <input type="file" id="file_upload" name="file_upload" accept="image/*" />
                     </div>
                 </div>
                 <div class="row mx-5">
                     <div class="col-6 d-flex justify-content-end align-items-center">
-                        <input type="text" name="address_3" id="address_3" placeholder="Province" required />
+                        <input type="text" name="address_2" id="address_2" placeholder="City" />
+                    </div>
+                </div>
+                <div class="row mx-5">
+                    <div class="col-6 d-flex justify-content-end align-items-center">
+                        <input type="text" name="address_3" id="address_3" placeholder="Province" />
                     </div>
                 </div>
                 <div class="row mx-5">
@@ -156,19 +202,27 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
                 </div>
                 <div class="row mx-5">
                     <div class="col-6 d-flex justify-content-end align-items-center">
-                        <input type="text" name="telephone" id="telephone" placeholder="Telephone" required />
+                        <input type="text" name="telephone" id="telephone" placeholder="Telephone" />
                     </div>
                     <div class="col-6 d-flex justify-content-end align-items-center">
-                        <input type="text" name="mobile" id="mobile" placeholder="Mobile" required />
-                    </div>
-                </div>
-                <div class="row my-4 mx-5">
-                    <div class="col-12 d-flex justify-content-end">
-                        <button class="success-btn px-5 mx-4" id="submit_btn" disabled>Submit</button>
-                        <button class="fail-btn px-5" id="cancel_btn">Cancel</button>
+                        <input type="text" name="mobile" id="mobile" placeholder="Mobile" />
                     </div>
                 </div>
             </form>
+            <div class="row my-4 mx-5">
+                <div class="col-12 d-flex justify-content-end">
+                    <button class="success-btn px-5 mx-4" name="submit_btn" id="submit_btn" data-bs-toggle="modal" data-bs-target="#Confirm" disabled>Submit</button>
+                    <button class="fail-btn px-5" id="cancel_btn">Cancel</button>
+                </div>
+            </div>
+            <div class="row my-4 mx-5">
+                <div class="col-12">
+                    <p class="text-muted"> Already have an account ? <a href="login.php"> Login here </a></p>
+                    <p class="text-muted"> Required fields are indicated with a '*' mark </p>
+                    <a href="index.php" class="small text-muted">Terms of use.</a>
+                    <a href="index.php" class="small text-muted">Privacy policy</a>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-12">
                     <img src="<?= BASE_URL . '/img/common/logo_white_outline.png' ?>" alt="logo" style="height:70px;position:absolute;bottom:10px;left:10px;z-index: 2;">
@@ -177,6 +231,28 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
             <div class="row">
                 <div class="col-12">
                     <img src="<?= BASE_URL . '/img/common/mountains_4.png' ?>" alt="mountains_1" style="width:100%; border-radius: 10px;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="Confirm" tabindex="-1" aria-labelledby="Confirm" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color:var(--background);">
+                <div class="modal-header d-flex justify-content-between">
+                    <img src="<?= BASE_URL . '/img/common/logo_logo.png' ?>" alt="" style="width: 3vw; height: 5vh; object-fit: cover;">
+                    <label class="mx-3" style="font-size:3vh;">Sustainability Policy</label>
+                    <button type="button" class="clear_btn" data-bs-dismiss="modal"><i class="material-icons">cancel</i></button>
+                </div>
+                <div class="modal-body" style="font-weight: normal; color:var(--primary_font); text-align: justify; text-justify: inter-word;">
+                    <p>By submitting the registration, you are agreeing to the terms and conditions of registration !</p>
+                    <p>Are you sure you want to submit the registration ?</p>
+                    <a href="index.php" class="small text-muted"><p>Terms of use.</p></a>
+                    <a href="index.php" class="small text-muted"><p>Privacy policy</p></a>
+                </div>
+                <div class="modal-footer">
+                    <button class="success-btn" type="submit" form="reg_form" formmethod="post">Confirm</button>
                 </div>
             </div>
         </div>

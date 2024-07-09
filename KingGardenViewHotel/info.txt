@@ -53,6 +53,9 @@ php --ini
 uncomment required extention lines
     ;extension=mysqli
 
+# enable file uploads
+    file_uploads = On
+
 
 # start web servers
 sudo systemctl start mariadb.service

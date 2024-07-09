@@ -114,3 +114,22 @@ addEventListener("DOMContentLoaded", (event) => {
     }
 
 });
+
+function success_alert(op, msg) {
+	let str = op + "completed succesfully." + msg;
+	Swal.fire({
+		title: "Success!",
+		text: str,
+		icon: "success"
+	});
+}
+
+function fail_alert(op, msg) {
+	let str = op + "failed !." + msg;
+	Swal.fire({
+		icon: "error",
+		title: "Error!",
+		text: str,
+		footer: '<a href="#">Why do I have this issue?</a>'
+	  });
+}

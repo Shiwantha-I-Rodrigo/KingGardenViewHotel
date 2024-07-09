@@ -1,4 +1,3 @@
-
 addEventListener("DOMContentLoaded", (event) => {
 
 	const first_name = document.getElementById("first_name");
@@ -10,15 +9,15 @@ addEventListener("DOMContentLoaded", (event) => {
 	const password_meter = document.getElementById("password_meter");
 	const length_tick = document.getElementById("length_tick");
 	const length_cross = document.getElementById("length_cross");
-    const upper_tick = document.getElementById("upper_tick");
+	const upper_tick = document.getElementById("upper_tick");
 	const upper_cross = document.getElementById("upper_cross");
-    const lower_tick = document.getElementById("lower_tick");
+	const lower_tick = document.getElementById("lower_tick");
 	const lower_cross = document.getElementById("lower_cross");
-    const number_tick = document.getElementById("number_tick");
+	const number_tick = document.getElementById("number_tick");
 	const number_cross = document.getElementById("number_cross");
-    const char_tick = document.getElementById("char_tick");
+	const char_tick = document.getElementById("char_tick");
 	const char_cross = document.getElementById("char_cross");
-    const submit_btn = document.getElementById("submit_btn");
+	const submit_btn = document.getElementById("submit_btn");
 	var [f1, l1, u1, e1, p1, p2] = [false, false, false, false, false, false];
 
 	const address_1 = document.getElementById("address_1");
@@ -36,10 +35,10 @@ addEventListener("DOMContentLoaded", (event) => {
 		const hasNumber = /\d/.test(value);
 		const hasChar = /[!@#$%^&*()\[\]{}\\|;:'",<.>/?`~]/.test(value);
 
-        if (hasLength) {
+		if (hasLength) {
 			length_tick.classList.remove("d-none");
 			length_cross.classList.add("d-none");
-		  } else {
+		} else {
 			length_tick.classList.add("d-none");
 			length_cross.classList.remove("d-none");
 		}
@@ -47,7 +46,7 @@ addEventListener("DOMContentLoaded", (event) => {
 		if (hasUpperCase) {
 			upper_tick.classList.remove("d-none");
 			upper_cross.classList.add("d-none");
-		  } else {
+		} else {
 			upper_tick.classList.add("d-none");
 			upper_cross.classList.remove("d-none");
 		}
@@ -55,7 +54,7 @@ addEventListener("DOMContentLoaded", (event) => {
 		if (hasLowerCase) {
 			lower_tick.classList.remove("d-none");
 			lower_cross.classList.add("d-none");
-		  } else {
+		} else {
 			lower_tick.classList.add("d-none");
 			lower_cross.classList.remove("d-none");
 		}
@@ -63,7 +62,7 @@ addEventListener("DOMContentLoaded", (event) => {
 		if (hasNumber) {
 			number_tick.classList.remove("d-none");
 			number_cross.classList.add("d-none");
-		  } else {
+		} else {
 			number_tick.classList.add("d-none");
 			number_cross.classList.remove("d-none");
 		}
@@ -71,7 +70,7 @@ addEventListener("DOMContentLoaded", (event) => {
 		if (hasChar) {
 			char_tick.classList.remove("d-none");
 			char_cross.classList.add("d-none");
-		  } else {
+		} else {
 			char_tick.classList.add("d-none");
 			char_cross.classList.remove("d-none");
 		}
@@ -149,7 +148,7 @@ addEventListener("DOMContentLoaded", (event) => {
 		mobile.classList.toggle("fail-glow", !m1);
 		sub_enable();
 	};
-	
+
 	function validateTelephone() {
 		t1 = /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(telephone.value) || telephone.value.trim() === "";
 		telephone.classList.toggle("fail-glow", !t1);
@@ -260,6 +259,11 @@ addEventListener("DOMContentLoaded", (event) => {
 		item.addEventListener("blur", event => {
 			resetGlow();
 		})
-	  })
+	})
 
 });
+
+// document.getElementById("submit_btn").addEventListener("click", function (event) {
+//     event.preventDefault();
+// 	$('#Confirm').modal('show');
+// });
