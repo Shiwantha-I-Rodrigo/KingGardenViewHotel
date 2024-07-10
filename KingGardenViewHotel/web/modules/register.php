@@ -29,11 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['alert_msg'] =  'The username provided has an account associated,<br> please <a href="/web/modules/login.php">log in</a> to continue, or use another username.';
             reDirect('/web/sub/alert.php');
         } else {
-            $file = "";
+            $full_path = "";
 
             if (isset($_FILES['file_upload'])) {
                 $path =  $_SERVER['DOCUMENT_ROOT'] . '/img/users/';
                 $file = uploadFile($path, $_FILES);
+                $full_path = '/img/users/' . $file;
             }
 
             $pw_hash = password_hash($password, PASSWORD_BCRYPT);

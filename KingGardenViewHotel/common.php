@@ -34,7 +34,6 @@ function authorize($user_id = null, $module_id = null)
 }
 
 //upload---------------------------------------------
-
 function uploadFile($path = null, $files = null)
 {
     $extensions = ['jpg', 'jpeg', 'png', 'gif'];
@@ -56,5 +55,5 @@ function uploadFile($path = null, $files = null)
 
     move_uploaded_file($file_tmp, $file);
 
-    return $file;
+    return  $random . "." . $file_ext;
 }
