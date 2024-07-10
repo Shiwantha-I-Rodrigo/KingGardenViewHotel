@@ -2,7 +2,31 @@
 <html lang="en">
 
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+session_start();
+require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    extract($_POST);
+    $message = array();
+
+    $db = dbConn();
+    $sql = "SELECT * FROM users u INNER JOIN customers c ON u.UserId = c.UserId WHERE u.UserName='$user_name' OR u.Email='$user_name'";
+    $result = $db->query($sql);
+    if ($result->num_rows == 1) {
+        $row = $result->fetch_assoc();
+        if (password_verify($password, $row['Password'])) {
+            $_SESSION['user_id'] = $row['UserId'];
+            $_SESSION['user_name'] = $row['UserName'];
+            reDirect("/web/modules/dashboard.php");
+        } else {
+            $message['message'] = "Invalid User Name or Password...!";
+        }
+    } else {
+        $message['message'] = "Invalid User Name or Password...!";
+    }
+}
+
 ?>
 
 <head>
@@ -42,7 +66,12 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
                         <label>Password</label>
                     </div>
                     <div class="col-6 d-flex">
-                        <input type="text" name="user_name" id="user_name" placeholder="Password" required />
+                        <input type="password" name="password" id="password" placeholder="Password" required />
+                    </div>
+                </div>
+                <div class="row my-5">
+                    <div class="col-12 d-flex justify-content-center">
+                        <p style="color:var(--fail)"><?= @$message['message'] ?></p>
                     </div>
                 </div>
                 <div class="row my-5">

@@ -23,18 +23,18 @@ function reDirect($data = null)
 }
 
 //Authorize---------------------------------------------
-function authorize($user_id = null, $module_id = null)
+function authorize($user_id = null, $module_id = null, $sys = null)
 {
     $db = dbConn();
     $sql = "SELECT * FROM user_modules WHERE UserId='$user_id' AND ModuleId ='$module_id'";
     $result = $db->query($sql);
     if ($result->num_rows < 1) {
-        reDirect(SYSTEM_BASE_URL . "401.php");
+        reDirect('/' . $sys . "/sub/401.php");
     };
 }
 
-//upload---------------------------------------------
-function uploadFile($path = null, $files = null)
+//Upload---------------------------------------------
+function uploadFile($path = null, $files = null, $sys = null)
 {
     $extensions = ['jpg', 'jpeg', 'png', 'gif'];
 
@@ -46,14 +46,79 @@ function uploadFile($path = null, $files = null)
     $file = $path . $random . "." . $file_ext;
 
     if (!in_array($file_ext, $extensions)) {
-        reDirect('/web/sub/alert.php');
+        reDirect('/' . $sys . '/sub/alert.php');
     }
 
     if ($file_size > 1500000) {
-        reDirect('/web/sub/alert.php');
+        reDirect('/' . $sys . '/sub/alert.php');
     }
 
     move_uploaded_file($file_tmp, $file);
 
     return  $random . "." . $file_ext;
+}
+
+//Title---------------------------------------------
+function getTitle($data = null)
+{
+    $title = "";
+    switch ($data) {
+        case 0:
+            $title = "";
+            break;
+        case 1:
+            $title = "Mr. ";
+            break;
+        case 2:
+            $title = "Mrs. ";
+            break;
+        case 3:
+            $title = "Ms. ";
+            break;
+        case 4:
+            $title = "Dr. ";
+            break;
+        case 5:
+            $title = "Ven. ";
+            break;
+        case 6:
+            $title = "";
+            break;
+    }
+
+    return $title;
+}
+
+//Status---------------------------------------------
+function getStatus($data = null)
+{
+    $status = "";
+    switch ($data) {
+        case 0:
+            $status = "Inactive";
+            break;
+        case 1:
+            $status = "Active";
+            break;
+        case 2:
+            $status = "Unavailable";
+            break;
+        case 3:
+            $status = "Unauthorized";
+            break;
+        case 4:
+            $status = "invalid";
+            break;
+        case 9:
+            $status = "Forbidden";
+            break;
+    }
+
+    return $status;
+}
+
+//Time---------------------------------------------
+function getTime($data = null)
+{
+    return date("Y-m-d H:i:s", substr((string)$data, 0, 10));
 }

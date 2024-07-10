@@ -23,12 +23,14 @@ addEventListener("DOMContentLoaded", (event) => {
     const rooms = document.getElementById("rooms");
     const blog = document.getElementById("blog");
     const contact = document.getElementById("contact");
-    const login = document.getElementById("login");
-    const register = document.getElementById("register");
     const call = document.getElementById("call");
     const email = document.getElementById("email");
     const address = document.getElementById("address");
     const design = document.getElementById("design");
+    const login = document.getElementById("login");
+    const register = document.getElementById("register");
+    const logout = document.getElementById("logout");
+    const dashboard = document.getElementById("dashboard");
 
     if (typeof (logo) != 'undefined' && logo != null) {
         logo.addEventListener("click", () => {
@@ -113,23 +115,18 @@ addEventListener("DOMContentLoaded", (event) => {
         });
     }
 
+    if (typeof (logout) != 'undefined' && logout != null) {
+        logout.addEventListener("click", () => {
+            sessionStorage.setItem("current_page", "home");
+            window.location.replace("/web/sub/logout.php");
+        });
+    }
+
+    if (typeof (dashboard) != 'undefined' && dashboard != null) {
+        dashboard.addEventListener("click", () => {
+            sessionStorage.setItem("current_page", "login");
+            window.location.replace("/web/modules/dashboard.php");
+        });
+    }
+
 });
-
-function success_alert(op, msg) {
-	let str = op + "completed succesfully." + msg;
-	Swal.fire({
-		title: "Success!",
-		text: str,
-		icon: "success"
-	});
-}
-
-function fail_alert(op, msg) {
-	let str = op + "failed !." + msg;
-	Swal.fire({
-		icon: "error",
-		title: "Error!",
-		text: str,
-		footer: '<a href="#">Why do I have this issue?</a>'
-	  });
-}

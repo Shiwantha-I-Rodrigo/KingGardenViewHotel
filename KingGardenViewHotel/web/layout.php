@@ -37,8 +37,18 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
         <div class="col-1 nav-item" id="blog">Blog</div>
         <div class="col-1 nav-item" id="contact">Contact Us</div>
         <div class="col-2"></div>
-        <div class="col-1 success-btn" id="login">Login</div>
-        <div class="col-1 nav-item" id="register">Register</div>
+
+        <?php
+        session_start();
+        if (!isset($_SESSION['user_id'])) {
+            echo '<div class="col-1 success-btn" id="login">Login</div>';
+            echo '<div class="col-1 nav-item" id="register">Register</div>';
+        } else {
+            echo '<div class="col-1 fail-btn" id="logout">Logout</div>';
+            echo '<div class="col-1 nav-item" id="dashboard">Dashboard</div>';
+        }
+        ?>
+
     </div>
     <!-- Nav End -->
 
