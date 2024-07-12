@@ -81,7 +81,7 @@ use kgvh;
 CREATE TABLE users (UserId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, UserName VARCHAR(255) NOT NULL, Password VARCHAR(255) NOT NULL, Email VARCHAR(255) NOT NULL, Type INT(1), Status INT(1));
 CREATE TABLE customers (CustomerId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, FirstName VARCHAR(255) NOT NULL, LastName VARCHAR(255) NOT NULL, AddressLine1 VARCHAR(255), AddressLine2 VARCHAR(255), AddressLine3 VARCHAR(255), Telephone VARCHAR(255), Mobile VARCHAR(255), Title VARCHAR(255), RegNo VARCHAR(255) NOT NULL, ProfilePic VARCHAR(255), UserId INT(11) NOT NULL, Token VARCHAR(255), Status INT(1), CONSTRAINT `UserIdCustomers` FOREIGN KEY (UserId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT);
 CREATE TABLE employees (EmployeeId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, FirstName VARCHAR(255) NOT NULL, LastName VARCHAR(255) NOT NULL, AddressLine1 VARCHAR(255), AddressLine2 VARCHAR(255), AddressLine3 VARCHAR(255), Telephone VARCHAR(255), Mobile VARCHAR(255), Title VARCHAR(255), RegNo VARCHAR(255), ProfilePic VARCHAR(255), UserId INT(11) NOT NULL, Token VARCHAR(255), Status INT(1),CONSTRAINT `UserIdEmployees` FOREIGN KEY (UserId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT);
-CREATE TABLE messages (MessageId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, MessageText VARCHAR(255) NOT NULL, Time INT(11), FromId INT(11) NOT NULL, ToId INT(11) NOT NULL, Thread INT(11) NOT NULL, Status INT(1), CONSTRAINT `FromIdMessages` FOREIGN KEY (FromId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT, CONSTRAINT `ToIdMessages` FOREIGN KEY (ToId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT);
+CREATE TABLE messages (MessageId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, MessageText VARCHAR(255) NOT NULL, Time INT(11), FromId INT(11) NOT NULL, FromName VARCHAR(255) NOT NULL, ToId INT(11) NOT NULL, Thread INT(11) NOT NULL, Status INT(1), CONSTRAINT `FromIdMessages` FOREIGN KEY (FromId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT, CONSTRAINT `ToIdMessages` FOREIGN KEY (ToId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT);
 CREATE TABLE notifications (NotificationId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, NotificationText VARCHAR(255) NOT NULL, NotificationTitle VARCHAR(255) NOT NULL, Date VARCHAR(255), FromId INT(11) NOT NULL, ToId INT(11) NOT NULL, Status INT(1), CONSTRAINT `FromIdNotifications` FOREIGN KEY (FromId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT,CONSTRAINT `ToIdNotifications` FOREIGN KEY (ToId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT);
 CREATE TABLE modules (ModuleId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, ModuleName VARCHAR(255) NOT NULL, ModulePath VARCHAR(255) NOT NULL, ModuleClasses VARCHAR(255) NOT NULL, Status INT(1));
 CREATE TABLE user_modules (PrivilegeId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, UserId INT(11) NOT NULL, ModuleId INT(11) NOT NULL, Status INT(1),  CONSTRAINT `UserIdUserModules` FOREIGN KEY (UserId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT, CONSTRAINT `ModuleIdUserModules` FOREIGN KEY (ModuleId) REFERENCES modules (ModuleId) ON DELETE CASCADE ON UPDATE RESTRICT);
@@ -164,8 +164,9 @@ CREATE TABLE blogs (BlogId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, BlogText
 - messages
     MessageId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
     MessageText VARCHAR(255) NOT NULL
-    Date VARCHAR(255)
+    Time VARCHAR(255)
     FromId INT(11) NOT NULL
+    FromName VARCHAR(255) NOT NULL
     ToId INT(11) NOT NULL
     Thread INT(11) NOT NULL
     Status INT(1)
@@ -259,8 +260,6 @@ ini_set('display_errors', 1);
 -jquery3
 -sweetalert2
 
-INSERT INTO messages (MessageText, Time, FromId, ToId, Thread, Status) VALUES ("Hi", 1720573684, 4, 9, 1, 1);
-INSERT INTO messages (MessageText, Time, FromId, ToId, Thread, Status) VALUES ("How are you", 1720573685, 9, 4, 1, 1);
 INSERT INTO modules (ModuleName, ModulePath, ModuleClasses, Status) VALUES ("messages", "/web/modules/dashboard.php", "textsms", 1);
 INSERT INTO user_modules (UserId, ModuleId, Status) VALUES (4, 1, 1);
 INSERT INTO user_modules (UserId, ModuleId, Status) VALUES (9, 1, 1);
@@ -269,3 +268,33 @@ INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, 
 INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (1,"room",2000,2000,1,0,"",1);
 INSERT INTO reviews (ReservationId, ReviewTitle, ReviewText, Status) VALUES (1,"good value","such great value for the price.",1);
 INSERT INTO blogs (BlogText, BlogTitle, BlogPicture, Status) VALUES ("Explore the city of Colombo with its rich colonial history, cultural heritage and diverse community. From shopping centres to religious sites, each tour is a day you will want to recount again. Rediscover your inner harmony and revitalise your mind, body, and spirit at our luxurious spa. Experience a blissful retreat within our urban oasis, dedicated to your well-being and rejuvenation.","Enjoy your stay with us","/img/blogs/6777afef167aa44cfa29532a6c3596e2.jpg",1);
+
+
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("anny1", 1720573685, 9, "anny",4, 9, 1);
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("anny2", 1720573686, 9, "anny",4, 9, 1); 
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("anny3", 1720573687, 9, "anny",4, 9, 1); 
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("lahiruru1", 1720573685, 12, "lahiruru",4, 12, 1); 
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("dammy1", 1720573685, 13, "dammy",4, 13, 1); 
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("dammy2", 1720573685, 13, "dammy",4, 13, 1);
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("dammy3", 1720573685, 13, "dammy",4, 13, 1); 
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("dammy4", 1720573686, 13, "dammy",4, 13, 1);
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("dammy5", 1720573687, 13, "dammy",4, 13, 1); 
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("saman1", 1720573685, 14, "saman",4, 14, 1);
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("thilak1", 1720573685, 15, "thilak",4, 15, 1); 
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("Pasc121", 1720573685, 16, "Pasc12",4, 16, 1); 
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("Pasc122", 1720573686, 16, "Pasc12",4, 16, 1); 
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("Huckelberry1", 1720573685, 17, "Huckelberry",4, 17, 1); 
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("timothy1", 1720573685, 18, "timothy",4, 18, 1);
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("timothy2", 1720573686, 18, "timothy",4, 18, 1);
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("Rem871", 1720573685, 19, "Rem87",4, 19, 1);
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("gune65", 1720573685, 20, "gune65",4, 20, 1);
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("rane553431", 1720573685, 21, "rane55343",4, 21, 1);
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("annya", 1720573685, 9, "anny",11, 9, 1);
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("annyb", 1720573685, 9, "anny",13, 9, 1);
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("annyc", 1720573686, 9, "anny",13, 9, 1);
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("annyd", 1720573686, 9, "anny",13, 9, 1);
+
+
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("tommy1", 1720573688, 4, "anny",9, 4, 1);
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("anny4", 1720573689, 9, "anny",4, 9, 1);
+INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("tommy2", 1720573695, 4, "anny",9, 4, 1);

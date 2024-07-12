@@ -124,7 +124,7 @@ addEventListener("DOMContentLoaded", (event) => {
 
     if (typeof (dashboard) != 'undefined' && dashboard != null) {
         dashboard.addEventListener("click", () => {
-            sessionStorage.setItem("current_page", "login");
+            sessionStorage.setItem("current_page", "dashboard");
             window.location.replace("/web/modules/dashboard.php");
         });
     }

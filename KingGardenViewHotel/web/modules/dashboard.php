@@ -27,41 +27,41 @@ if ($result->num_rows > 0) {
 
 ?>
 
-<section>
+<section style="background-color:var(--shadow);">
     <div class="container py-5">
         <div class="row mt-5">
             <div class="col-4">
                 <div class="card mb-4">
                     <div class="card-body text-center">
                         <img src="<?= $profile_pic ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
-                        <h5 class="my-3"><?= $username ?></h5>
-                        <p class="text-muted mb-1"><?= $reg_no ?></p>
-                        <p class="text-muted mb-4"><?= $status ?></p>
-                        <div class="d-flex justify-content-center mb-2">
-                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary">Edit</button>
-                            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary ms-1">Deactivate</button>
+                        <h2 class="my-1" style="font-size : 4vh;"><?= $username ?></h2>
+                        <p class="mb-1">Registration No. : <?= $reg_no ?></p>
+                        <p class="mb-4">Account Status : <?= $status ?></p>
+                        <div class="d-flex justify-content-around mb-2">
+                            <button type="button" class="success-btn px-3 py-2" style="width:8vw;">Edit</button>
+                            <button type="button" class="fail-btn px-3 py-2" style="width:8vw;">Deactivate</button>
                         </div>
                     </div>
                 </div>
                 <div class="card mb-4">
-                    <ul class="list-group list-group-flush rounded-3">
+                    <div class="card-body" style="min-height: 20vh;">
 
-                        <?php
-                        $sql = "SELECT * FROM  messages WHERE ToId = $user_id ";
-                        $messages = $db->query($sql);
-                        while ($row = $messages->fetch_assoc()) {
-                        ?>
+                        <p class="mb-4"><span class="text-primary font-italic me-1">Recieved</span> Messages</p>
 
-                            <li class="list-group-item d-flex justify-content-between align-items-center p-3" style="background-color: var(--primary);">
-                                <label style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><?= $row['MessageText'] ?></label>
-                            </li>
+                        <ul class="list-group list-group-flush rounded-3 px-3" id="msg">
 
-                        <?php } ?>
+                            <li>none</li>
+                            <li>none</li>
+                            <li>none</li>
+                            <li>none</li>
+                            <li>none</li>
 
-                    </ul>
+                        </ul>
+
+                    </div>
                     <div class="d-flex justify-content-between align-items-center p-3">
-                        <i class="material-icons">arrow_back</i>
-                        <i class="material-icons">arrow_forward</i>
+                        <i class="material-icons" id="msg_back">arrow_back</i>
+                        <i class="material-icons" id="msg_fwd">arrow_forward</i>
                     </div>
                 </div>
             </div>
@@ -117,49 +117,47 @@ if ($result->num_rows > 0) {
                 <div class="row">
                     <div class="col-6">
                         <div class="card mb-4">
-                            <div class="card-body">
+                            <div class="card-body" style="min-height: 30vh;">
 
                                 <p class="mb-4"><span class="text-primary font-italic me-1">Past</span> Reservations</p>
 
-                                <?php
-                                $current = time();
-                                $sql = "SELECT * FROM  reservations WHERE GuestId = $user_id AND TimeSlotEnd < $current";
-                                $reservations = $db->query($sql);
-                                while ($row = $reservations->fetch_assoc()) {
-                                ?>
+                                <ul class="list-group list-group-flush rounded-3 px-3" id="past">
 
-                                    <p class="mb-1" style="font-size: .77rem;">Reservation : <?= $row['ReservationId']  ?><br>From : <?= getTime($row['TimeSlotStart']) ?><br>To : <?= getTime($row['TimeSlotEnd']) ?></p>
+                                    <li>none</li>
+                                    <li>none</li>
+                                    <li>none</li>
+                                    <li>none</li>
+                                    <li>none</li>
 
-                                <?php } ?>
+                                </ul>
 
                             </div>
                             <div class="d-flex justify-content-between align-items-center p-3">
-                                <i class="material-icons">arrow_back</i>
-                                <i class="material-icons">arrow_forward</i>
+                                <i class="material-icons" id="past_back">arrow_back</i>
+                                <i class="material-icons" id="past_fwd">arrow_forward</i>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="card mb-4">
-                            <div class="card-body">
+                            <div class="card-body" style="min-height: 30vh;">
 
-                                <p class="mb-4"><span class="text-primary font-italic me-1">Upcomming</span> Reservations</p>
+                                <p class="mb-4"><span class="text-primary font-italic me-1">Pending</span> Reservations</p>
 
-                                <?php
-                                $current = time();
-                                $sql = "SELECT * FROM  reservations WHERE GuestId = $user_id AND TimeSlotStart > $current";
-                                $reservations = $db->query($sql);
-                                while ($row = $reservations->fetch_assoc()) {
-                                ?>
+                                <ul class="list-group list-group-flush rounded-3 px-3" id="comming">
 
-                                    <p class="mb-1" style="font-size: .77rem;">Reservation : <?= $row['ReservationId']  ?><br>From : <?= getTime($row['TimeSlotStart']) ?><br>To : <?= getTime($row['TimeSlotEnd']) ?></p>
+                                    <li>none</li>
+                                    <li>none</li>
+                                    <li>none</li>
+                                    <li>none</li>
+                                    <li>none</li>
 
-                                <?php } ?>
+                                </ul>
 
                             </div>
                             <div class="d-flex justify-content-between align-items-center p-3">
-                                <i class="material-icons">arrow_back</i>
-                                <i class="material-icons">arrow_forward</i>
+                                <i class="material-icons" id="comming_back">arrow_back</i>
+                                <i class="material-icons" id="comming_fwd">arrow_forward</i>
                             </div>
                         </div>
                     </div>
@@ -167,7 +165,27 @@ if ($result->num_rows > 0) {
             </div>
         </div>
     </div>
+    <div class="row" style="height:10vh;"></div>
 </section>
+
+<!-- Message Modal -->
+<div class="modal fade" id="Conversation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="background-color:var(--background);">
+            <div class="modal-header d-flex justify-content-between">
+                <img src="<?= BASE_URL . '/img/common/logo_logo.png' ?>" alt="" style="width: 3vw; height: 5vh; object-fit: cover;">
+                <label class="mx-3" style="font-size:3vh;">Messages</label>
+                <button type="button" class="clear_btn" data-bs-dismiss="modal"><i class="material-icons">cancel</i></button>
+            </div>
+            <div class="modal-body" style="color:var(--primary_font); text-align: justify; text-justify: inter-word; display:inline-block">
+                <ul id="model_msg"></ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="fail-btn px-3" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <?php
 $page_content = ob_get_clean();
