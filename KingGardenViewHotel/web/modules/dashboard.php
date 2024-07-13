@@ -19,7 +19,7 @@ if ($result->num_rows > 0) {
         $mobile = $row['Mobile'];
         $address = $row['AddressLine1'] . ", " . $row['AddressLine2'] . ", " . $row['AddressLine3'];
         $reg_no = $row['RegNo'];
-        $status = getStatus($row['Status']);
+        $status = getStatus($row['UserStatus']);
         $email = $row['Email'];
         $username = $row['UserName'];
     }
@@ -169,16 +169,16 @@ if ($result->num_rows > 0) {
 </section>
 
 <!-- Message Modal -->
-<div class="modal fade" id="Conversation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="Dash_Pop" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content" style="background-color:var(--background);">
             <div class="modal-header d-flex justify-content-between">
                 <img src="<?= BASE_URL . '/img/common/logo_logo.png' ?>" alt="" style="width: 3vw; height: 5vh; object-fit: cover;">
-                <label class="mx-3" style="font-size:3vh;">Messages</label>
+                <label class="mx-3" style="font-size:3vh;" id="modal-heading"></label>
                 <button type="button" class="clear_btn" data-bs-dismiss="modal"><i class="material-icons">cancel</i></button>
             </div>
             <div class="modal-body" style="color:var(--primary_font); text-align: justify; text-justify: inter-word; display:inline-block">
-                <ul id="model_msg"></ul>
+                <ul id="model_list" style="list-style-type : none;"></ul>
             </div>
             <div class="modal-footer">
                 <button type="button" class="fail-btn px-3" data-bs-dismiss="modal">Close</button>

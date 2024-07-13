@@ -127,7 +127,7 @@ CREATE TABLE blogs (BlogId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, BlogText
     Password VARCHAR(255) NOT NULL
     Email VARCHAR(255) NOT NULL
     Type INT(1)
-    Status INT(1)
+    UserStatus INT(1)
 
 - customers
     CustomerId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
@@ -143,7 +143,7 @@ CREATE TABLE blogs (BlogId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, BlogText
     ProfilePic VARCHAR(255)
     UserId INT(11) NOT NULL
     Token VARCHAR(255)
-    Status INT(1)
+    CustomerStatus INT(1)
 
 - employees
     EmployeeId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
@@ -159,7 +159,7 @@ CREATE TABLE blogs (BlogId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, BlogText
     ProfilePic VARCHAR(255)
     UserId INT(11) NOT NULL
     Token VARCHAR(255)
-    Status INT(1)
+    EmployeeStatus INT(1)
 
 - messages
     MessageId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
@@ -169,7 +169,7 @@ CREATE TABLE blogs (BlogId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, BlogText
     FromName VARCHAR(255) NOT NULL
     ToId INT(11) NOT NULL
     Thread INT(11) NOT NULL
-    Status INT(1)
+    MessageStatus INT(1)
 
 - notifications
     NotificationId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
@@ -178,20 +178,20 @@ CREATE TABLE blogs (BlogId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, BlogText
     Date VARCHAR(255)
     FromId INT(11) NOT NULL
     ToId INT(11) NOT NULL
-    Status INT(1)
+    NotificationStatus INT(1)
 
 - modules
     ModuleId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
     ModuleName VARCHAR(255) NOT NULL
     ModulePath VARCHAR(255) NOT NULL
     ModuleClasses VARCHAR(255) NOT NULL
-    Status INT(1)
+    ModuleStatus INT(1)
 
 - user_modules
     PrivilegeId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
     UserId INT(11) NOT NULL
     ModuleId INT(11) NOT NULL
-    Status INT(1)
+    User_ModuleStatus INT(1)
 
 - reservations
     ReservationId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
@@ -200,7 +200,7 @@ CREATE TABLE blogs (BlogId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, BlogText
     RoomId INT(11) NOT NULL
     TimeSlotStart INT(11)
     TimeSlotEnd INT(11)
-    Status INT(1)
+    ReservationStatus INT(1)
 
 - items
     ItemId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
@@ -211,14 +211,14 @@ CREATE TABLE blogs (BlogId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, BlogText
     ItemStatus INT(1)
     ItemDiscount INT(3)
     ItemComments VARCHAR(255)
-    Status INT(1)
+    ItemStatus INT(1)
 
 - reviews
     ReviewId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
     ReservationId INT(11) NOT NULL
     ReviewTitle VARCHAR(255)
     ReviewText VARCHAR(511)
-    Status INT(1)
+    ReviewStatus INT(1)
 
 - rooms
     RoomId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
@@ -228,14 +228,14 @@ CREATE TABLE blogs (BlogId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, BlogText
     RoomWIFI INT(1)
     RoomBalcony INT(1)
     RoomPicture VARCHAR(255)
-    Status INT(1)
+    RoomStatus INT(1)
 
 - blogs
     BlogId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
     BlogText VARCHAR(4095)
     BlogTitle VARCHAR(255)
     BlogPicture VARCHAR(255)
-    Status INT(1)
+    BlogStatus INT(1)
 
 
 # setup email
@@ -298,3 +298,54 @@ INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status)
 INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("tommy1", 1720573688, 4, "anny",9, 4, 1);
 INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("anny4", 1720573689, 9, "anny",4, 9, 1);
 INSERT INTO messages (MessageText, Time, FromId, FromName, ToId, Thread, Status) VALUES ("tommy2", 1720573695, 4, "anny",9, 4, 1);
+
+
+INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, Status) VALUES (4,9,1,1723507200,1723680000,1);
+INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, Status) VALUES (4,9,1,1723852800,1723939200,1);
+INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, Status) VALUES (4,9,1,1726617600,1727049600,1);
+INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, Status) VALUES (4,9,1,1727222400,1727308800,1);
+INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, Status) VALUES (4,9,1,1727568000,1727654400,1);
+INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, Status) VALUES (4,9,1,1727827200,1727913600,1);
+
+INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (2,"room",2000,2000,1,0,"",1);
+INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (3,"room",3000,3000,1,0,"",1);
+INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (3,"breakfast",1000,500,1,0,"",7);
+INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (3,"lunch",1000,0,1,0,"",0);
+INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (4,"room",2000,2000,1,0,"",1);
+INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (5,"room",2000,2000,1,0,"",1);
+INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (6,"room",2000,2000,1,0,"",1);
+INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (7,"room",2000,2000,1,0,"",1);
+
+
+INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, Status) VALUES (4,9,1,1696291200,1696636800,1);
+INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, Status) VALUES (4,9,1,1701820800,1701907200,1);
+INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, Status) VALUES (4,9,1,1704585600,1704758400,1);
+INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, Status) VALUES (4,9,1,1706054400,1706227200,1);
+INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, Status) VALUES (4,9,1,1711238400,1711756800,1);
+INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, Status) VALUES (4,9,1,1712016000,1712188800,1);
+
+INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (8,"room",2000,2000,1,0,"",1);
+INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (9,"room",2000,2000,1,0,"",1);
+INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (10,"room",2000,2000,1,0,"",1);
+INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (11,"room",2000,2000,1,0,"",1);
+INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (12,"room",2000,2000,1,0,"",1);
+INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (13,"room",2000,2000,1,0,"",1);
+
+INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, Status) VALUES (11,9,1,1712275200,1712361600,1);
+INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, Status) VALUES (11,9,1,1640995200,1641772800,1);
+
+INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (14,"room",2000,0,1,0,"",0);
+INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (15,"room",2000,2000,1,0,"",1);
+
+ALTER TABLE users RENAME COLUMN Status to UserStatus;
+ALTER TABLE customers RENAME COLUMN Status to CustomerStatus;
+ALTER TABLE employees RENAME COLUMN Status to EmployeeStatus;
+ALTER TABLE messages RENAME COLUMN Status to MessageStatus;
+ALTER TABLE notifications RENAME COLUMN Status to NotificationStatus;
+ALTER TABLE modules RENAME COLUMN Status to ModuleStatus;
+ALTER TABLE user_modules RENAME COLUMN Status to User_ModuleStatus;
+ALTER TABLE reservations RENAME COLUMN Status to ReservationStatus;
+ALTER TABLE items RENAME COLUMN Status to ItemStatus;
+ALTER TABLE reviews RENAME COLUMN Status to ReviewStatus;
+ALTER TABLE rooms RENAME COLUMN Status to RoomStatus;
+ALTER TABLE blogs RENAME COLUMN Status to BlogStatus;

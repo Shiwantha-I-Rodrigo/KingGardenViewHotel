@@ -120,5 +120,5 @@ function getStatus($data = null)
 //Time---------------------------------------------
 function getTime($data = null)
 {
-    return date("Y-m-d H:i:s", substr((string)$data, 0, 10));
+    return date("Y-m-d", substr((string)$data, 0, 10));
 }

@@ -15,59 +15,41 @@ window.onload = function () {
 document.getElementById("msg_back").addEventListener("click", function (event) {
     event.preventDefault();
     $("#msg li").remove();
-    let request = "msg_back";
-    $.ajax({
-        data: {
-            req: request
-        },
-        type: 'POST',
-        dataType: 'json',
-        url: '/web/sub/ajax.php',
-        success: function (response) {
-            var content = response.content;
-            let list = document.getElementById('msg');
-            list.innerHTML = content;
-            if (content == '') {
-                msg_fwd.style.display = "none";
-            } else {
-                msg_fwd.style.display = "block";
-            };
-
-            const lists = document.querySelectorAll('#msg>li');
-            for (i = 0; i < lists.length; ++i) {
-                lists[i].addEventListener("click", function (event) {
-                    $.ajax({
-                        data: {
-                            req: "msg_li",
-                            inf: this.id
-                        },
-                        type: 'POST',
-                        dataType: 'json',
-                        url: '/web/sub/ajax.php',
-                        success: function (response) {
-                            var content = response.content;
-                            let list = document.getElementById('model_msg');
-                            list.innerHTML = content;
-                            $('#Conversation').modal('show');
-                        },
-                        error: function (xhr, status, error) {
-                            alert(error);
-                        }
-                    });
-                });
-            };
-
-        },
-        error: function (xhr, status, error) {
-            alert(error);
-        }
-    });
+    ajax_call("msg_back", "msg_li", "msg", msg_fwd, "Messages");
 });
 
 document.getElementById("msg_fwd").addEventListener("click", function (event) {
     event.preventDefault();
     $("#msg li").remove();
-    let request = "msg_fwd";
+    ajax_call("msg_fwd", "msg_li", "msg", msg_fwd, "Messages");
+});
+
+document.getElementById("past_back").addEventListener("click", function (event) {
+    event.preventDefault();
+    $("#past li").remove();
+    ajax_call("past_back", "res_li", "past", past_fwd, "Reservation");
+});
+
+document.getElementById("past_fwd").addEventListener("click", function (event) {
+    event.preventDefault();
+    $("#past li").remove();
+    ajax_call("past_fwd", "res_li", "past", past_fwd, "Reservation");
+});
+
+document.getElementById("comming_back").addEventListener("click", function (event) {
+    event.preventDefault();
+    $("#comming li").remove();
+    ajax_call("comming_back", "res_li", "comming", comming_fwd, "Reservation");
+});
+
+document.getElementById("comming_fwd").addEventListener("click", function (event) {
+    event.preventDefault();
+    $("#comming li").remove();
+    ajax_call("comming_fwd", "res_li", "comming", comming_fwd, "Reservation");
+});
+
+
+function ajax_call(request, sub_request, list_name, fwd, heading) {
     $.ajax({
         data: {
             req: request
@@ -77,20 +59,20 @@ document.getElementById("msg_fwd").addEventListener("click", function (event) {
         url: '/web/sub/ajax.php',
         success: function (response) {
             var content = response.content;
-            let list = document.getElementById('msg');
+            let list = document.getElementById(list_name);
             list.innerHTML = content;
             if (content == '') {
-                msg_fwd.style.display = "none";
+                fwd.style.display = "none";
             } else {
-                msg_fwd.style.display = "block";
-            }
+                fwd.style.display = "block";
+            };
 
-            const lists = document.querySelectorAll('#msg>li');
+            const lists = document.querySelectorAll('#' + list_name + '>li');
             for (i = 0; i < lists.length; ++i) {
                 lists[i].addEventListener("click", function (event) {
                     $.ajax({
                         data: {
-                            req: "msg_li",
+                            req: sub_request,
                             inf: this.id
                         },
                         type: 'POST',
@@ -98,9 +80,11 @@ document.getElementById("msg_fwd").addEventListener("click", function (event) {
                         url: '/web/sub/ajax.php',
                         success: function (response) {
                             var content = response.content;
-                            let list = document.getElementById('model_msg');
+                            let list = document.getElementById('model_list');
                             list.innerHTML = content;
-                            $('#Conversation').modal('show');
+                            let title = document.getElementById('modal-heading');
+                            title.innerHTML = heading;
+                            $('#Dash_Pop').modal('show');
                         },
                         error: function (xhr, status, error) {
                             alert(error);
@@ -108,118 +92,10 @@ document.getElementById("msg_fwd").addEventListener("click", function (event) {
                     });
                 });
             };
-            
-        },
-        error: function (xhr, status, error) {
-            alert(error);
-        }
-    });
-});
 
-document.getElementById("past_back").addEventListener("click", function (event) {
-    event.preventDefault();
-    $("#past li").remove();
-    let request = "past_back";
-    $.ajax({
-        data: {
-            req: request
-        },
-        type: 'POST',
-        dataType: 'json',
-        url: '/web/sub/ajax.php',
-        success: function (response) {
-            var content = response.content;
-            let list = document.getElementById('past');
-            list.innerHTML = content;
-            if (content == '') {
-                past_fwd.style.display = "none";
-            } else {
-                past_fwd.style.display = "block";
-            }
         },
         error: function (xhr, status, error) {
             alert(error);
         }
     });
-});
-
-document.getElementById("past_fwd").addEventListener("click", function (event) {
-    event.preventDefault();
-    $("#past li").remove();
-    let request = "past_fwd";
-    $.ajax({
-        data: {
-            req: request
-        },
-        type: 'POST',
-        dataType: 'json',
-        url: '/web/sub/ajax.php',
-        success: function (response) {
-            var content = response.content;
-            let list = document.getElementById('past');
-            list.innerHTML = content;
-            if (content == '') {
-                past_fwd.style.display = "none";
-            } else {
-                past_fwd.style.display = "block";
-            }
-        },
-        error: function (xhr, status, error) {
-            alert(error);
-        }
-    });
-});
-
-document.getElementById("comming_back").addEventListener("click", function (event) {
-    event.preventDefault();
-    $("#comming li").remove();
-    let request = "comming_back";
-    $.ajax({
-        data: {
-            req: request
-        },
-        type: 'POST',
-        dataType: 'json',
-        url: '/web/sub/ajax.php',
-        success: function (response) {
-            var content = response.content;
-            let list = document.getElementById('comming');
-            list.innerHTML = content;
-            if (content == '') {
-                comming_fwd.style.display = "none";
-            } else {
-                comming_fwd.style.display = "block";
-            }
-        },
-        error: function (xhr, status, error) {
-            alert(error);
-        }
-    });
-});
-
-document.getElementById("comming_fwd").addEventListener("click", function (event) {
-    event.preventDefault();
-    $("#comming li").remove();
-    let request = "comming_fwd";
-    $.ajax({
-        data: {
-            req: request
-        },
-        type: 'POST',
-        dataType: 'json',
-        url: '/web/sub/ajax.php',
-        success: function (response) {
-            var content = response.content;
-            let list = document.getElementById('comming');
-            list.innerHTML = content;
-            if (content == '') {
-                comming_fwd.style.display = "none";
-            } else {
-                comming_fwd.style.display = "block";
-            }
-        },
-        error: function (xhr, status, error) {
-            alert(error);
-        }
-    });
-});
+}
