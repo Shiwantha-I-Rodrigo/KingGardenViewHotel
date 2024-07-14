@@ -146,7 +146,7 @@ if (isset($_POST['req'])) {
                 $RoomAC = $row['RoomAC'];
                 $RoomWIFI = $row['RoomWIFI'];
                 $RoomPicture = $row['RoomPicture'];
-                $RoomBalcony = $row['RoomBalcony'];
+                $RoomCapacity = $row['RoomCapacity'];
                 $TimeSlotStart = getTime($row['TimeSlotStart']);
                 $TimeSlotEnd = getTime($row['TimeSlotEnd']);
                 $ReservationId = $row['ReservationId'];

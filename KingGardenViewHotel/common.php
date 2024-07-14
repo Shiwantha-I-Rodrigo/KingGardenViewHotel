@@ -122,3 +122,9 @@ function getTime($data = null)
 {
     return date("Y-m-d", substr((string)$data, 0, 10));
 }
+
+//SetHome---------------------------------------------
+function setHome()
+{
+    echo '<script type="text/javascript">sessionStorage.setItem("current_page", "home");</script>';
+}

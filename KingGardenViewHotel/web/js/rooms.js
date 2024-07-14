@@ -21,8 +21,10 @@ elements.forEach((item) => {
     item.addEventListener('click', () => {
         let room_id = item.id;
         let text = item.innerHTML;
+        let input = document.getElementById("room_id");
         $("#room-id").html(room_id);
         $("#room-details").html(text);
+        input.value = room_id;
         $('#Reservation').modal('show');
     })
 });

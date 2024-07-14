@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <h2 class="d-flex justify-content-center align-items-center my-5">Log In</h2>
                 </div>
             </div>
-            <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form" style="z-index:1;" novalidate>
+            <form action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form" name="login_form" style="z-index:1;" novalidate>
                 <div class="row my-2">
                     <div class="col-4 d-flex justify-content-end align-items-center">
                         <label>Username</label>
@@ -76,8 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 <div class="row my-5">
                     <div class="col-10 d-flex justify-content-end">
-                        <button class="success-btn px-5 mx-4">Login</button>
-                        <button class="fail-btn px-5">Cancel</button>
+                        <button id="submit_btn" class="success-btn px-5 mx-4">Login</button>
+                        <button id="clear_btn" class="fail-btn px-5">Clear</button>
                     </div>
                 </div>
             </form>
@@ -99,6 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <script src="<?= WEB_BASE_URL ?>js/jquery-3.7.1.min.js"></script>
     <script src="<?= WEB_BASE_URL ?>js/sweetalert2@11.js"></script>
     <script src="<?= WEB_BASE_URL ?>js/common.js"></script>
+    <script src="<?= WEB_BASE_URL ?>js/login.js"></script>
 
 </body>
 

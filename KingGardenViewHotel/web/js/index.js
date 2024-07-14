@@ -1,3 +1,5 @@
+sessionStorage.setItem("current_page", "home");
+
 document.getElementById("rooms_count_minus").addEventListener("click", function (event) {
     event.preventDefault();
     let count = document.getElementById("rooms_count");

@@ -88,7 +88,7 @@ CREATE TABLE user_modules (PrivilegeId INT(11) PRIMARY KEY NOT NULL AUTO_INCREME
 CREATE TABLE reservations (ReservationId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, GuestId INT(11) NOT NULL, StaffId INT(11), RoomId INT(11) NOT NULL, TimeSlotStart INT(11), TimeSlotEnd INT(11), Status INT(1), CONSTRAINT `GuestIdReservations` FOREIGN KEY (GuestId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT, CONSTRAINT `StaffIdReservations` FOREIGN KEY (StaffId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT, CONSTRAINT `RoomIdReservations` FOREIGN KEY (RoomId) REFERENCES rooms (RoomId) ON DELETE CASCADE ON UPDATE RESTRICT);
 CREATE TABLE items (ItemId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, ReservationId INT(11) NOT NULL, ItemName VARCHAR(255), ItemPrice INT(11), ItemPaid INT(11), ItemStatus INT(1), ItemDiscount INT(3), ItemComments VARCHAR(255), Status INT(1), CONSTRAINT `ReservationIdItems` FOREIGN KEY (ReservationId) REFERENCES reservations (ReservationId) ON DELETE CASCADE ON UPDATE RESTRICT);
 CREATE TABLE reviews (ReviewId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, ReservationId INT(11) NOT NULL, ReviewTitle VARCHAR(255), ReviewText VARCHAR(511), Status INT(1), CONSTRAINT `ReservationIdReviews` FOREIGN KEY (ReservationId) REFERENCES reservations (ReservationId) ON DELETE CASCADE ON UPDATE RESTRICT);
-CREATE TABLE rooms (RoomId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, RoomName VARCHAR(255) NOT NULL, RoomPrice INT(11), RoomAC INT(1), RoomWIFI INT(1), RoomBalcony INT(1), RoomPicture VARCHAR(255), Status INT(1));
+CREATE TABLE rooms (RoomId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, RoomName VARCHAR(255) NOT NULL, RoomPrice INT(11), RoomAC INT(1), RoomWIFI INT(1), RoomCapacity INT(1), RoomPicture VARCHAR(255), Status INT(1));
 CREATE TABLE blogs (BlogId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, BlogText VARCHAR(4095), BlogTitle VARCHAR(255), BlogPicture VARCHAR(255), Status INT(1));
 
 # INT codes
@@ -226,7 +226,7 @@ CREATE TABLE blogs (BlogId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, BlogText
     RoomPrice INT(11)
     RoomAC INT(1)
     RoomWIFI INT(1)
-    RoomBalcony INT(1)
+    RoomCapacity INT(1)
     RoomPicture VARCHAR(255)
     RoomStatus INT(1)
 
@@ -263,7 +263,7 @@ ini_set('display_errors', 1);
 INSERT INTO modules (ModuleName, ModulePath, ModuleClasses, Status) VALUES ("messages", "/web/modules/dashboard.php", "textsms", 1);
 INSERT INTO user_modules (UserId, ModuleId, Status) VALUES (4, 1, 1);
 INSERT INTO user_modules (UserId, ModuleId, Status) VALUES (9, 1, 1);
-INSERT INTO rooms (RoomName, RoomPrice, RoomAC, RoomWIFI, RoomBalcony, RoomPicture, Status) VALUES ("Standard Room",2000,0,0,0,"/img/rooms/6777afef167aa44cfa29532a6c3596e2.jpg",1);
+INSERT INTO rooms (RoomName, RoomPrice, RoomAC, RoomWIFI, RoomCapacity, RoomPicture, Status) VALUES ("Standard Room",2000,0,0,0,"/img/rooms/6777afef167aa44cfa29532a6c3596e2.jpg",1);
 INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, Status) VALUES (4,9,1,1720569600,1720699199,1);
 INSERT INTO items (ReservationId, ItemName, ItemPrice, ItemPaid, ItemStatus, ItemDiscount, ItemComments, Status) VALUES (1,"room",2000,2000,1,0,"",1);
 INSERT INTO reviews (ReservationId, ReviewTitle, ReviewText, Status) VALUES (1,"good value","such great value for the price.",1);
@@ -349,3 +349,11 @@ ALTER TABLE items RENAME COLUMN Status to ItemStatus;
 ALTER TABLE reviews RENAME COLUMN Status to ReviewStatus;
 ALTER TABLE rooms RENAME COLUMN Status to RoomStatus;
 ALTER TABLE blogs RENAME COLUMN Status to BlogStatus;
+
+ALTER TABLE rooms RENAME COLUMN RoomBalcony to RoomCapacity;
+
+INSERT INTO rooms (RoomName, RoomPrice, RoomAC, RoomWIFI, RoomCapacity, RoomPicture, RoomStatus) VALUES ("Standard Room",3500,1,1,2,"/img/rooms/6777afef167aa44cfa29532a6c3596e3.jpg",0);
+INSERT INTO rooms (RoomName, RoomPrice, RoomAC, RoomWIFI, RoomCapacity, RoomPicture, RoomStatus) VALUES ("Deulux Room",5500,1,1,3,"/img/rooms/6777afef167aa44cfa29532a6c3596e5.jpg",1);
+INSERT INTO rooms (RoomName, RoomPrice, RoomAC, RoomWIFI, RoomCapacity, RoomPicture, RoomStatus) VALUES ("Family Room",4000,1,0,3,"/img/rooms/6777afef167aa44cfa29532a6c3596e6.jpg",1);
+INSERT INTO rooms (RoomName, RoomPrice, RoomAC, RoomWIFI, RoomCapacity, RoomPicture, RoomStatus) VALUES ("Luxary Room",6900,1,1,2,"/img/rooms/6777afef167aa44cfa29532a6c3596e4.jpg",1);
+INSERT INTO rooms (RoomName, RoomPrice, RoomAC, RoomWIFI, RoomCapacity, RoomPicture, RoomStatus) VALUES ("Solo Traveler Room",2000,0,0,1,"/img/rooms/6777afef167aa44cfa29532a6c3596e7.jpg",1);

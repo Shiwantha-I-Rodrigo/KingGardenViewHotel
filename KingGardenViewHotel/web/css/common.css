@@ -156,7 +156,7 @@ input[type="file"]::file-selector-button {
     border-right: 0.1vh solid var(--primary_font);
 }
 
-textarea{
+textarea {
     color: var(--primary_font);
     border: none;
     border-bottom: 0.5vh solid var(--primary_font);
@@ -363,6 +363,20 @@ select {
     padding: 0;
     margin: 0;
     border: none;
+}
+
+.sw-alert {
+    border-radius: 10px !important;
+    background-color: var(--primary);
+    color : var(--primary_font);
+}
+
+.sw-alert-btn {
+    color: var(--success_font);
+    padding-left: 6vh;
+    padding-right: 6vh;
+    padding-top: 0vh;
+    padding-bottom: 0vh;
 }
 
 /* slider */
