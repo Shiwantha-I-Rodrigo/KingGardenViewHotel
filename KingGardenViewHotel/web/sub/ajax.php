@@ -12,6 +12,7 @@ if (isset($_POST['req'])) {
     isset($_SESSION['msg_offset']) ? $msg_offset = $_SESSION['msg_offset'] : $_SESSION['msg_offset'] = 0;
     isset($_SESSION['past_offset']) ? $past_offset = $_SESSION['past_offset'] : $_SESSION['past_offset'] = 0;
     isset($_SESSION['comming_offset']) ? $comming_offset = $_SESSION['comming_offset'] : $_SESSION['comming_offset'] = 0;
+    isset($_SESSION['blog_offset']) ? $blog_offset = $_SESSION['blog_offset'] : $_SESSION['blog_offset'] = 0;
     $db = dbConn();
 
     switch ($req) {
@@ -56,7 +57,7 @@ if (isset($_POST['req'])) {
             $_SESSION['past_offset'] >= 5 ? $_SESSION['past_offset'] -= 5 : $_SESSION['past_offset'] = 0;
             $past_offset = $_SESSION['past_offset'];
             $sql = "SELECT * FROM (SELECT * FROM reservations WHERE GuestId = " . $user_id . " AND TimeSlotEnd <= " . time() . " ORDER BY TimeSlotEnd DESC LIMIT 5 OFFSET "
-             . $past_offset . " ) s INNER JOIN rooms r ON s.RoomId = r.RoomId ORDER BY TimeSlotEnd DESC";
+                . $past_offset . " ) s INNER JOIN rooms r ON s.RoomId = r.RoomId ORDER BY TimeSlotEnd DESC";
             $result = $db->query($sql);
             while ($row = $result->fetch_assoc()) {
                 $res_id = $row['ReservationId'];
@@ -65,7 +66,7 @@ if (isset($_POST['req'])) {
                 $TimeSlotEnd = getTime($row['TimeSlotEnd']);
                 $Status = getStatus($row['ReservationStatus']);
                 $content .= "<li id=" . $res_id . ">( " . $RoomName . " ) <ul><li> From : " . $TimeSlotStart . "</li><li> To : " . $TimeSlotEnd . "</li><li> Status : "
-                 . $Status . "</li></ul></li>";
+                    . $Status . "</li></ul></li>";
             }
             break;
 
@@ -73,7 +74,7 @@ if (isset($_POST['req'])) {
             $_SESSION['past_offset'] < 0 ? $_SESSION['past_offset'] = 0 : $_SESSION['past_offset'] += 5;
             $past_offset = $_SESSION['past_offset'];
             $sql = "SELECT * FROM (SELECT * FROM reservations WHERE GuestId = " . $user_id . " AND TimeSlotEnd <= " . time() . " ORDER BY TimeSlotEnd DESC LIMIT 5 OFFSET "
-             . $past_offset . " ) s INNER JOIN rooms r ON s.RoomId = r.RoomId ORDER BY TimeSlotEnd DESC";
+                . $past_offset . " ) s INNER JOIN rooms r ON s.RoomId = r.RoomId ORDER BY TimeSlotEnd DESC";
             $result = $db->query($sql);
             while ($row = $result->fetch_assoc()) {
                 $res_id = $row['ReservationId'];
@@ -82,7 +83,7 @@ if (isset($_POST['req'])) {
                 $TimeSlotEnd = getTime($row['TimeSlotEnd']);
                 $Status = getStatus($row['ReservationStatus']);
                 $content .= "<li id=" . $res_id . ">( " . $RoomName . " ) <ul><li> From : " . $TimeSlotStart . "</li><li> To : " . $TimeSlotEnd . "</li><li> Status : "
-                 . $Status . "</li></ul></li>";
+                    . $Status . "</li></ul></li>";
             }
             break;
 
@@ -90,7 +91,7 @@ if (isset($_POST['req'])) {
             $_SESSION['comming_offset'] >= 5 ? $_SESSION['comming_offset'] -= 5 : $_SESSION['comming_offset'] = 0;
             $comming_offset = $_SESSION['comming_offset'];
             $sql = "SELECT * FROM (SELECT * FROM reservations WHERE GuestId = " . $user_id . " AND TimeSlotEnd > " . time() . " ORDER BY TimeSlotEnd LIMIT 5 OFFSET "
-             . $comming_offset . ") s INNER JOIN rooms r ON s.RoomId = r.RoomId ORDER BY TimeSlotEnd";
+                . $comming_offset . ") s INNER JOIN rooms r ON s.RoomId = r.RoomId ORDER BY TimeSlotEnd";
             $result = $db->query($sql);
             while ($row = $result->fetch_assoc()) {
                 $res_id = $row['ReservationId'];
@@ -99,7 +100,7 @@ if (isset($_POST['req'])) {
                 $TimeSlotEnd = getTime($row['TimeSlotEnd']);
                 $Status = getStatus($row['ReservationStatus']);
                 $content .= "<li id=" . $res_id . ">( " . $RoomName . " ) <ul><li> From : " . $TimeSlotStart . "</li><li> To : " . $TimeSlotEnd . "</li><li> Status : "
-                 . $Status . "</li></ul></li>";
+                    . $Status . "</li></ul></li>";
             }
             break;
 
@@ -107,7 +108,7 @@ if (isset($_POST['req'])) {
             $_SESSION['comming_offset'] < 0 ? $_SESSION['comming_offset'] = 0 : $_SESSION['comming_offset'] += 5;
             $comming_offset = $_SESSION['comming_offset'];
             $sql = "SELECT * FROM (SELECT * FROM reservations WHERE GuestId = " . $user_id . " AND TimeSlotEnd > " . time() . " ORDER BY TimeSlotEnd LIMIT 5 OFFSET "
-             . $comming_offset . ") s INNER JOIN rooms r ON s.RoomId = r.RoomId ORDER BY TimeSlotEnd";
+                . $comming_offset . ") s INNER JOIN rooms r ON s.RoomId = r.RoomId ORDER BY TimeSlotEnd";
             $result = $db->query($sql);
             while ($row = $result->fetch_assoc()) {
                 $res_id = $row['ReservationId'];
@@ -116,14 +117,14 @@ if (isset($_POST['req'])) {
                 $TimeSlotEnd = getTime($row['TimeSlotEnd']);
                 $Status = getStatus($row['ReservationStatus']);
                 $content .= "<li id=" . $res_id . ">( " . $RoomName . " ) <ul><li> From : " . $TimeSlotStart . "</li><li> To : " . $TimeSlotEnd . "</li><li> Status : "
-                 . $Status . "</li></ul></li>";
+                    . $Status . "</li></ul></li>";
             }
             break;
 
         case "msg_li":
             $id = $_POST['inf'];
             $sql = "SELECT * FROM messages WHERE FromId = " . $id . " AND ToID = " . $user_id . " UNION SELECT * FROM messages WHERE FromId = " . $user_id . " AND ToID = "
-             . $id . " ORDER BY Time";
+                . $id . " ORDER BY Time";
             $result = $db->query($sql);
             while ($row = $result->fetch_assoc()) {
                 $MessageText = $row['MessageText'];
@@ -138,7 +139,7 @@ if (isset($_POST['req'])) {
 
         case "res_li":
             $id = $_POST['inf'];
-            $sql = "SELECT * FROM reservations s INNER JOIN rooms r ON s.RoomId = r.RoomId WHERE ReservationId = " . $id ;
+            $sql = "SELECT * FROM reservations s INNER JOIN rooms r ON s.RoomId = r.RoomId WHERE ReservationId = " . $id;
             $result = $db->query($sql);
             while ($row = $result->fetch_assoc()) {
                 $RoomId = $row['RoomId'];
@@ -153,9 +154,9 @@ if (isset($_POST['req'])) {
                 $Status = getStatus($row['ReservationStatus']);
             }
             $content .= '<li><img src=\"' . $RoomPicture . '\" alt=\"\" style=\"width:95%; border-radius: 1vh;\"/></li>';
-            $content .= "<li>Room : " . $RoomName . " " . $RoomId ."</li><li>From : " . $TimeSlotStart . " To : "
-             . $TimeSlotEnd . "</li><li>Reservation No : " . $ReservationId . "</li><li>Status : " . $Status . "</li>";
-            $req = "SELECT * FROM items WHERE ReservationId = " . $id ;
+            $content .= "<li>Room : " . $RoomName . " " . $RoomId . "</li><li>From : " . $TimeSlotStart . " To : "
+                . $TimeSlotEnd . "</li><li>Reservation No : " . $ReservationId . "</li><li>Status : " . $Status . "</li>";
+            $req = "SELECT * FROM items WHERE ReservationId = " . $id;
             $reply = $db->query($req);
             $content .= "<li>Invoice :</li>";
             while ($row = $reply->fetch_assoc()) {
@@ -166,6 +167,60 @@ if (isset($_POST['req'])) {
                 $content .= "<li><ul><li> " . $ItemName . " : " . $ItemPrice . " ( " . $ItemStatus . " ) </li></ul></li>";
             }
             break;
+
+        case "blog_back":
+            $_SESSION['blog_offset'] >= 5 ? $_SESSION['blog_offset'] -= 5 : $_SESSION['blog_offset'] = 0;
+            $blog_offset = $_SESSION['blog_offset'];
+            $sql = "SELECT * FROM blogs LIMIT 5 OFFSET " . $blog_offset;
+            $result = $db->query($sql);
+            while ($row = $result->fetch_assoc()) {
+                $BlogText = $row['BlogText'];
+                $BlogTitle = $row['BlogTitle'];
+                $BlogPicture = $row['BlogPicture'];
+                $content .= '<div class="row my-5 ps-5" style="width:100vw; height:30vh;">
+                    <div class="col-11 m-0 p-0" style="background-color:var(--background);border: 0.5vh solid var(--background);border-radius: 2vh;">
+                        <div class="row m-0 p-0">
+                            <div class="col-4 m-0 p-0" style="overflow: hidden;">
+                                <img class="m-0 p-0" src="' . $BlogPicture . '" alt="" style="height:30vh; object-fit: cover; border-radius: 2vh 0 0 2vh;">
+                            </div>
+                            <div class="col-8 m-0 p-0">
+                                <h3 style="font-size: 3vh; text-align:center;" class="my-3">' . $BlogTitle . '</h3>
+                                <p class="me-3 px-5" style="font-size:2vh; text-align: justify; text-justify: inter-word;">' . $BlogText . '</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>';
+            }
+            $content = json_encode($content, JSON_UNESCAPED_SLASHES);
+            $content = trim($content, "\"");
+            break;
+
+            case "blog_fwd":
+                $_SESSION['blog_offset'] < 0 ? $_SESSION['blog_offset'] = 0 : $_SESSION['blog_offset'] += 5;
+                $blog_offset = $_SESSION['blog_offset'];
+                $sql = "SELECT * FROM blogs LIMIT 5 OFFSET " . $blog_offset;
+                $result = $db->query($sql);
+                while ($row = $result->fetch_assoc()) {
+                    $BlogText = $row['BlogText'];
+                    $BlogTitle = $row['BlogTitle'];
+                    $BlogPicture = $row['BlogPicture'];
+                    $content .= '<div class="row my-5 ps-5" style="width:100vw; height:30vh;">
+                        <div class="col-11 m-0 p-0" style="background-color:var(--background);border: 0.5vh solid var(--background);border-radius: 2vh;">
+                            <div class="row m-0 p-0">
+                                <div class="col-4 m-0 p-0" style="overflow: hidden;">
+                                    <img class="m-0 p-0" src="' . $BlogPicture . '" alt="" style="height:30vh; object-fit: cover; border-radius: 2vh 0 0 2vh;">
+                                </div>
+                                <div class="col-8 m-0 p-0">
+                                    <h3 style="font-size: 3vh; text-align:center;" class="my-3">' . $BlogTitle . '</h3>
+                                    <p class="me-3 px-5" style="font-size:2vh; text-align: justify; text-justify: inter-word;">' . $BlogText . '</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>';
+                }
+                $content = json_encode($content, JSON_UNESCAPED_SLASHES);
+                $content = trim($content, "\"");
+                break;
 
         default:
     }

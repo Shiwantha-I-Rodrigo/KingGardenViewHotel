@@ -1,58 +1,78 @@
 <?php
 session_start();
-require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
 $extra_js = '<script src="' . WEB_BASE_URL . 'js/contact.js"></script>';
 $extra_css = '';
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    extract($_POST);
+
+    $db = dbConn();
+    $text = "'Name_" . $name . "_Email_" . $email . "_Telephone_" . $telephone . "_Subject_" . $subject . "_Message_" . $message . "'"; 
+    $time = time();
+    $sql = "INSERT INTO messages (MessageText, MessageTime, FromId, FromName, ToId, Thread, MessageStatus) VALUES ($text, $time, 22, 'guest',23, 22, 5)";
+    $db->query($sql);
+    $message_id = $db->insert_id;
+    $_SESSION['alert_color'] = "var(--primary)";
+    $_SESSION['alert_icon'] = "task_alt";
+    $_SESSION['alert_title'] = "Succesful !";
+    $_SESSION['alert_msg'] = "Message Sent Succesfully <br>Message ID : " . $message_id;
+    reDirect('/web/sub/alert.php');
+}
+
 ob_start();
 ?>
 
 <div class="row pt-5" style="position:absolute; top:10vh; background-image: var(--background_img_03); width:100vw; height:100vh;">
     <div class="col-6 ms-5 mt-5">
-        <div class="row">
-            <div class="col-4">
-                <label>Full Name</label>
+        <form id="contact_form" action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form" novalidate>
+            <div class="row">
+                <div class="col-4">
+                    <label>Full Name</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" name="name" id="name" placeholder="Name" required />
+                </div>
             </div>
-            <div class="col-8">
-                <input type="text" name="user_name" id="user_name" placeholder="Name" required />
+            <div class="row">
+                <div class="col-4">
+                    <label>Email</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" name="email" id="email" placeholder="Email" required />
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-4">
-                <label>Email</label>
+            <div class="row">
+                <div class="col-4">
+                    <label>Telephone</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" name="telephone" id="telephone" placeholder="Telephone" required />
+                </div>
             </div>
-            <div class="col-8">
-                <input type="text" name="user_name" id="user_name" placeholder="Email" required />
+            <div class="row">
+                <div class="col-4">
+                    <label>Subject</label>
+                </div>
+                <div class="col-8">
+                    <input type="text" name="subject" id="subject" placeholder="Subject" required />
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-4">
-                <label>Telephone</label>
+            <div class="row">
+                <div class="col-4">
+                    <label>Message</label>
+                </div>
+                <div class="col-8 m-0 p-0 pe-4 ps-1">
+                    <textarea id="message" name="message" rows="4" cols="50">Message</textarea>
+                </div>
             </div>
-            <div class="col-8">
-                <input type="text" name="user_name" id="user_name" placeholder="Telephone" required />
+            <div class="row">
+                <div class="col-2">
+                    <button class="success-btn px-5 py-2 mt-5">Submit</button>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-4">
-                <label>Subject</label>
-            </div>
-            <div class="col-8">
-                <input type="text" name="user_name" id="user_name" placeholder="Subject" required />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-4">
-                <label>Message</label>
-            </div>
-            <div class="col-8 m-0 p-0 pe-4 ps-1">
-                <textarea id="freeform" name="freeform" rows="4" cols="50">Message</textarea>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-2">
-                <button class="success-btn px-5 py-2 mt-5">Submit</button>
-            </div>
-        </div>
+        </form>
     </div>
     <div class="col-5 ms-5">
         <div class="row">
