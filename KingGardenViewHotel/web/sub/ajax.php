@@ -1,8 +1,8 @@
 <?php
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
-isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : reDirect("/web/modules/login.php");
-authorize($user_id, '1', 'web');
+//isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : reDirect("/web/modules/login.php");
+//authorize($user_id, '1', 'web');
 
 if (isset($_POST['req'])) {
     $req = $_POST['req'];
@@ -24,7 +24,7 @@ if (isset($_POST['req'])) {
             $result = $db->query($sql);
             while ($row = $result->fetch_assoc()) {
                 $from = $row['FromId'];
-                $req = "SELECT MessageText, FromName FROM messages WHERE ToId = " . $user_id . " AND FromId = " . $from . " ORDER BY Time DESC LIMIT 1";
+                $req = "SELECT MessageText, FromName FROM messages WHERE ToId = " . $user_id . " AND FromId = " . $from . " ORDER BY MessageTime DESC LIMIT 1";
                 $res = $db->query($req);
                 while ($rec = $res->fetch_assoc() and ($item_count < $per_page)) {
                     $MessageText = $rec['MessageText'];
@@ -42,7 +42,7 @@ if (isset($_POST['req'])) {
             $result = $db->query($sql);
             while ($row = $result->fetch_assoc()) {
                 $from = $row['FromId'];
-                $req = "SELECT MessageText, FromName FROM messages WHERE ToId = " . $user_id . " AND FromId = " . $from . " ORDER BY Time DESC LIMIT 1";
+                $req = "SELECT MessageText, FromName FROM messages WHERE ToId = " . $user_id . " AND FromId = " . $from . " ORDER BY MessageTime DESC LIMIT 1";
                 $res = $db->query($req);
                 while ($rec = $res->fetch_assoc() and ($item_count < $per_page)) {
                     $MessageText = $rec['MessageText'];
@@ -124,7 +124,7 @@ if (isset($_POST['req'])) {
         case "msg_li":
             $id = $_POST['inf'];
             $sql = "SELECT * FROM messages WHERE FromId = " . $id . " AND ToID = " . $user_id . " UNION SELECT * FROM messages WHERE FromId = " . $user_id . " AND ToID = "
-                . $id . " ORDER BY Time";
+                . $id . " ORDER BY MessageTime";
             $result = $db->query($sql);
             while ($row = $result->fetch_assoc()) {
                 $MessageText = $row['MessageText'];
