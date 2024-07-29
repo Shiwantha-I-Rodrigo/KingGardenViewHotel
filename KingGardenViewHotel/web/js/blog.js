@@ -24,13 +24,13 @@ window.onload = function () {
 
 document.getElementById("blog_back").addEventListener("click", function (event) {
     event.preventDefault();
-    $("#blogs div").remove();
+    //$("#blogs div").remove();
     ajax_call("blog_back", "", "blogs", blog_fwd, "");
 });
 
 document.getElementById("blog_fwd").addEventListener("click", function (event) {
     event.preventDefault();
-    $("#blogs div").remove();
+    //$("#blogs div").remove();
     ajax_call("blog_fwd", "", "blogs", blog_fwd, "");
 });
 
@@ -46,10 +46,10 @@ function ajax_call(request, sub_request, list_name, fwd, heading) {
         success: function (response) {
             var content = response.content;
             let list = document.getElementById(list_name);
-            list.innerHTML = content;
             if (content == '') {
                 fwd.style.display = "none";
             } else {
+                list.innerHTML = content;
                 fwd.style.display = "block";
             };
         },
