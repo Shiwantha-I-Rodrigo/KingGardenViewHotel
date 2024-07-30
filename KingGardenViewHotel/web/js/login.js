@@ -11,26 +11,21 @@ document.getElementById("submit_btn").addEventListener("click", function (event)
     let user_name = document.getElementById("user_name");
     let password = document.getElementById("password");
     if (user_name.value == "") {
-        Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Username cannot be empty!",
-            customClass: {
-                popup: 'sw-alert',
-                confirmButton: 'sw-alert-btn',
-            }
-        });
+        errorAlert("Username cannot be empty!");
     } else if (password.value == "") {
-        Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Password cannot be empty!",
-            customClass: {
-                popup: 'sw-alert',
-                confirmButton: 'sw-alert-btn',
-            }
-        });
+        errorAlert("Password cannot be empty!");
     } else {
         document.login_form.submit();
     }
 });
+
+function errorAlert(text){
+    Swal.fire({
+        icon: "error",
+        text: text,
+        customClass: {
+            popup: 'sw-alert',
+            confirmButton: 'sw-alert-btn',
+        }
+    });
+}

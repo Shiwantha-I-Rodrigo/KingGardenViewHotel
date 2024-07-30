@@ -4,20 +4,17 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
 $extra_js = '<script src="' . WEB_BASE_URL . 'js/rooms.js"></script>';
 $extra_css = '';
 isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : $user_id = 0;
-isset($_SESSION['TimeSlotStart']) ? $TimeSlotStart = $_SESSION['TimeSlotStart'] : $TimeSlotStart = 0;
-isset($_SESSION['TimeSlotEnd']) ? $TimeSlotEnd = $_SESSION['TimeSlotEnd'] : $TimeSlotEnd = 0;
+isset($_SESSION['TimeSlotStart']) ? $TimeSlotStart = $_SESSION['TimeSlotStart'] : $TimeSlotStart = 1;
+isset($_SESSION['TimeSlotEnd']) ? $TimeSlotEnd = $_SESSION['TimeSlotEnd'] : $TimeSlotEnd = 2;
 isset($_SESSION['guests']) ? $guests = $_SESSION['guests'] : $guests = 1;
 isset($_SESSION['rooms']) ? $rooms = $_SESSION['rooms'] : $rooms = 1;
+
+$total_days = ceil(abs($TimeSlotStart - $TimeSlotEnd)/60/60/24);
 $columns = 3;
-$total_days = 2;
-
-//temp
-$guests = 3;
-$rooms = 3;
-$TimeSlotStart = 1723507200;
-$TimeSlotEnd = 1723690000;
-
+$rooms_list = array();
+$rooms_list2 = array();
 $db = dbConn();
+
 // get rooms with conflicting reservations
 $sql = "SELECT * FROM rooms r JOIN reservations s ON r.RoomId = s.RoomId WHERE ( TimeSlotStart BETWEEN $TimeSlotStart AND $TimeSlotEnd ) OR ( TimeSlotEnd BETWEEN $TimeSlotStart AND $TimeSlotEnd)";
 $result = $db->query($sql);
@@ -40,7 +37,7 @@ while ($row = $result->fetch_assoc()) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($user_id == 0) {
         reDirect("/web/modules/login.php");
-    } elseif ($TimeSlotStart == 0 || $TimeSlotEnd == 0) {
+    } elseif ($TimeSlotStart < 99 || $TimeSlotEnd < 99) {
         setHome();
         reDirect("/web/index.php");
     } else {

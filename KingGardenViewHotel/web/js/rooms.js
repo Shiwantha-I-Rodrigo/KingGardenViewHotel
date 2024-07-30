@@ -1,3 +1,5 @@
+sessionStorage.setItem("current_page", "rooms");
+
 document.getElementById("booknow").addEventListener("click", function (event) {
     event.preventDefault();
     sessionStorage.setItem("current_page", "home");
