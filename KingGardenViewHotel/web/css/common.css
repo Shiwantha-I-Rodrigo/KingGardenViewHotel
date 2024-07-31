@@ -408,6 +408,7 @@ select {
     color: var(--success_font);
     font-size: small;
     font-style: italic;
+    text-align: right;
 }
 
 .chat {
@@ -451,15 +452,34 @@ select {
     font-size: small;
 }
 
-.reservation-list {
+.reservation {
     padding: 1vh;
-    margin-top: 1vh;
+    margin: 1vh;
+    background-color: rgba(255, 255, 255, 0);
+    border-bottom: 0.1vh solid var(--success_font);
+}
+
+.reservation-name {
+    padding: 0;
+    margin: 0;
+    color: var(--tertiary);
+    font-size: larger;
+}
+
+.reservation-time {
+    padding: 0;
+    margin: 0;
     color: var(--success_font);
-    background-color: var(--success);
-    border: 0.1vh solid var(--success_font);
-    border-radius: 1vh;
-    padding: 0.2vh;
-    font-weight: bold;
+    font-size: normal;
+}
+
+.reservation-status {
+    padding: 0;
+    margin: 0;
+    color: var(--success_font);
+    font-size: small;
+    font-style: italic;
+    text-align: right;
 }
 
 /* slider */

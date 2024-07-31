@@ -67,8 +67,8 @@ if (isset($_POST['req'])) {
                 $TimeSlotStart = getTime($row['TimeSlotStart']);
                 $TimeSlotEnd = getTime($row['TimeSlotEnd']);
                 $Status = getStatus($row['ReservationStatus']);
-                $content .= "<li class='reservation-list' id=" . $res_id . ">( " . $RoomName . " ) <ul><li> From : " . $TimeSlotStart . "</li><li> To : " . $TimeSlotEnd . "</li><li> Status : "
-                    . $Status . "</li></ul></li>";
+                $content .= "<li class='reservation' id=" . $res_id . "><div class='reservation-name'>" . $RoomName . " - " . $res_id . "</div><div class='reservation-time'> From : " . $TimeSlotStart
+                    . "</div><div class='reservation-time'> To : " . $TimeSlotEnd . "</div><div class='reservation-status'> Status : " . $Status . "</li>";
             }
             break;
 
@@ -84,8 +84,8 @@ if (isset($_POST['req'])) {
                 $TimeSlotStart = getTime($row['TimeSlotStart']);
                 $TimeSlotEnd = getTime($row['TimeSlotEnd']);
                 $Status = getStatus($row['ReservationStatus']);
-                $content .= "<li class='reservation-list' id=" . $res_id . ">( " . $RoomName . " ) <ul><li> From : " . $TimeSlotStart . "</li><li> To : " . $TimeSlotEnd . "</li><li> Status : "
-                    . $Status . "</li></ul></li>";
+                $content .= "<li class='reservation' id=" . $res_id . "><div class='reservation-name'>" . $RoomName . " - " . $res_id . "</div><div class='reservation-time'> From : " . $TimeSlotStart
+                    . "</div><div class='reservation-time'> To : " . $TimeSlotEnd . "</div><div class='reservation-status'> Status : " . $Status . "</li>";
             }
             break;
 
@@ -101,8 +101,8 @@ if (isset($_POST['req'])) {
                 $TimeSlotStart = getTime($row['TimeSlotStart']);
                 $TimeSlotEnd = getTime($row['TimeSlotEnd']);
                 $Status = getStatus($row['ReservationStatus']);
-                $content .= "<li class='reservation-list' id=" . $res_id . ">( " . $RoomName . " ) <ul><li> From : " . $TimeSlotStart . "</li><li> To : " . $TimeSlotEnd . "</li><li> Status : "
-                    . $Status . "</li></ul></li>";
+                $content .= "<li class='reservation' id=" . $res_id . "><div class='reservation-name'>" . $RoomName . " - " . $res_id . "</div><div class='reservation-time'> From : " . $TimeSlotStart
+                    . "</div><div class='reservation-time'> To : " . $TimeSlotEnd . "</div><div class='reservation-status'> Status : " . $Status . "</li>";
             }
             break;
 
@@ -118,15 +118,15 @@ if (isset($_POST['req'])) {
                 $TimeSlotStart = getTime($row['TimeSlotStart']);
                 $TimeSlotEnd = getTime($row['TimeSlotEnd']);
                 $Status = getStatus($row['ReservationStatus']);
-                $content .= "<li class='reservation-list' id=" . $res_id . ">( " . $RoomName . " ) <ul><li> From : " . $TimeSlotStart . "</li><li> To : " . $TimeSlotEnd . "</li><li> Status : "
-                    . $Status . "</li></ul></li>";
+                $content .= "<li class='reservation' id=" . $res_id . "><div class='reservation-name'>" . $RoomName . " - " . $res_id . "</div><div class='reservation-time'> From : " . $TimeSlotStart
+                    . "</div><div class='reservation-time'> To : " . $TimeSlotEnd . "</div><div class='reservation-status'> Status : " . $Status . "</li>";
             }
             break;
 
         case "msg_li":
             $id = $_POST['inf'];
             $sql = "SELECT * FROM messages WHERE FromId = " . $id . " AND ToID = " . $user_id . " UNION SELECT * FROM messages WHERE FromId = " . $user_id . " AND ToID = "
-                . $id . " ORDER BY MessageTime";
+                . $id . " ORDER BY MessageTime DESC";
             $result = $db->query($sql);
             while ($row = $result->fetch_assoc()) {
                 $MessageText = $row['MessageText'];
@@ -155,20 +155,25 @@ if (isset($_POST['req'])) {
                 $TimeSlotEnd = getTime($row['TimeSlotEnd']);
                 $ReservationId = $row['ReservationId'];
                 $Status = getStatus($row['ReservationStatus']);
+                $CancelTime = $row['TimeSlotEnd'];
             }
             $content .= '<li><img src=\"' . $RoomPicture . '\" alt=\"\" style=\"width:95%; border-radius: 1vh;\"/></li>';
-            $content .= "<li>Room : " . $RoomName . " " . $RoomId . "</li><li>From : " . $TimeSlotStart . " To : "
-                . $TimeSlotEnd . "</li><li>Reservation No : " . $ReservationId . "</li><li>Status : " . $Status . "</li>";
+            $content .= "<li class='reservation-name' >Room : " . $RoomName . " " . $RoomId . "</li><br/><li class='reservation-time'>From : " . $TimeSlotStart . " To : "
+                . $TimeSlotEnd . "</li><li class='reservation-time' >Reservation No : " . $ReservationId . "</li><li class='reservation-time' >Status : " . $Status . "</li>";
+            if ($CancelTime > time()) {
+                $content .= "<br/><li><button data-id = " . $ReservationId . " id='cancel' class='fail-btn px-3'>Cancel Reservation</button></li>";
+            }
             $req = "SELECT * FROM items WHERE ReservationId = " . $id;
             $reply = $db->query($req);
-            $content .= "<li>Invoice :</li>";
+            $content .= "<br/><li>Invoice :</li>";
             while ($row = $reply->fetch_assoc()) {
                 $ItemName = $row['ItemName'];
                 $ItemPrice = $row['ItemPrice'];
                 $ItemPaid = $row['ItemPaid'];
                 $ItemStatus = getStatus($row['ItemStatus']);
-                $content .= "<li><ul><li> " . $ItemName . " : " . $ItemPrice . " ( " . $ItemStatus . " ) </li></ul></li>";
+                $content .= "<li><ul><li> " . $ItemName . " : Rs." . $ItemPrice . " ( " . $ItemStatus . " ) </li></ul></li>";
             }
+
             break;
 
         case "blog_back":

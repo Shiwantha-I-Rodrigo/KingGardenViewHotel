@@ -14,37 +14,37 @@ window.onload = function () {
 
 document.getElementById("msg_back").addEventListener("click", function (event) {
     event.preventDefault();
-    $("#msg li").remove();
+    // $("#msg li").remove();
     ajax_call("msg_back", "msg_li", "msg", msg_fwd, "Messages");
 });
 
 document.getElementById("msg_fwd").addEventListener("click", function (event) {
     event.preventDefault();
-    $("#msg li").remove();
+    // $("#msg li").remove();
     ajax_call("msg_fwd", "msg_li", "msg", msg_fwd, "Messages");
 });
 
 document.getElementById("past_back").addEventListener("click", function (event) {
     event.preventDefault();
-    $("#past li").remove();
+    // $("#past li").remove();
     ajax_call("past_back", "res_li", "past", past_fwd, "Reservation");
 });
 
 document.getElementById("past_fwd").addEventListener("click", function (event) {
     event.preventDefault();
-    $("#past li").remove();
+    // $("#past li").remove();
     ajax_call("past_fwd", "res_li", "past", past_fwd, "Reservation");
 });
 
 document.getElementById("comming_back").addEventListener("click", function (event) {
     event.preventDefault();
-    $("#comming li").remove();
+    // $("#comming li").remove();
     ajax_call("comming_back", "res_li", "comming", comming_fwd, "Reservation");
 });
 
 document.getElementById("comming_fwd").addEventListener("click", function (event) {
     event.preventDefault();
-    $("#comming li").remove();
+    // $("#comming li").remove();
     ajax_call("comming_fwd", "res_li", "comming", comming_fwd, "Reservation");
 });
 
@@ -60,10 +60,10 @@ function ajax_call(request, sub_request, list_name, fwd, heading) {
         success: function (response) {
             var content = response.content;
             let list = document.getElementById(list_name);
-            list.innerHTML = content;
             if (content == '') {
                 fwd.style.display = "none";
             } else {
+                list.innerHTML = content;
                 fwd.style.display = "block";
             };
 
@@ -85,6 +85,18 @@ function ajax_call(request, sub_request, list_name, fwd, heading) {
                             let title = document.getElementById('modal-heading');
                             title.innerHTML = heading;
                             $('#Dash_Pop').modal('show');
+
+                            if (document.querySelector("#cancel")){
+                                let cancel = document.getElementById("cancel");
+                                let id = cancel.getAttribute('data-id');
+                                cancel.addEventListener("click", function (event) {
+                                    $('#Dash_Pop').modal('hide');
+                                    $("#Confirm").modal("show");
+                                    let input = document.getElementById("ReservationId");
+                                    input.value = id;
+                                });
+                            }
+                        
                         },
                         error: function (xhr, status, error) {
                             alert(error);
@@ -96,6 +108,17 @@ function ajax_call(request, sub_request, list_name, fwd, heading) {
         },
         error: function (xhr, status, error) {
             alert(error);
+        }
+    });
+}
+
+if (document.querySelector("#cancelled")){
+    Swal.fire({
+        icon: "warning",
+        text: "The reservation is cancelled succesfully !",
+        customClass: {
+            popup: 'sw-alert',
+            confirmButton: 'sw-alert-btn',
         }
     });
 }
