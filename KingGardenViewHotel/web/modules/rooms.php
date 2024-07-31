@@ -8,12 +8,24 @@ isset($_SESSION['TimeSlotStart']) ? $TimeSlotStart = $_SESSION['TimeSlotStart'] 
 isset($_SESSION['TimeSlotEnd']) ? $TimeSlotEnd = $_SESSION['TimeSlotEnd'] : $TimeSlotEnd = 2;
 isset($_SESSION['guests']) ? $guests = $_SESSION['guests'] : $guests = 1;
 isset($_SESSION['rooms']) ? $rooms = $_SESSION['rooms'] : $rooms = 1;
+isset($_SESSION['discounted']) ? $discounted = $_SESSION['discounted'] : $discounted = 0;
+isset($_SESSION['ac']) ? $ac = $_SESSION['ac'] : $ac = 0;
+isset($_SESSION['wifi']) ? $wifi = $_SESSION['wifi'] : $wifi = 0;
 
-$total_days = ceil(abs($TimeSlotStart - $TimeSlotEnd)/60/60/24);
+$total_days = ceil(abs($TimeSlotStart - $TimeSlotEnd) / 60 / 60 / 24);
 $columns = 3;
+$extra_args = "";
 $rooms_list = array();
 $rooms_list2 = array();
 $db = dbConn();
+
+//construct filter arguments
+if ($discounted == 1 || $ac == 1 || $wifi == 1) {
+    $extra_args = " WHERE ";
+    $discounted == 1 ? (($ac == 1 || $wifi == 1) ? $extra_args .= " RoomStatus = 6 AND " : $extra_args .= " RoomStatus = 6 ") : $extra_args = $extra_args;
+    $ac == 1 ? (($wifi == 1) ? $extra_args .= " RoomAC = 1 AND " : $extra_args .= " RoomAC = 1 ") : $extra_args = $extra_args;
+    $wifi == 1 ?  $extra_args .= " RoomWIFI = 1 " : $extra_args = $extra_args;
+}
 
 // get rooms with conflicting reservations
 $sql = "SELECT * FROM rooms r JOIN reservations s ON r.RoomId = s.RoomId WHERE ( TimeSlotStart BETWEEN $TimeSlotStart AND $TimeSlotEnd ) OR ( TimeSlotEnd BETWEEN $TimeSlotStart AND $TimeSlotEnd)";
@@ -22,10 +34,10 @@ while ($row = $result->fetch_assoc()) {
     $rooms_list[] = $row['RoomId'];
 }
 // get all rooms except conflicting rooms
-$sql = "SELECT * FROM rooms";
+$sql = "SELECT * FROM rooms $extra_args";
 $result = $db->query($sql);
 while ($row = $result->fetch_assoc()) {
-    if (!in_array($row['RoomId'],$rooms_list)) {
+    if (!in_array($row['RoomId'], $rooms_list)) {
         $rooms_list2[] = array(
             "RoomId" => $row['RoomId'], "RoomName" => $row['RoomName'], "RoomPrice" => $row['RoomPrice'], "RoomAC" => $row['RoomAC'], "RoomWIFI" => $row['RoomWIFI'],
             "RoomCapacity" => $row['RoomCapacity'], "RoomPicture" => $row['RoomPicture'], "RoomStatus" => $row['RoomStatus']
@@ -65,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ob_start();
 ?>
 
-<div style="position:absolute; top:10vh; background-image: var(--background_img_03);">
+<div style="position:absolute; top:10vh; background-image: var(--background_img_03); min-height:100vh;">
     <?php
     echo '<div class="row my-5 px-5 d-flex justify-content-around" style="width:100vw;">';
     switch ($rooms) {

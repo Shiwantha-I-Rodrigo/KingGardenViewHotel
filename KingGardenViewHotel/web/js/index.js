@@ -70,7 +70,7 @@ document.getElementById("start_date").addEventListener("change", function (event
     if (isNaN(stimestamp) || stimestamp < now) {
         start_date.value = new Date().toISOString().slice(0, 10);
         infoAlert("please select a current or future date !");
-    } else if (stimestamp > etimestamp) {
+    } else if (stimestamp >= etimestamp) {
         end_date.value = "";
         e_date.value = "";
         infoAlert("you have selected a starting date later than ending date, the ending date will be emptied now !");
@@ -90,7 +90,7 @@ document.getElementById("end_date").addEventListener("change", function (event) 
     let etimestamp = edate.getTime();
     let e_date = document.getElementById("e_date");
     // 86400000
-    if (isNaN(etimestamp) || etimestamp < stimestamp + 86400000) {
+    if (isNaN(etimestamp) || etimestamp < (stimestamp + 86400000)) {
         end_date.value = new Date(stimestamp + 86400000).toISOString().slice(0, 10);
         infoAlert("please select a date later than the starting date !");
     } else if ((etimestamp - stimestamp) >= 1209600001) {

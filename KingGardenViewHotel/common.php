@@ -123,6 +123,11 @@ function getTime($data = null)
     return date("Y-m-d", substr((string)$data, 0, 10));
 }
 
+function getTimes($data = null)
+{
+    return date("jS \of F Y h:i:s A", substr((string)$data, 0, 10));
+}
+
 //SetHome---------------------------------------------
 function setHome()
 {

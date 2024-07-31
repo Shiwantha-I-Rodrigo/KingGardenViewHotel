@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
-//isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : reDirect("/web/modules/login.php");
+isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : reDirect("/web/modules/login.php");
 //authorize($user_id, '1', 'web');
 
 if (isset($_POST['req'])) {
@@ -20,16 +20,17 @@ if (isset($_POST['req'])) {
         case "msg_back":
             $_SESSION['msg_offset'] >= 5 ? $_SESSION['msg_offset'] -= 5 : $_SESSION['msg_offset'] = 0;
             $msg_offset = $_SESSION['msg_offset'];
-            $sql = "SELECT DISTINCT FromId FROM messages WHERE ToId = " . $user_id . " LIMIT 5 OFFSET " . $msg_offset;
+            $sql = "SELECT FromId, MAX(MessageTime) AS last_sent FROM messages WHERE ToId = " . $user_id . " GROUP BY FromId ORDER BY last_sent DESC LIMIT 5 OFFSET " . $msg_offset;
             $result = $db->query($sql);
             while ($row = $result->fetch_assoc()) {
                 $from = $row['FromId'];
-                $req = "SELECT MessageText, FromName FROM messages WHERE ToId = " . $user_id . " AND FromId = " . $from . " ORDER BY MessageTime DESC LIMIT 1";
+                $req = "SELECT * FROM messages WHERE ToId = " . $user_id . " AND FromId = " . $from . " ORDER BY MessageTime DESC LIMIT 1";
                 $res = $db->query($req);
                 while ($rec = $res->fetch_assoc() and ($item_count < $per_page)) {
                     $MessageText = $rec['MessageText'];
                     $FromName = $rec['FromName'];
-                    $content .= "<li id=" . $from . ">( " . $FromName . " ) " . $MessageText . "</li>";
+                    $MessageTime = getTimes($rec['MessageTime']);
+                    $content .= "<li class='message' id=" . $from . "><div class='message-name'>" . $FromName . " : </div><div class='message-text'>" . $MessageText . "</div><div class='message-time'>" . $MessageTime . "</div></li>";
                     $item_count++;
                 }
             }
@@ -38,16 +39,17 @@ if (isset($_POST['req'])) {
         case "msg_fwd":
             $_SESSION['msg_offset'] < 0 ? $_SESSION['msg_offset'] = 0 : $_SESSION['msg_offset'] += 5;
             $msg_offset = $_SESSION['msg_offset'];
-            $sql = "SELECT DISTINCT FromId FROM messages WHERE ToId = " . $user_id . " LIMIT 5 OFFSET " . $msg_offset;
+            $sql = "SELECT FromId, MAX(MessageTime) AS last_sent FROM messages WHERE ToId = " . $user_id . " GROUP BY FromId ORDER BY last_sent DESC LIMIT 5 OFFSET " . $msg_offset;
             $result = $db->query($sql);
             while ($row = $result->fetch_assoc()) {
                 $from = $row['FromId'];
-                $req = "SELECT MessageText, FromName FROM messages WHERE ToId = " . $user_id . " AND FromId = " . $from . " ORDER BY MessageTime DESC LIMIT 1";
+                $req = "SELECT * FROM messages WHERE ToId = " . $user_id . " AND FromId = " . $from . " ORDER BY MessageTime DESC LIMIT 1";
                 $res = $db->query($req);
                 while ($rec = $res->fetch_assoc() and ($item_count < $per_page)) {
                     $MessageText = $rec['MessageText'];
                     $FromName = $rec['FromName'];
-                    $content .= "<li id=" . $from . ">( " . $FromName . " ) " . $MessageText . "</li>";
+                    $MessageTime = getTimes($rec['MessageTime']);
+                    $content .= "<li class='message' id=" . $from . "><div class='message-name'>" . $FromName . " : </div><div class='message-text'>" . $MessageText . "</div><div class='message-time'>" . $MessageTime . "</div></li>";
                     $item_count++;
                 }
             }
@@ -65,7 +67,7 @@ if (isset($_POST['req'])) {
                 $TimeSlotStart = getTime($row['TimeSlotStart']);
                 $TimeSlotEnd = getTime($row['TimeSlotEnd']);
                 $Status = getStatus($row['ReservationStatus']);
-                $content .= "<li id=" . $res_id . ">( " . $RoomName . " ) <ul><li> From : " . $TimeSlotStart . "</li><li> To : " . $TimeSlotEnd . "</li><li> Status : "
+                $content .= "<li class='reservation-list' id=" . $res_id . ">( " . $RoomName . " ) <ul><li> From : " . $TimeSlotStart . "</li><li> To : " . $TimeSlotEnd . "</li><li> Status : "
                     . $Status . "</li></ul></li>";
             }
             break;
@@ -82,7 +84,7 @@ if (isset($_POST['req'])) {
                 $TimeSlotStart = getTime($row['TimeSlotStart']);
                 $TimeSlotEnd = getTime($row['TimeSlotEnd']);
                 $Status = getStatus($row['ReservationStatus']);
-                $content .= "<li id=" . $res_id . ">( " . $RoomName . " ) <ul><li> From : " . $TimeSlotStart . "</li><li> To : " . $TimeSlotEnd . "</li><li> Status : "
+                $content .= "<li class='reservation-list' id=" . $res_id . ">( " . $RoomName . " ) <ul><li> From : " . $TimeSlotStart . "</li><li> To : " . $TimeSlotEnd . "</li><li> Status : "
                     . $Status . "</li></ul></li>";
             }
             break;
@@ -99,7 +101,7 @@ if (isset($_POST['req'])) {
                 $TimeSlotStart = getTime($row['TimeSlotStart']);
                 $TimeSlotEnd = getTime($row['TimeSlotEnd']);
                 $Status = getStatus($row['ReservationStatus']);
-                $content .= "<li id=" . $res_id . ">( " . $RoomName . " ) <ul><li> From : " . $TimeSlotStart . "</li><li> To : " . $TimeSlotEnd . "</li><li> Status : "
+                $content .= "<li class='reservation-list' id=" . $res_id . ">( " . $RoomName . " ) <ul><li> From : " . $TimeSlotStart . "</li><li> To : " . $TimeSlotEnd . "</li><li> Status : "
                     . $Status . "</li></ul></li>";
             }
             break;
@@ -116,7 +118,7 @@ if (isset($_POST['req'])) {
                 $TimeSlotStart = getTime($row['TimeSlotStart']);
                 $TimeSlotEnd = getTime($row['TimeSlotEnd']);
                 $Status = getStatus($row['ReservationStatus']);
-                $content .= "<li id=" . $res_id . ">( " . $RoomName . " ) <ul><li> From : " . $TimeSlotStart . "</li><li> To : " . $TimeSlotEnd . "</li><li> Status : "
+                $content .= "<li class='reservation-list' id=" . $res_id . ">( " . $RoomName . " ) <ul><li> From : " . $TimeSlotStart . "</li><li> To : " . $TimeSlotEnd . "</li><li> Status : "
                     . $Status . "</li></ul></li>";
             }
             break;
@@ -129,10 +131,11 @@ if (isset($_POST['req'])) {
             while ($row = $result->fetch_assoc()) {
                 $MessageText = $row['MessageText'];
                 $FromId = $row['FromId'];
+                $MessageTime = getTimes($row['MessageTime']);
                 if ($FromId == $id) {
-                    $content .= '<li style=\"color:var(--secondary_font); text-align: right;list-style-type: none; padding-right:2vw;\">' . $MessageText . '</li>';
+                    $content .= "<li class='chat' ><div class='chat-right-text'>" . $MessageText . "</div><div class='chat-right-time'>" . $MessageTime . "</div></li>";
                 } else {
-                    $content .= '<li style=\"color:var(--primary_font); list-style-type: none;\">' . $MessageText . '</li>';
+                    $content .= "<li class='chat' ><div class='chat-left-text'>" . $MessageText . "</div><div class='chat-left-time'>" . $MessageTime . "</div></li>";
                 }
             }
             break;
@@ -195,16 +198,16 @@ if (isset($_POST['req'])) {
             $content = trim($content, "\"");
             break;
 
-            case "blog_fwd":
-                $_SESSION['blog_offset'] < 0 ? $_SESSION['blog_offset'] = 0 : $_SESSION['blog_offset'] += 5;
-                $blog_offset = $_SESSION['blog_offset'];
-                $sql = "SELECT * FROM blogs LIMIT 5 OFFSET " . $blog_offset;
-                $result = $db->query($sql);
-                while ($row = $result->fetch_assoc()) {
-                    $BlogText = $row['BlogText'];
-                    $BlogTitle = $row['BlogTitle'];
-                    $BlogPicture = $row['BlogPicture'];
-                    $content .= '<div class="row my-5 ps-5" style="width:100vw; height:30vh;">
+        case "blog_fwd":
+            $_SESSION['blog_offset'] < 0 ? $_SESSION['blog_offset'] = 0 : $_SESSION['blog_offset'] += 5;
+            $blog_offset = $_SESSION['blog_offset'];
+            $sql = "SELECT * FROM blogs LIMIT 5 OFFSET " . $blog_offset;
+            $result = $db->query($sql);
+            while ($row = $result->fetch_assoc()) {
+                $BlogText = $row['BlogText'];
+                $BlogTitle = $row['BlogTitle'];
+                $BlogPicture = $row['BlogPicture'];
+                $content .= '<div class="row my-5 ps-5" style="width:100vw; height:30vh;">
                         <div class="col-11 m-0 p-0" style="background-color:var(--background);border: 0.5vh solid var(--background);border-radius: 2vh;">
                             <div class="row m-0 p-0">
                                 <div class="col-4 m-0 p-0" style="overflow: hidden;">
@@ -217,10 +220,10 @@ if (isset($_POST['req'])) {
                             </div>
                         </div>
                     </div>';
-                }
-                $content = json_encode($content, JSON_UNESCAPED_SLASHES);
-                $content = trim($content, "\"");
-                break;
+            }
+            $content = json_encode($content, JSON_UNESCAPED_SLASHES);
+            $content = trim($content, "\"");
+            break;
 
         default:
     }

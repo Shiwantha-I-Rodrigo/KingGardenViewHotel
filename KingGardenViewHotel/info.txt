@@ -99,6 +99,7 @@ CREATE TABLE blogs (BlogId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, BlogText
     3 = unauthorized
     4 = invalid
     5 = reserved
+    6 = discounted
     9 = forbidden
 
 - users - Type

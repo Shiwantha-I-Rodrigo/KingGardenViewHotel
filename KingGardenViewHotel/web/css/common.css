@@ -6,6 +6,8 @@
     --primary_font: #ffffff;
     --secondary: #2b7a78;
     --secondary_font: #3aafa9;
+    --tertiary: #337eaa;
+    --tertiary_font: #ffffff;
 
     --buttonx: #3aafa9;
     --buttonx_font: #feffff;
@@ -368,7 +370,7 @@ select {
 .sw-alert {
     border-radius: 10px !important;
     background-color: var(--primary);
-    color : var(--primary_font);
+    color: var(--primary_font);
 }
 
 .sw-alert-btn {
@@ -377,6 +379,87 @@ select {
     padding-right: 6vh;
     padding-top: 0vh;
     padding-bottom: 0vh;
+}
+
+.message {
+    padding: 1vh;
+    margin: 1vh;
+    background-color: rgba(255, 255, 255, 0);
+    border-bottom: 0.1vh solid var(--success_font);
+}
+
+.message-name {
+    padding: 0;
+    margin: 0;
+    color: var(--fail);
+    font-size: large;
+}
+
+.message-text {
+    padding: 0;
+    margin: 0;
+    color: var(--success_font);
+    font-size: large;
+}
+
+.message-time{
+    padding: 0;
+    margin: 0;
+    color: var(--success_font);
+    font-size: small;
+    font-style: italic;
+}
+
+.chat {
+    padding: 1vh;
+    margin: 2vh;
+}
+
+.chat-right-text {
+    padding: 1vh;
+    margin: 0;
+    color: var(--tertiary_font);
+    background-color: var(--tertiary);
+    border-radius: 1vh;
+    text-align: right;
+    font-size: large;
+}
+
+.chat-right-time {
+    padding: 0;
+    margin: 0;
+    color: var(--tertiary_font);
+    background-color: rgba(255, 255, 255, 0);
+    text-align: right;
+    font-size: small;
+}
+
+.chat-left-text {
+    padding: 1vh;
+    margin: 0;
+    color: var(--primary_font);
+    background-color: var(--primary);
+    border-radius: 1vh;
+    font-size: large;
+}
+
+.chat-left-time {
+    padding: 0;
+    margin: 0;
+    color: var(--primary_font);
+    background-color: rgba(255, 255, 255, 0);
+    font-size: small;
+}
+
+.reservation-list {
+    padding: 1vh;
+    margin-top: 1vh;
+    color: var(--success_font);
+    background-color: var(--success);
+    border: 0.1vh solid var(--success_font);
+    border-radius: 1vh;
+    padding: 0.2vh;
+    font-weight: bold;
 }
 
 /* slider */

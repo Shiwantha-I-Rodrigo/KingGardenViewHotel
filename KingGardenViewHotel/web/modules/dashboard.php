@@ -1,8 +1,6 @@
 <?php
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
-ob_start();
-
 isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : reDirect("/web/modules/login.php");
 authorize($user_id, '1', 'web');
 $extra_js = '<script src="' . WEB_BASE_URL . 'js/dashboard.js"></script>';
@@ -24,7 +22,7 @@ if ($result->num_rows > 0) {
         $username = $row['UserName'];
     }
 }
-
+ob_start();
 ?>
 
 <section style="background-color:var(--shadow);">
@@ -48,7 +46,7 @@ if ($result->num_rows > 0) {
 
                         <p class="mb-4"><span class="text-primary font-italic me-1">Recieved</span> Messages</p>
 
-                        <ul class="list-group list-group-flush rounded-3 px-3" id="msg">
+                        <ul class="list-group list-group-flush rounded-3 px-3" id="msg" style="list-style-type:none;">
 
                             <li>none</li>
                             <li>none</li>
@@ -170,7 +168,7 @@ if ($result->num_rows > 0) {
 
 <!-- Message Modal -->
 <div class="modal fade" id="Dash_Pop" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content" style="background-color:var(--background);">
             <div class="modal-header d-flex justify-content-between">
                 <img src="<?= BASE_URL . '/img/common/logo_logo.png' ?>" alt="" style="width: 3vw; height: 5vh; object-fit: cover;">

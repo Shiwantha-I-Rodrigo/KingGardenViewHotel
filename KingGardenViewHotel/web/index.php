@@ -10,10 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['TimeSlotEnd'] = ($e_date/1000) - 1;
     $_SESSION['guests'] = $guest_count;
     $_SESSION['rooms'] = $rooms_count;
-    $_SESSION['available'] = $available;
-    $_SESSION['discounted'] = $discounted;
-    $_SESSION['ac'] = $ac;
-    $_SESSION['wifi'] = $wifi;
+    isset($_POST['discounted']) ? $_SESSION['discounted'] = 1 :  $_SESSION['discounted'] = 0;
+    isset($_POST['ac']) ? $_SESSION['ac'] = 1 :  $_SESSION['ac'] = 0;
+    isset($_POST['wifi']) ? $_SESSION['wifi'] = 1 :  $_SESSION['wifi'] = 0;
     reDirect('/web/modules/rooms.php');
 }
 
@@ -84,21 +83,17 @@ ob_start();
                             <button class="tiny-btn px-1 mx-1" name="guest_count_plus" id="guest_count_plus"><i class="material-icons">add</i></button>
                         </div>
                     </div>
-                    <div class="row py-4 px-5 border-bottom d-flex justify-content-end">
-                        <div class="form-check form-check-inline col-3  p-0 m-0">
-                            <input class="form-check-input" type="checkbox" id="available" value="1" checked>
-                            <label class="form-check-label mx-3" for="available">Available</label>
-                        </div>
-                        <div class="form-check form-check-inline col-3  p-0 m-0">
-                            <input class="form-check-input" type="checkbox" id="discounted" value="2">
+                    <div class="row py-4 px-5 border-bottom d-flex justify-content-around">
+                        <div class="form-check form-check-inline col-3  p-0 m-0 d-flex justify-content-center">
+                            <input class="form-check-input" type="checkbox" id="discounted" name="discounted" value="1">
                             <label class="form-check-label mx-3" for="discounted">Discounted</label>
                         </div>
-                        <div class="form-check form-check-inline col-2  p-0 m-0">
-                            <input class="form-check-input" type="checkbox" id="ac" value="3">
+                        <div class="form-check form-check-inline col-2  p-0 m-0 d-flex justify-content-center">
+                            <input class="form-check-input" type="checkbox" id="ac" name="ac" value="1">
                             <label class="form-check-label mx-3" for="ac">AC</label>
                         </div>
-                        <div class="form-check form-check-inline col-2  p-0 m-0">
-                            <input class="form-check-input" type="checkbox" id="wifi" value="4">
+                        <div class="form-check form-check-inline col-2  p-0 m-0 d-flex justify-content-center">
+                            <input class="form-check-input" type="checkbox" id="wifi" name="wifi" value="1">
                             <label class="form-check-label mx-3" for="wifi">WiFi</label>
                         </div>
                     </div>
