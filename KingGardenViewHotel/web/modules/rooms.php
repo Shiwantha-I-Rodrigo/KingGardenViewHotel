@@ -96,8 +96,8 @@ ob_start();
                         <div class="p-2">
                             <label>' . $rooms_list2[$i]["RoomName"] . '</label>
                             <p>Price : Rs ' . $rooms_list2[$i]["RoomPrice"] . ' per person a night.<br>
-                                Discounted price Rs.' . ($rooms_list2[$i]["RoomPrice"]) * $total_days . ' for your entire stay<br>
-                                occupancy : ' . $rooms_list2[$i]["RoomCapacity"] . '<br>';
+                                Discounted price : Rs.' . ($rooms_list2[$i]["RoomPrice"]) * $total_days . ' for your entire stay<br>
+                                Occupancy : ' . $rooms_list2[$i]["RoomCapacity"] . '<br>';
                     if ($rooms_list2[$i]["RoomWIFI"] == 1) {
                         echo '<i class="material-icons">wifi</i>';
                     }
@@ -136,7 +136,7 @@ ob_start();
                                     <label>' . $rooms_list2[$i]["RoomName"] . ' & ' . $rooms_list2[$j]["RoomName"] . '</label>
                                     <p>Price : Rs ' . $rooms_list2[$i]["RoomPrice"] +  $rooms_list2[$j]["RoomPrice"] . ' per night.<br>
                                         Discounted price Rs.' . ($rooms_list2[$i]["RoomPrice"] +  $rooms_list2[$j]["RoomPrice"]) * $total_days . ' for your entire stay<br>
-                                        occupancy : ' . $rooms_list2[$i]["RoomCapacity"] . ' + ' . $rooms_list2[$j]["RoomCapacity"] . '</p><br>';
+                                        Occupancy : ' . $rooms_list2[$i]["RoomCapacity"] . ' + ' . $rooms_list2[$j]["RoomCapacity"] . '</p><br>';
                         echo ' <label>' .  $rooms_list2[$i]["RoomName"] . '</label>';
                         if ($rooms_list2[$i]["RoomWIFI"] == 1) {
                             echo '<i class="material-icons">wifi</i>';
@@ -194,7 +194,7 @@ ob_start();
                                         <label>' .  $rooms_list2[$i]["RoomName"] . ' & ' . $rooms_list2[$j]["RoomName"] . ' & ' . $rooms_list2[$k]["RoomName"] . '</label>
                                         <p>Price : Rs ' . $rooms_list2[$i]["RoomPrice"] +  $rooms_list2[$j]["RoomPrice"] +  $rooms_list2[$k]["RoomPrice"] . ' per night.<br>
                                             Discounted price Rs.' . ($rooms_list2[$i]["RoomPrice"] +  $rooms_list2[$j]["RoomPrice"] +  $rooms_list2[$k]["RoomPrice"]) * $total_days . ' for your entire stay<br>
-                                            occupancy : ' . $rooms_list2[$i]["RoomCapacity"] . ' + ' . $rooms_list2[$j]["RoomCapacity"] . ' + ' . $rooms_list2[$k]["RoomCapacity"] . '</p><br>';
+                                            Occupancy : ' . $rooms_list2[$i]["RoomCapacity"] . ' + ' . $rooms_list2[$j]["RoomCapacity"] . ' + ' . $rooms_list2[$k]["RoomCapacity"] . '</p><br>';
                             echo ' <label>' .  $rooms_list2[$i]["RoomName"] . '</label>';
                             if ($rooms_list2[$i]["RoomWIFI"] == 1) {
                                 echo '<i class="material-icons">wifi</i>';

@@ -70,6 +70,7 @@ function ajax_call(request, sub_request, list_name, fwd, heading) {
             const lists = document.querySelectorAll('#' + list_name + '>li');
             for (i = 0; i < lists.length; ++i) {
                 lists[i].addEventListener("click", function (event) {
+                    $thisid = this.id;
                     $.ajax({
                         data: {
                             req: sub_request,
@@ -84,9 +85,15 @@ function ajax_call(request, sub_request, list_name, fwd, heading) {
                             list.innerHTML = content;
                             let title = document.getElementById('modal-heading');
                             title.innerHTML = heading;
+                            let foot = document.getElementById('modal_foot');
+                            sub_request == 'msg_li' ? foot.innerHTML = '<form class="chat-form" method="post">' +
+                                '<input name="chat" class="w-75 ms-5"></input>' +
+                                '<input name="id" class="d-none" value="' + $thisid + '"></input>' +
+                                '<button class="success-btn px-4 ms-3" type="submit" formmethod="post">Send</button></form>' :
+                                foot.innerHTML = '<button type="button" class="fail-btn px-3" data-bs-dismiss="modal">Close</button>';
                             $('#Dash_Pop').modal('show');
 
-                            if (document.querySelector("#cancel")){
+                            if (document.querySelector("#cancel")) {
                                 let cancel = document.getElementById("cancel");
                                 let id = cancel.getAttribute('data-id');
                                 cancel.addEventListener("click", function (event) {
@@ -96,7 +103,7 @@ function ajax_call(request, sub_request, list_name, fwd, heading) {
                                     input.value = id;
                                 });
                             }
-                        
+
                         },
                         error: function (xhr, status, error) {
                             alert(error);
@@ -112,10 +119,21 @@ function ajax_call(request, sub_request, list_name, fwd, heading) {
     });
 }
 
-if (document.querySelector("#cancelled")){
+if (document.querySelector("#cancelled")) {
     Swal.fire({
         icon: "warning",
         text: "The reservation is cancelled succesfully !",
+        customClass: {
+            popup: 'sw-alert',
+            confirmButton: 'sw-alert-btn',
+        }
+    });
+}
+
+if (document.querySelector("#sent")) {
+    Swal.fire({
+        icon: "success",
+        text: "The message is sent succesfully !",
         customClass: {
             popup: 'sw-alert',
             confirmButton: 'sw-alert-btn',

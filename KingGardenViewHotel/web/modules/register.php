@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $msg .= "<h2>Congratulations</h2>";
             $msg .= "<p>Your account has been successfully created</p>";
             $msg .= "Click the following link to verify your email:\n";
-            $msg .= $_SERVER['SERVER_NAME'] . "/web/sub/verify.php?token=$token";
+            $msg .= $_SERVER['SERVER_NAME'] . "/web/sub/verify.php?id=$user_id&token=$token";
             sendEmail($email, $first_name, "Account Verification", $msg);
             $_SESSION['alert_color'] = "var(--primary)";
             $_SESSION['alert_icon'] = "task_alt";

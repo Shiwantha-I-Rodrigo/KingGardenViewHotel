@@ -28,10 +28,21 @@ ob_start();
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     extract($_POST);
-    $sql = "DELETE FROM reservations WHERE ReservationId = $ReservationId";
-    $result = $db->query($sql);
-    if ($result) {
-        echo '<div id="cancelled"></div>';
+    if (isset($ReservationId)) {
+        $sql = "DELETE FROM reservations WHERE ReservationId = $ReservationId";
+        $result = $db->query($sql);
+        if ($result) {
+            echo '<div id="cancelled"></div>';
+        }
+    }
+
+    if (isset($chat)) {
+        $name_hash = $username . substr(password_hash($user_id, PASSWORD_BCRYPT),-5,5);
+        $sql = "INSERT INTO messages (MessageText, MessageTime, FromId, FromName, ToId, Thread, MessageStatus) VALUES ('$chat'," . time() . ",$user_id, '$name_hash',$id,$user_id,1)";
+        $result = $db->query($sql);
+        if ($result) {
+            echo '<div id="sent"></div>';
+        }
     }
 }
 
@@ -49,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <p class="mb-4">Account Status : <?= $status ?></p>
                         <div class="d-flex justify-content-around mb-2">
                             <button type="button" class="success-btn px-3 py-2" style="width:8vw;">Edit</button>
-                            <button type="button" class="fail-btn px-3 py-2" style="width:8vw;">Deactivate</button>
+                            <button type="button" class="fail-btn px-3 py-2" style="width:8vw;">Logout</button>
                         </div>
                     </div>
                 </div>
@@ -190,7 +201,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="modal-body" style="color:var(--primary_font); text-align: justify; text-justify: inter-word; display:inline-block">
                 <ul id="model_list" style="list-style-type : none;"></ul>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" id="modal_foot">
                 <button type="button" class="fail-btn px-3" data-bs-dismiss="modal">Close</button>
             </div>
         </div>

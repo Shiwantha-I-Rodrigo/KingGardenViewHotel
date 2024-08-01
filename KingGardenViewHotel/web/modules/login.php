@@ -69,12 +69,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <input type="password" name="password" id="password" placeholder="Password" required />
                     </div>
                 </div>
-                <div class="row my-5">
+                <div class="row my-3">
                     <div class="col-12 d-flex justify-content-center">
                         <p style="color:var(--fail)"><?= @$message['message'] ?></p>
                     </div>
                 </div>
-                <div class="row my-5">
+                <div class="row">
+                    <div class="col-10 d-flex justify-content-end">
+                        <p class="text-muted"> Don't have an account ? <a href="register.php"> Register here </a></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-10 d-flex justify-content-end">
+                        <p class="text-muted"> Forgot Password ? <a href="recover.php"> Recover password </a></p>
+                    </div>
+                </div>
+                <div class="row mt-3 mb-5">
                     <div class="col-10 d-flex justify-content-end">
                         <button id="submit_btn" class="success-btn px-5 mx-4">Login</button>
                         <button id="clear_btn" class="fail-btn px-5">Clear</button>
