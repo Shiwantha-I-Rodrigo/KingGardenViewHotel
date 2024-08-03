@@ -14,7 +14,7 @@ $result = $db->query($sql);
 if ($result->num_rows == 1) {
     $row = $result->fetch_assoc();
     if ($row['Token'] == $token) {
-        $req = "UPDATE customers SET CustomerStatus = 1 WHERE UserId = $id";
+        $req = "UPDATE users SET UserStatus = 1 WHERE UserId = $id";
         $res = $db->query($req);
         if ($res) {
             $_SESSION['alert_color'] = "var(--primary)";

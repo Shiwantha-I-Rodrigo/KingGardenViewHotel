@@ -11,15 +11,19 @@ $result = $db->query($sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $row['ProfilePic'] != "" ? $profile_pic = $row['ProfilePic'] : $profile_pic = "/img/users/default.png";
-        $title = getTitle($row['Title']);
-        $name = $title . $row['FirstName'] . " " . $row['LastName'];
+        $title = $row['Title'];
+        $first_name = $row['FirstName'];
+        $last_name = $row['LastName'];
         $telephone = $row['Telephone'];
         $mobile = $row['Mobile'];
-        $address = $row['AddressLine1'] . ", " . $row['AddressLine2'] . ", " . $row['AddressLine3'];
+        $address_1 = $row['AddressLine1'];
+        $address_2 =  $row['AddressLine2'];
+        $address_3 =  $row['AddressLine3'];
         $reg_no = $row['RegNo'];
-        $status = getStatus($row['UserStatus']);
+        $status = $row['UserStatus'];
         $email = $row['Email'];
-        $username = $row['UserName'];
+        $user_name = $row['UserName'];
+        $current_password = $row['Password'];
     }
 }
 
@@ -30,53 +34,47 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $db = dbConn();
     $sql = "SELECT * FROM users WHERE Email='$email'";
     $result = $db->query($sql);
-    if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    if ($result->num_rows > 0 && $email != $row['Email']) {
         $_SESSION['alert_color'] = "var(--fail)";
         $_SESSION['alert_icon'] = "error";
         $_SESSION['alert_title'] = "Error";
         $_SESSION['alert_msg'] = 'The email address provided has an account associated,<br> please <a href="/web/modules/login.php">log in</a> to continue, or use another email address.';
         reDirect('/web/sub/alert.php');
     } else {
-        $db = dbConn();
         $sql = "SELECT * FROM users WHERE UserName='$user_name'";
         $result = $db->query($sql);
-        if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        if ($result->num_rows > 0 && $user_name != $row['UserName']) {
             $_SESSION['alert_color'] = "var(--fail)";
             $_SESSION['alert_icon'] = "error";
             $_SESSION['alert_title'] = "Error";
             $_SESSION['alert_msg'] =  'The username provided has an account associated,<br> please <a href="/web/modules/login.php">log in</a> to continue, or use another username.';
             reDirect('/web/sub/alert.php');
         } else {
-            $full_path = "";
+            $upload = "";
 
             if (isset($_FILES['file_upload'])) {
                 $path =  $_SERVER['DOCUMENT_ROOT'] . '/img/users/';
                 $file = uploadFile($path, $_FILES, "web");
                 $full_path = '/img/users/' . $file;
+                $upload = ",`ProfilePic`='$full_path'";
             }
 
-            $pw_hash = password_hash($password, PASSWORD_BCRYPT);
-            $db = dbConn();
-            $sql = "INSERT INTO `users`(`UserName`, `Password`,`Email`,`Type`,`UserStatus`) VALUES ('$user_name','$pw_hash','$email',1,0)";
+            isset($change_pw) && $password != '' ? $pw_hash = password_hash($password, PASSWORD_BCRYPT) : $pw_hash = $current_password;
+            $sql = "UPDATE users SET `UserName`='$user_name', `Password`='$pw_hash',`Email`='$email' WHERE UserId=$user_id";
             $db->query($sql);
 
-            $user_id = $db->insert_id;
             $reg_no = date('Y') . date('m') . $user_id;
             $token = md5(uniqid());
 
-            $sql = "INSERT INTO `customers`(`FirstName`, `LastName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `Telephone`, `Mobile`, `Title`, `RegNo`,`ProfilePic`, `UserId`, `Token`, `CustomerStatus`) VALUES ('$first_name','$last_name','$address_1','$address_2','$address_3','$telephone','$mobile','$title','$reg_no','$file','$user_id','$token',0)";
+            $sql = "UPDATE customers SET `FirstName`='$first_name', `LastName`='$last_name', `AddressLine1`='$address_1', `AddressLine2`='$address_2', `AddressLine3`='$address_3', `Telephone`='$telephone', `Mobile`='$mobile', `Title`='$title', `RegNo`='$reg_no' $upload WHERE `UserId`='$user_id'";
             $db->query($sql);
 
-            $msg = "<h1>SUCCESS</h1>";
-            $msg .= "<h2>Congratulations</h2>";
-            $msg .= "<p>Your account has been successfully created</p>";
-            $msg .= "Click the following link to verify your email:\n";
-            $msg .= $_SERVER['SERVER_NAME'] . "/web/sub/verify.php?id=$user_id&token=$token";
-            sendEmail($email, $first_name, "Account Verification", $msg);
             $_SESSION['alert_color'] = "var(--primary)";
             $_SESSION['alert_icon'] = "task_alt";
-            $_SESSION['alert_title'] = "Registration Succesful !";
-            $_SESSION['alert_msg'] = "Hi, " . $user_name . " your registration was submitted succesfully,<br>please complete account verification using<br>instructions sent to the provided email address.<br>Registration no : " . $reg_no;
+            $_SESSION['alert_title'] = "Success !";
+            $_SESSION['alert_msg'] = "Hi, " . $user_name . " your information was updated succesfully";
             reDirect('/web/sub/alert.php');
         }
     }
@@ -88,14 +86,11 @@ ob_start();
 <div class="container mt-5 p-5">
     <div class="card">
         <div class="row">
-            <div class="col-2 p-4">
-                <a href="/index.php"><i class="material-icons">home</i>Back Home</a>
-            </div>
-            <div class="col-8 d-flex justify-content-center mt-4">
-                <img src="<?= BASE_URL . '/img/common/logo_logo.png' ?>" alt="logo" style="height:75px;">
+            <div class="col-12 d-flex justify-content-center mt-5">
+                <img src="<?= $profile_pic ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
             </div>
         </div>
-        <h2 class="d-flex justify-content-center align-items-center my-5">Registration</h2>
+        <h2 class="d-flex justify-content-center align-items-center my-4" style="font-size:3vh;">Update User Information</h2>
         <form id="reg_form" enctype="multipart/form-data" action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form" novalidate>
 
             <div class="row mx-5">
@@ -109,20 +104,20 @@ ob_start();
             <div class="row mx-5">
                 <div class="col-1 d-flex justify-content-start align-items-center">
                     <select name="title" id="title">
-                        <option selected value="0">Title</option>
-                        <option value="1">Mr.</option>
-                        <option value="2">Mrs.</option>
-                        <option value="3">Ms.</option>
-                        <option value="4">Dr.</option>
-                        <option value="5">Ven.</option>
-                        <option value="6">Other.</option>
+                        <option <?php echo ($title == 0) ? 'selected' : ''; ?> value="0">Title</option>
+                        <option <?php echo ($title == 1) ? 'selected' : ''; ?> value="1">Mr.</option>
+                        <option <?php echo ($title == 2) ? 'selected' : ''; ?> value="2">Mrs.</option>
+                        <option <?php echo ($title == 3) ? 'selected' : ''; ?> value="3">Ms.</option>
+                        <option <?php echo ($title == 4) ? 'selected' : ''; ?> value="4">Dr.</option>
+                        <option <?php echo ($title == 5) ? 'selected' : ''; ?> value="5">Ven.</option>
+                        <option <?php echo ($title == 6) ? 'selected' : ''; ?> value="6">Other.</option>
                     </select>
                 </div>
                 <div class="col-5 d-flex justify-content-end align-items-center">
-                    <input type="text" class="fail-glow" name="first_name" id="first_name" placeholder="First Name" required />
+                    <input type="text" name="first_name" id="first_name" value="<?= $first_name ?>" placeholder="First Name" required />
                 </div>
                 <div class="col-6 d-flex justify-content-end align-items-center">
-                    <input type="text" class="fail-glow" name="last_name" id="last_name" placeholder="Last Name" required />
+                    <input type="text" name="last_name" id="last_name" value="<?= $last_name ?>" placeholder="Last Name" required />
                 </div>
             </div>
             <div class="row mx-5">
@@ -135,26 +130,26 @@ ob_start();
             </div>
             <div class="row mx-5">
                 <div class="col-6 d-flex justify-content-end align-items-center">
-                    <input type="text" class="fail-glow" name="user_name" id="user_name" placeholder="Username (at least 4 characters long)" required />
+                    <input type="text" name="user_name" id="user_name" value="<?= $user_name ?>" placeholder="Username (at least 4 characters long)" required />
                 </div>
                 <div class="col-6 d-flex justify-content-end align-items-center">
-                    <input type="text" class="fail-glow" name="email" id="email" placeholder="Email" required />
+                    <input type="text" name="email" id="email" value="<?= $email ?>" placeholder="Email" required />
                 </div>
             </div>
             <div class="row mx-5">
                 <div class="col-6 d-flex justify-content-start align-items-bottom">
-                    <label>Password</label>
+                    <label class="d-none" id="password_label">Password</label>
                 </div>
                 <div class="col-6 d-flex justify-content-start align-items-bottom">
-                    <label>Confirm Password</label>
+                    <label class="d-none" id="confirm_password_label">Confirm Password</label>
                 </div>
             </div>
             <div class="row mx-5">
                 <div class="col-6 d-flex justify-content-end align-items-center">
-                    <input type="password" class="fail-glow" name="password" id="password" placeholder="Password" required />
+                    <input class="d-none" type="password" class="fail-glow" name="password" id="password" placeholder="Password" required />
                 </div>
                 <div class="col-6 d-flex justify-content-end align-items-center">
-                    <input type="password" class="fail-glow" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required />
+                    <input class="d-none" type="password" class="fail-glow" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required />
                 </div>
             </div>
             <div class="row mx-5">
@@ -189,6 +184,12 @@ ob_start();
                 </div>
             </div>
             <div class="row mx-5">
+                <div class="col-3 ms-3 my-3 d-flex justify-content-start align-items-bottom form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="change_pw">
+                    <label class="form-check-label ms-3 " for="change_pw">Change Password</label>
+                </div>
+            </div>
+            <div class="row mx-5">
                 <div class="col-6 d-flex justify-content-start align-items-bottom">
                     <label>Address</label>
                 </div>
@@ -198,7 +199,7 @@ ob_start();
             </div>
             <div class="row mx-5">
                 <div class="col-6 d-flex justify-content-end align-items-center">
-                    <input type="text" name="address_1" id="address_1" placeholder="House No. & Street" />
+                    <input type="text" name="address_1" id="address_1" value="<?= $address_1 ?>" placeholder="House No. & Street" />
                 </div>
                 <div class="col-6 d-flex justify-content-end align-items-center">
                     <input type="file" id="file_upload" name="file_upload" accept="image/*" />
@@ -206,12 +207,12 @@ ob_start();
             </div>
             <div class="row mx-5">
                 <div class="col-6 d-flex justify-content-end align-items-center">
-                    <input type="text" name="address_2" id="address_2" placeholder="City" />
+                    <input type="text" name="address_2" id="address_2" value="<?= $address_2 ?>" placeholder="City" />
                 </div>
             </div>
             <div class="row mx-5">
                 <div class="col-6 d-flex justify-content-end align-items-center">
-                    <input type="text" name="address_3" id="address_3" placeholder="Province" />
+                    <input type="text" name="address_3" id="address_3" value="<?= $address_3 ?>" placeholder="Province" />
                 </div>
             </div>
             <div class="row mx-5">
@@ -224,10 +225,10 @@ ob_start();
             </div>
             <div class="row mx-5">
                 <div class="col-6 d-flex justify-content-end align-items-center">
-                    <input type="text" name="telephone" id="telephone" placeholder="Telephone" />
+                    <input type="text" name="telephone" id="telephone" value="<?= $telephone ?>" placeholder="Telephone" />
                 </div>
                 <div class="col-6 d-flex justify-content-end align-items-center">
-                    <input type="text" name="mobile" id="mobile" placeholder="Mobile" />
+                    <input type="text" name="mobile" id="mobile" value="<?= $mobile ?>" placeholder="Mobile" />
                 </div>
             </div>
         </form>
@@ -239,10 +240,7 @@ ob_start();
         </div>
         <div class="row my-4 mx-5">
             <div class="col-12">
-                <p class="text-muted"> Already have an account ? <a href="login.php"> Login here </a></p>
                 <p class="text-muted"> Required fields are indicated by red color </p>
-                <a href="index.php" class="small text-muted">Terms of use.</a>
-                <a href="index.php" class="small text-muted">Privacy policy</a>
             </div>
         </div>
         <div class="row">
@@ -257,6 +255,7 @@ ob_start();
         </div>
     </div>
 </div>
+<div class="row" style="height:10vh;"></div>
 
 <!-- Modal -->
 <div class="modal fade" id="Confirm" tabindex="-1" aria-labelledby="Confirm" aria-hidden="true">
@@ -268,10 +267,7 @@ ob_start();
                 <button type="button" class="clear_btn" data-bs-dismiss="modal"><i class="material-icons">cancel</i></button>
             </div>
             <div class="modal-body" style="font-weight: normal; color:var(--primary_font); text-align: justify; text-justify: inter-word;">
-                <p>By submitting the registration, you are agreeing to the terms and conditions of registration !</p>
-                <p>Are you sure you want to submit the registration ?</p>
-                <a href="index.php" class="small">Terms of use.</a>
-                <a href="index.php" class="small">Privacy policy.</a>
+                <p>Are you sure you want to submit the changes ?</p>
             </div>
             <div class="modal-footer">
                 <button class="success-btn px-3" type="submit" form="reg_form" formmethod="post">Confirm</button>

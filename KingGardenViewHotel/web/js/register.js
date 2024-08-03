@@ -214,6 +214,7 @@ addEventListener("DOMContentLoaded", (event) => {
 
 	password.addEventListener("input", () => {
 		validatePassword();
+		confirm_passwords();
 	});
 	confirm_password.addEventListener("input", () => {
 		confirm_passwords();

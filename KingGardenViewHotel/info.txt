@@ -370,3 +370,5 @@ INSERT INTO blogs (BlogText, BlogTitle, BlogPicture, BlogStatus) VALUES ("blog8.
 INSERT INTO blogs (BlogText, BlogTitle, BlogPicture, BlogStatus) VALUES ("blog9.","Enjoy","/img/blogs/6777afef167aa44cfa29532a6c3596e2.jpg",1);
 
 ALTER TABLE messages RENAME COLUMN Time to MessageTime;
+ALTER TABLE reservations ADD guests INT(11);
+ALTER TABLE reservations RENAME COLUMN guests to Guests;

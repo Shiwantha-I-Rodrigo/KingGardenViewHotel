@@ -11,7 +11,7 @@ ob_start();
     <i class="material-icons" id="blog_fwd">arrow_forward</i>
 </div>
 
-<div class="pb-5" style="position:absolute; top:15vh; background-image: var(--background_img_03);" name="blogs" id="blogs">
+<div class="pb-5" style="position:absolute; top:15vh; background-image: var(--background_img_03);min-height:100vh;" name="blogs" id="blogs">
 
 </div>
 

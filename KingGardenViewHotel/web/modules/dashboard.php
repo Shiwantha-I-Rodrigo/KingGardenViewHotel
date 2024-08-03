@@ -13,6 +13,7 @@ if ($result->num_rows > 0) {
         $row['ProfilePic'] != "" ? $profile_pic = $row['ProfilePic'] : $profile_pic = "/img/users/default.png";
         $title = getTitle($row['Title']);
         $name = $title . $row['FirstName'] . " " . $row['LastName'];
+        $name2 = $row['FirstName'] . " " . $row['LastName'];
         $telephone = $row['Telephone'];
         $mobile = $row['Mobile'];
         $address = $row['AddressLine1'] . ", " . $row['AddressLine2'] . ", " . $row['AddressLine3'];
@@ -33,15 +34,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $result = $db->query($sql);
         if ($result) {
             echo '<div id="cancelled"></div>';
+
+            $msg = "Dear " . $name2 . ",<br/>" .
+                "I hope this email finds you well. We would like to extend our sincerest appreciation for choosing King Garden View Hotel for your stay.<br/>" .
+                "The Reservation [ id : " . $ReservationId . "] is cancelled according to your request. If there is anything else we can assist you with or if you have any alternative requests, please do not hesitate to reach out to our front desk staff.<br/>" .
+                "Warm regards,<br/>Managing Director,<br/>King garden View Hotel";
+
+            sendEmail($email, $name, "Your Reservation Is Cancelled!", $msg);
         }
     }
 
     if (isset($chat)) {
-        $name_hash = $username . substr(password_hash($user_id, PASSWORD_BCRYPT),-5,5);
-        $sql = "INSERT INTO messages (MessageText, MessageTime, FromId, FromName, ToId, Thread, MessageStatus) VALUES ('$chat'," . time() . ",$user_id, '$name_hash',$id,$user_id,1)";
+        $sql = "INSERT INTO messages (MessageText, MessageTime, FromId, FromName, ToId, Thread, MessageStatus) VALUES ('$chat'," . time() . ",$user_id, '$name2',$id,$user_id,1)";
         $result = $db->query($sql);
         if ($result) {
             echo '<div id="sent"></div>';
+        }
+    }
+
+    if (isset($new_chat_id)) {
+        $sql = "SELECT * FROM users WHERE UserName='$new_chat_id' OR Email='$new_chat_id'";
+        $result = $db->query($sql);
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $to_id = $row['UserId'];
+            $req = "INSERT INTO messages (MessageText, MessageTime, FromId, FromName, ToId, Thread, MessageStatus) VALUES ('$new_chat_text'," . time() . ",$user_id, '$name2',$to_id,$user_id,1)";
+            $res = $db->query($req);
+            if ($result) {
+                echo '<div id="sent"></div>';
+            }
+        } else {
+            echo '<div id="not_sent"></div>';
         }
     }
 }
@@ -59,8 +82,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <p class="mb-1">Registration No. : <?= $reg_no ?></p>
                         <p class="mb-4">Account Status : <?= $status ?></p>
                         <div class="d-flex justify-content-around mb-2">
-                            <button type="button" class="success-btn px-3 py-2" style="width:8vw;">Edit</button>
-                            <button type="button" class="fail-btn px-3 py-2" style="width:8vw;">Logout</button>
+                            <a href="edit_user.php"><button type="button" class="success-btn px-3 py-2" style="width:8vw;">Edit</button></a>
+                            <a href="../sub/logout.php"><button type="button" class="fail-btn px-3 py-2" style="width:8vw;">Logout</button></a>
                         </div>
                     </div>
                 </div>
@@ -69,14 +92,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         <p class="mb-4"><span class="text-primary font-italic me-1">Recieved</span> Messages</p>
 
+                        <button class="success-btn px-3 py-2 mb-4" name="new_chat_btn" id="new_chat_btn"><i class="material-icons">add</i> New Chat</button>"
+
                         <ul class="list-group list-group-flush rounded-3 px-3" id="msg" style="list-style-type:none;">
 
                             <li>none</li>
-                            <li>none</li>
-                            <li>none</li>
-                            <li>none</li>
-                            <li>none</li>
-
+ 
                         </ul>
 
                     </div>
@@ -145,10 +166,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <ul class="list-group list-group-flush rounded-3 px-3" id="past" style="list-style-type:none;">
 
                                     <li>none</li>
-                                    <li>none</li>
-                                    <li>none</li>
-                                    <li>none</li>
-                                    <li>none</li>
 
                                 </ul>
 
@@ -167,10 +184,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                                 <ul class="list-group list-group-flush rounded-3 px-3" id="comming" style="list-style-type:none;">
 
-                                    <li>none</li>
-                                    <li>none</li>
-                                    <li>none</li>
-                                    <li>none</li>
                                     <li>none</li>
 
                                 </ul>

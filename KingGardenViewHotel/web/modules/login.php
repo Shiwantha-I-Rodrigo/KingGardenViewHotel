@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $result = $db->query($sql);
     if ($result->num_rows == 1) {
         $row = $result->fetch_assoc();
-        if (password_verify($password, $row['Password'])) {
+        if (password_verify($password, $row['Password']) && $row['UserStatus'] == 1) {
             $_SESSION['user_id'] = $row['UserId'];
             $_SESSION['user_name'] = $row['UserName'];
             reDirect("/web/modules/dashboard.php");

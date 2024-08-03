@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $_SESSION['alert_msg'] = 'The email address provided has an account associated,<br> please <a href="/web/modules/login.php">log in</a> to continue, or use another email address.';
         reDirect('/web/sub/alert.php');
     } else {
-        $db = dbConn();
         $sql = "SELECT * FROM users WHERE UserName='$user_name'";
         $result = $db->query($sql);
         if ($result->num_rows > 0) {
@@ -38,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             $pw_hash = password_hash($password, PASSWORD_BCRYPT);
-            $db = dbConn();
             $sql = "INSERT INTO `users`(`UserName`, `Password`,`Email`,`Type`,`UserStatus`) VALUES ('$user_name','$pw_hash','$email',1,0)";
             $db->query($sql);
 
@@ -46,7 +44,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $reg_no = date('Y') . date('m') . $user_id;
             $token = md5(uniqid());
 
-            $sql = "INSERT INTO `customers`(`FirstName`, `LastName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `Telephone`, `Mobile`, `Title`, `RegNo`,`ProfilePic`, `UserId`, `Token`, `CustomerStatus`) VALUES ('$first_name','$last_name','$address_1','$address_2','$address_3','$telephone','$mobile','$title','$reg_no','$file','$user_id','$token',0)";
+            $sql = "INSERT INTO `customers`(`FirstName`, `LastName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `Telephone`, `Mobile`, `Title`, `RegNo`,`ProfilePic`, `UserId`, `Token`, `CustomerStatus`) VALUES ('$first_name','$last_name','$address_1','$address_2','$address_3','$telephone','$mobile','$title','$reg_no','$full_path','$user_id','$token',0)";
+            $db->query($sql);
+
+            $sql = "INSERT INTO 'user_modules' ('UserId', 'ModuleId', 'User_ModuleStatus') VALUES ($user_id,1,1)";
             $db->query($sql);
 
             $msg = "<h1>SUCCESS</h1>";
@@ -60,7 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['alert_title'] = "Registration Succesful !";
             $_SESSION['alert_msg'] = "Hi, " . $user_name . " your registration was submitted succesfully,<br>please complete account verification using<br>instructions sent to the provided email address.<br>Registration no : " . $reg_no;
             reDirect('/web/sub/alert.php');
-
         }
     }
 }

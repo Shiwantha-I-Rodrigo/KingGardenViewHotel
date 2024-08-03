@@ -54,16 +54,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         reDirect("/web/index.php");
     } else {
         extract($_POST);
-        $db = dbConn();
+
+        $sql = "SELECT * FROM users u JOIN customers c ON c.UserId=c.UserId WHERE u.UserId=$user_id";
+        $result = $db->query($sql);
+        $row = $result->fetch_assoc();
+
         $iter = array($room_id1, $room_id2, $room_id3);
         $res_ids = array();
         $n = 0;
         while ($n < $rooms) {
-            $sql = "INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, ReservationStatus) VALUES ($user_id, $user_id, $iter[$n] , $TimeSlotStart, $TimeSlotEnd, 1)";
+            $sql = "INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, ReservationStatus, Guests) VALUES ($user_id, $user_id, $iter[$n] , $TimeSlotStart, $TimeSlotEnd, 1, $guests)";
             $db->query($sql);
             array_push($res_ids, $db->insert_id);
             $n++;
         }
+
+        $start = getTime($TimeSlotStart);
+        $end = getTime($TimeSlotEnd);
+        $rooms_string = $room_id1;
+        $room_id2 != 0 ? $rooms_string .= " / " . $room_id2 : null;
+        $room_id3 != 0 ? $rooms_string .= " / " . $room_id3 : null;
+        $res_string = $res_ids[0];
+        isset($res_ids[1]) ? $res_string .= " / " . $res_ids[1] : null;
+        isset($res_ids[2]) ? $res_string .= " / " . $res_ids[2] : null;
+
+        $msg = "Dear ". $row['FirstName'] . ",<br/>Thank you for choosing King Garden View Hotel! Your reservation for " . $start . " is confirmed.<br/>" .
+            "We're thrilled to host you for a memorable stay. Please review your booking details below. If you have any questions or special requests, feel free to reach out.<br/>" .
+            "start date : " . $start . "<br/>" .
+            "end date : " . $end . "<br/>" .
+            "Room/s : " . $rooms_string. "<br/>" .
+            "Guests : " . $guests . "<br/>" .
+            "Reservation Id/s : " . $res_string . "<br/>" .
+            "We look forward to providing you with an exceptional experience. Safe travels!<br/>" .
+            "Warm regards,<br/>" .
+            "Managing Director,<br/>".
+            "King garden View Hotel";
+
+        sendEmail($row['Email'], $row['FirstName'], "Your Reservation Is Confirmed!", $msg);
         $_SESSION['alert_color'] = "var(--primary)";
         $_SESSION['alert_icon'] = "task_alt";
         $_SESSION['alert_title'] = "Reservation Succesful !";

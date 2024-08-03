@@ -6,8 +6,8 @@ $extra_css = '';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
-    $_SESSION['TimeSlotStart'] = $s_date/1000;
-    $_SESSION['TimeSlotEnd'] = ($e_date/1000) - 1;
+    $_SESSION['TimeSlotStart'] = ($s_date/1000) + 43200;
+    $_SESSION['TimeSlotEnd'] = ($e_date/1000) + 43199;
     $_SESSION['guests'] = $guest_count;
     $_SESSION['rooms'] = $rooms_count;
     isset($_POST['discounted']) ? $_SESSION['discounted'] = 1 :  $_SESSION['discounted'] = 0;

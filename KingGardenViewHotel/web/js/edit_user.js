@@ -18,7 +18,7 @@ addEventListener("DOMContentLoaded", (event) => {
 	const char_tick = document.getElementById("char_tick");
 	const char_cross = document.getElementById("char_cross");
 	const submit_btn = document.getElementById("submit_btn");
-	var [f1, l1, u1, e1, p1, p2] = [false, false, false, false, false, false];
+	var [f1, l1, u1, e1, p1, p2] = [true, true, true, true, true, true];
 
 	const address_1 = document.getElementById("address_1");
 	const address_2 = document.getElementById("address_2");
@@ -26,6 +26,10 @@ addEventListener("DOMContentLoaded", (event) => {
 	const mobile = document.getElementById("mobile");
 	const telephone = document.getElementById("telephone");
 	var [t1, m1, a1, a2, a3] = [true, true, true, true, true];
+
+	const change_pw = document.getElementById("change_pw");
+	const password_label = document.getElementById("password_label");
+	const confirm_password_label = document.getElementById("confirm_password_label");
 
 	function validatePassword() {
 		const value = password.value;
@@ -174,46 +178,21 @@ addEventListener("DOMContentLoaded", (event) => {
 		//last_name.classList.remove("fail-glow");
 	};
 
+	function togglePassword() {
+		password.classList.toggle("d-none");
+		confirm_password.classList.toggle("d-none");
+		password_meter.classList.add("d-none");
+		password_label.classList.toggle("d-none");
+		confirm_password_label.classList.toggle("d-none");
+		sub_enable();
+	}
+
 	password.addEventListener("focus", () => {
 		validatePassword();
 	});
-
-	// password2.addEventListener("focus", () => {
-	// 	validatePassword();
-	// });
-	// userName.addEventListener("focus", () => {
-	// 	validateUserName();
-	// });
-	// email.addEventListener("focus", () => {
-	// 	validateEmail();
-	// });
-	// firstName.addEventListener("focus", () => {
-	// 	validateFirstName();
-	// });
-	// last_name.addEventListener("focus", () => {
-	// 	validateLastName();
-	// });
-	// nic.addEventListener("focus", () => {
-	// 	validateNic();
-	// });
-	// address_1.addEventListener("focus", () => {
-	// 	validateAddress1();
-	// });
-	// address_2.addEventListener("focus", () => {
-	// 	validateAddress2();
-	// });
-	// address_3.addEventListener("focus", () => {
-	// 	validateAddress3();
-	// });
-	// mobile.addEventListener("focus", () => {
-	// 	validateMobile();
-	// });
-	// telephone.addEventListener("focus", () => {
-	// 	validateTelephone();
-	// });
-
 	password.addEventListener("input", () => {
 		validatePassword();
+		confirm_passwords();
 	});
 	confirm_password.addEventListener("input", () => {
 		confirm_passwords();
@@ -260,5 +239,17 @@ addEventListener("DOMContentLoaded", (event) => {
 			resetGlow();
 		})
 	})
+
+	change_pw.addEventListener("change", () => {
+		if (change_pw.checked) {
+			validatePassword();
+			confirm_passwords();
+		} else {
+			p1 = true;
+			p2 = true;
+			sub_enable();
+		}
+		togglePassword();
+	});
 
 });

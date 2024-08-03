@@ -12,6 +12,22 @@ window.onload = function () {
     comming_back.click();
 };
 
+document.getElementById("new_chat_btn").addEventListener("click", function (event) {
+    event.preventDefault();
+
+    let title = document.getElementById('modal-heading');
+    let list = document.getElementById('model_list');
+    let foot = document.getElementById('modal_foot');
+
+    title.innerHTML = "New Chat";
+    list.innerHTML = '<form method="post" class="pe-5 ps-2"><input class="my-5" type="text" name="new_chat_id" id="new_chat_id" placeholder="Username or Email" />'+
+    '<input class="mb-5" type="text" name="new_chat_text" id="new_chat_text" placeholder="Message" />'+
+    '<button class="success-btn px-3 py-2 mb-2" name="new_chat_btn" id="new_chat_btn" type="submit" formmethod="post"><i class="material-icons">send</i> Send Message</button></form>';
+    foot.innerHTML = '<button type="button" class="fail-btn px-3" data-bs-dismiss="modal">Close</button>';
+
+    $('#Dash_Pop').modal('show');
+});
+
 document.getElementById("msg_back").addEventListener("click", function (event) {
     event.preventDefault();
     // $("#msg li").remove();
@@ -134,6 +150,17 @@ if (document.querySelector("#sent")) {
     Swal.fire({
         icon: "success",
         text: "The message is sent succesfully !",
+        customClass: {
+            popup: 'sw-alert',
+            confirmButton: 'sw-alert-btn',
+        }
+    });
+}
+
+if (document.querySelector("#not_sent")) {
+    Swal.fire({
+        icon: "error",
+        text: "User not found! Please check the user name or email and try again.",
         customClass: {
             popup: 'sw-alert',
             confirmButton: 'sw-alert-btn',
