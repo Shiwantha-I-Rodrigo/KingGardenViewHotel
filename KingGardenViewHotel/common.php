@@ -117,6 +117,34 @@ function getStatus($data = null)
     return $status;
 }
 
+//Role---------------------------------------------
+function getRole($data = null)
+{
+    $role = "";
+    switch ($data) {
+        case 0:
+            $role = "Guest";
+            break;
+        case 1:
+            $role = "Customer";
+            break;
+        case 2:
+            $role = "Taxi";
+            break;
+        case 3:
+            $role = "Receptionist";
+            break;
+        case 4:
+            $role = "Manager";
+            break;
+        case 5:
+            $role = "Admin";
+            break;
+    }
+
+    return $role;
+}
+
 //Time---------------------------------------------
 function getTime($data = null)
 {

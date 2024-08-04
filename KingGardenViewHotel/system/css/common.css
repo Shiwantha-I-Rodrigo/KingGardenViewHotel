@@ -1,0 +1,573 @@
+/* variables */
+
+:root {
+
+    --primary: #000000;
+    --primary_font: #ffffff;
+    --secondary: #868686;
+    --secondary_font: #ccdad9;
+    --tertiary: #441a1a;
+    --tertiary_font: #ffffff;
+
+    --buttonx: #000000;
+    --buttonx_font: #feffff;
+    --buttony: #000000;
+    --buttony_font: #ffffff;
+
+    --success: #000000;
+    --success_font: #ffffff;
+    --fail: #cb2d6f;
+    --fail_font: #feffff;
+
+    --background: #000000;
+    --background_transparent: #00000091;
+    --background_translucent: #000000c4;
+    --foreground: #ffffff;
+    --glow: #000000;
+    --shadow: #ffffff;
+    --overlay: #ffffff;
+
+    --background_img_01: url('../../img/common/banner3.jpg');
+    --background_img_02: url('../../img/common/mountains_5.png');
+    --background_img_03: url('../../img/common/banner1.jpg');
+
+}
+
+@font-face {
+    font-family: RobotoCondensed;
+    src: url(RobotoCondensed.ttf);
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: Lobster;
+    src: url(Lobster.ttf);
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: GreatVibes;
+    src: url(GreatVibes.ttf);
+    font-weight: bold;
+}
+
+/*
+
+metalicblue
+7091e6
+3d52a0
+adbbda
+8697c4
+ede8f5
+
+blackblue
+0b0c10
+66fcf1
+1f2833
+c5c6c7
+45a29e
+
+green
+3aafa9
+feffff
+2b7a78
+3aafa9
+17252a
+
+royal
+2d283e
+802bb1
+564f6f
+d1d7e0
+4c495d
+
+red cb2d6f
+green 14a098
+
+*/
+
+/* selectors */
+
+* {
+    font-family: RobotoCondensed;
+    font-size: large;
+}
+
+body {
+    background-color: rgb(53, 53, 53);
+}
+
+h1 {
+    color: transparent;
+    font-family: RobotoCondensed;
+    font-size: 10vh;
+    display: inline-block;
+    margin: 0;
+    background-color: var(--background);
+    background-image: var(--background_img_01);
+    background-repeat: repeat;
+    background-size: 30vh 30vw;
+    background-position: center;
+    background-clip: text;
+    -webkit-background-clip: text;
+    text-shadow: 0.1vh 0.1vw;
+}
+
+h2 {
+    color: var(--primary_font);
+    font-family: Lobster;
+    font-size: 10vh;
+}
+
+h3 {
+    color: var(--primary_font);
+    font-family: GreatVibes;
+    font-size: 10vh;
+}
+
+p {
+    color: var(--primary_font);
+}
+
+a {
+    color: var(--primary_font);
+}
+
+button {
+    color: var(--primary_font);
+}
+
+label {
+    color: var(--primary_font);
+}
+
+input {
+    color: var(--primary_font);
+    border: none;
+    border-bottom: 0.5vh solid var(--primary_font);
+    width: 100%;
+    background-color: #ffffff00;
+    margin-bottom: 1vh;
+}
+
+input[type="file"]::file-selector-button {
+    border: 0.1vh solid var(--primary_font);
+    background-color: var(--primary);
+    color: var(--primary_font);
+    border: none;
+    border-right: 0.1vh solid var(--primary_font);
+}
+
+textarea {
+    color: var(--primary_font);
+    border: none;
+    border-bottom: 0.5vh solid var(--primary_font);
+    width: 100%;
+    background-color: #ffffff00;
+    margin: 1vh;
+    resize: none;
+}
+
+img {
+    color: var(--primary_font);
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+ul {
+    color: var(--primary_font);
+}
+
+ol {
+    color: var(--primary_font);
+}
+
+i {
+    color: var(--primary_font);
+    vertical-align: middle;
+    margin-inline: 0.5vh;
+}
+
+select {
+    border: 0.1vh solid var(--primary_font);
+    background-color: var(--primary);
+    color: var(--primary_font);
+    border: none;
+}
+
+/* element id */
+
+#spinner {
+    color: var(--primary);
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    z-index: 99;
+}
+
+#overlay {
+    background-color: var(--background);
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    z-index: 98;
+}
+
+#navbar {
+    color: var(--primary);
+    background-color: var(--background);
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    position: fixed;
+    width: 100vw;
+    height: 10vh;
+    top: 0vh;
+    left: 0vw;
+}
+
+#footer {
+    color: var(--primary);
+    background-color: var(--background);
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    position: fixed;
+    width: 100vw;
+    height: 10vh;
+    top: 90vh;
+    left: 0vw;
+}
+
+#booknow {
+    position: fixed;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    width: 10vw;
+    bottom: 15vh;
+    right: 5vw;
+    z-index: 97;
+}
+
+/* element class */
+
+.success-btn {
+    color: var(--success_font);
+    background-color: var(--success);
+    border: 0.1vh solid var(--success_font);
+    border-radius: 1vh;
+    padding: 0.2vh;
+    font-weight: bold;
+}
+
+.fail-btn {
+    color: var(--fail_font);
+    background-color: var(--fail);
+    border: 0.1vh solid var(--fail_font);
+    border-radius: 1vh;
+    padding: 0.2vh;
+    font-weight: bold;
+}
+
+.tiny-btn {
+    color: var(--success_font);
+    background-color: rgba(255, 255, 255, 0);
+    border: 0.1vh solid var(--success_font);
+    border-radius: 1vh;
+    padding: 0.2vh;
+    font-weight: bold;
+}
+
+.nav-item {
+    color:var(--primary_font);
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    height: 100%;
+}
+
+.nav-selected {
+    border-top: 10px solid var(--background);
+    border-bottom: 10px solid var(--primary);
+}
+
+.card {
+    border-radius: 10px;
+    background-color: var(--primary);
+    margin-top: 2vh;
+    margin-left: 1vh;
+}
+
+.card_transparent {
+    border-radius: 10px;
+    background-color: var(--background_transparent);
+    margin-top: 2vh;
+    margin-left: 1vh;
+    padding: 1vh;
+}
+
+.fail {
+    color: var(--fail);
+}
+
+.success {
+    color: var(--success);
+}
+
+.row {
+    margin: 0;
+    padding: 0;
+    margin-bottom: 0.5vh;
+}
+
+.col-12 {
+    margin: 0;
+    padding: 0;
+}
+
+.success-glow {
+    border-bottom: 0.5vh solid var(--success);
+    transition: ease-in 0.5s;
+}
+
+.fail-glow {
+    color: var(--fail);
+    border-bottom: 0.5vh solid var(--fail);
+    transition: ease-in 0.5s;
+}
+
+.banner {
+    position: absolute;
+    top: 10vh;
+    width: 100vw;
+    height: 80vh;
+    overflow: hidden;
+    background-image: var(--background_img_01);
+    background-repeat: no-repeat;
+    background-size: cover;
+    object-fit: cover;
+    z-index: -1;
+}
+
+.row {
+    margin: 0;
+    padding: 0;
+}
+
+.datepickers {
+    background-color: rgba(255, 255, 255, 0);
+    color: var(--primary_font);
+}
+
+.clear_btn {
+    background-color: rgba(255, 255, 255, 0);
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.sw-alert {
+    border-radius: 10px !important;
+    background-color: var(--primary);
+    color: var(--primary_font);
+}
+
+.sw-alert-btn {
+    color: var(--success_font);
+    padding-left: 6vh;
+    padding-right: 6vh;
+    padding-top: 0vh;
+    padding-bottom: 0vh;
+}
+
+.message {
+    padding: 1vh;
+    margin: 1vh;
+    background-color: rgba(255, 255, 255, 0);
+    border-bottom: 0.1vh solid var(--success_font);
+}
+
+.message-name {
+    padding: 0;
+    margin: 0;
+    color: var(--fail);
+    font-size: large;
+}
+
+.message-text {
+    padding: 0;
+    margin: 0;
+    color: var(--success_font);
+    font-size: large;
+}
+
+.message-time{
+    padding: 0;
+    margin: 0;
+    color: var(--success_font);
+    font-size: small;
+    font-style: italic;
+    text-align: right;
+}
+
+.chat {
+    padding: 1vh;
+    margin: 2vh;
+}
+
+.chat-right-text {
+    padding: 1vh;
+    margin: 0;
+    color: var(--tertiary_font);
+    background-color: var(--tertiary);
+    border-radius: 1vh;
+    text-align: right;
+    font-size: large;
+}
+
+.chat-right-time {
+    padding: 0;
+    margin: 0;
+    color: var(--tertiary_font);
+    background-color: rgba(255, 255, 255, 0);
+    text-align: right;
+    font-size: small;
+}
+
+.chat-left-text {
+    padding: 1vh;
+    margin: 0;
+    color: var(--primary_font);
+    background-color: var(--primary);
+    border-radius: 1vh;
+    font-size: large;
+}
+
+.chat-left-time {
+    padding: 0;
+    margin: 0;
+    color: var(--primary_font);
+    background-color: rgba(255, 255, 255, 0);
+    font-size: small;
+}
+
+.chat-form {
+    width : 100%;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.reservation {
+    padding: 1vh;
+    margin: 1vh;
+    background-color: rgba(255, 255, 255, 0);
+    border-bottom: 0.1vh solid var(--success_font);
+}
+
+.reservation-name {
+    padding: 0;
+    margin: 0;
+    color: var(--tertiary);
+    font-size: larger;
+}
+
+.reservation-time {
+    padding: 0;
+    margin: 0;
+    color: var(--success_font);
+    font-size: normal;
+}
+
+.reservation-status {
+    padding: 0;
+    margin: 0;
+    color: var(--success_font);
+    font-size: small;
+    font-style: italic;
+    text-align: right;
+}
+
+/* slider */
+
+.slide-in {
+    animation: slide-in 2s ease-in;
+}
+
+.slide-out {
+    animation: slide-out 2s ease-in;
+    left: 100%;
+}
+
+@keyframes slide-in {
+    0% {
+        transform: translateX(100%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slide-out {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* effects */
+
+.success-btn:focus,
+.success-btn:hover {
+    color: var(--success);
+    background-color: var(--success_font);
+    box-shadow: 0 0 15px var(--success_font);
+    transition: ease-in 0.5s;
+    cursor: pointer;
+}
+
+.success-btn:disabled,
+.success-btn[disabled] {
+    background-color: #818181;
+    color: #8b8b8b;
+}
+
+.fail-btn:focus,
+.fail-btn:hover {
+    color: var(--fail);
+    background-color: var(--fail_font);
+    box-shadow: 0 0 15px var(--fail_font);
+    transition: ease-in 0.5s;
+    cursor: pointer;
+}
+
+.nav-item:focus,
+.nav-item:hover {
+    color: var(--primary_font);
+    text-shadow: 1px 1px 10px var(--primary_font), 1px 1px 10px var(--primary_font);
+    transition: ease-in 0.5s;
+    cursor: pointer;
+}
+
+input:focus {
+    outline: none;
+}
+
+.datepickers:focus {
+    background-color: rgba(255, 255, 255, 0);
+    color: var(--primary_font);
+}
+
+.room:focus,
+.room:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--foreground);
+    transition: ease-in 0.5s;
+    cursor: pointer;
+}

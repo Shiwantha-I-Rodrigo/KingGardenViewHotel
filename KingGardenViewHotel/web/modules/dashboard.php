@@ -92,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                         <p class="mb-4"><span class="text-primary font-italic me-1">Recieved</span> Messages</p>
 
-                        <button class="success-btn px-3 py-2 mb-4" name="new_chat_btn" id="new_chat_btn"><i class="material-icons">add</i> New Chat</button>"
+                        <button class="success-btn px-3 py-2 mb-4" name="new_chat_btn" id="new_chat_btn"><i class="material-icons">add</i> New Chat</button>
 
                         <ul class="list-group list-group-flush rounded-3 px-3" id="msg" style="list-style-type:none;">
 

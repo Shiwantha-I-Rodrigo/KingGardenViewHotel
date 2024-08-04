@@ -47,19 +47,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $sql = "INSERT INTO `customers`(`FirstName`, `LastName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `Telephone`, `Mobile`, `Title`, `RegNo`,`ProfilePic`, `UserId`, `Token`, `CustomerStatus`) VALUES ('$first_name','$last_name','$address_1','$address_2','$address_3','$telephone','$mobile','$title','$reg_no','$full_path','$user_id','$token',0)";
             $db->query($sql);
 
-            $sql = "INSERT INTO 'user_modules' ('UserId', 'ModuleId', 'User_ModuleStatus') VALUES ($user_id,1,1)";
+            $sql = "INSERT INTO user_modules (UserId, ModuleId, User_ModuleStatus) VALUES ('$user_id',1,1)";
             $db->query($sql);
 
             $msg = "<h1>SUCCESS</h1>";
             $msg .= "<h2>Congratulations</h2>";
             $msg .= "<p>Your account has been successfully created</p>";
             $msg .= "Click the following link to verify your email:\n";
-            $msg .= $_SERVER['SERVER_NAME'] . "/web/sub/verify.php?id=$user_id&token=$token";
+            $msg .= "<a href='http://" . $_SERVER['SERVER_NAME'] . "/web/sub/verify.php?id=$user_id&token=$token'> Verification Link <a/>";
             sendEmail($email, $first_name, "Account Verification", $msg);
             $_SESSION['alert_color'] = "var(--primary)";
             $_SESSION['alert_icon'] = "task_alt";
             $_SESSION['alert_title'] = "Registration Succesful !";
-            $_SESSION['alert_msg'] = "Hi, " . $user_name . " your registration was submitted succesfully,<br>please complete account verification using<br>instructions sent to the provided email address.<br>Registration no : " . $reg_no;
+            $_SESSION['alert_msg'] = "Hi, " . $user_name . " your registration was submitted succesfully,<br>please complete account verification using<br>instructions sent to the provided email address.<br>Registration no : " .
+            $reg_no . "<br/> Go to Login : <a href='/web/modules/login.php'>Login</a>";
             reDirect('/web/sub/alert.php');
         }
     }

@@ -20,26 +20,26 @@ if ($result->num_rows == 1) {
             $_SESSION['alert_color'] = "var(--primary)";
             $_SESSION['alert_icon'] = "task_alt";
             $_SESSION['alert_title'] = "Verification Succesful !";
-            $_SESSION['alert_msg'] = "your account verification was succesful !<br>please <a href='/web/modules/login.php'>login</a> to continue..";
-            reDirect('/web/sub/alert.php');
+            $_SESSION['alert_msg'] = "your account verification was succesful !<br>please login to continue..";
+            reDirect('/system/sub/alert.php');
         } else {
             $_SESSION['alert_color'] = "var(--fail)";
             $_SESSION['alert_icon'] = "error";
             $_SESSION['alert_title'] = "Verification Failed !";
             $_SESSION['alert_msg'] = "your account verification was unsuccesful !<br>please contact the hotel for further assistance.<br>Tel : +94-35-22-34654";
-            reDirect('/web/sub/alert.php');
+            reDirect('/system/sub/alert.php');
         }
     } else {
         $_SESSION['alert_color'] = "var(--fail)";
         $_SESSION['alert_icon'] = "error";
         $_SESSION['alert_title'] = "Verification Failed !";
         $_SESSION['alert_msg'] = "your account verification was unsuccesful !<br><strong>make sure to copy the entire link if you are copy pasting the link<strong> or please contact the hotel for further assistance.<br>Tel : +94-35-22-34654";
-        reDirect('/web/sub/alert.php');
+        reDirect('/system/sub/alert.php');
     }
 } else {
     $_SESSION['alert_color'] = "var(--fail)";
     $_SESSION['alert_icon'] = "error";
     $_SESSION['alert_title'] = "Verification Failed !";
     $_SESSION['alert_msg'] = "your account verification was unsuccesful !<br>please contact the hotel for further assistance.<br>Tel : +94-35-22-34654";
-    reDirect('/web/sub/alert.php');
+    reDirect('/system/sub/alert.php');
 }
