@@ -20,24 +20,31 @@ if (isset($_POST['req'])) {
         case "msg_back":
             $_SESSION['msg_offset'] >= 5 ? $_SESSION['msg_offset'] -= 5 : $_SESSION['msg_offset'] = 0;
             $msg_offset = $_SESSION['msg_offset'];
-            $sql = "SELECT FromId, ToId, MAX(MessageTime) AS last_sent FROM messages WHERE ToId = $user_id OR FromId = $user_id GROUP BY FromId ORDER BY last_sent DESC LIMIT 10 OFFSET $msg_offset";
+            $sql = "SELECT * FROM messages WHERE ToId = $user_id OR FromId = $user_id ORDER BY MessageTime DESC";
             $result = $db->query($sql);
-            $listed = array();
+            $list = array();
             while ($row = $result->fetch_assoc()) {
-                if (!in_array($row['FromId'],$listed) && !in_array($row['ToId'],$listed)) {
-                    $row['FromId'] == $user_id ? $from = $row['ToId'] :  $from = $row['FromId'];
-                    $row['FromId'] == $user_id ? $to = $row['FromId'] :  $to = $row['ToId'];
-                    $row['FromId'] == $user_id ? $req = "SELECT * FROM (SELECT * FROM messages WHERE ToId = $to AND FromId = $from UNION SELECT * FROM messages WHERE ToId = $from AND FromId = $to) AS m JOIN customers c ON m.ToId = c.UserId ORDER BY MessageTime DESC LIMIT 1" :
-                        $req = "SELECT * FROM (SELECT * FROM messages WHERE ToId = $to AND FromId = $from UNION SELECT * FROM messages WHERE ToId = $from AND FromId = $to) AS m JOIN customers c ON m.FromId = c.UserId ORDER BY MessageTime DESC LIMIT 1";
-                    $res = $db->query($req);
-                    while ($rec = $res->fetch_assoc() and ($item_count < $per_page)) {
-                        $MessageText = $rec['MessageText'];
-                        $FromName = $rec['FirstName'] . " " . $rec['LastName'];
-                        $MessageTime = getTimes($rec['MessageTime']);
-                        $from = $rec['FromName'];
-                        $content .= "<li class='message' id=" . $rec['UserId'] . "><div class='message-name'>" . $FromName . " : </div><div class='message-text'>" . $MessageText . "</div><div class='message-time'>". $from  . "<br/>" . $MessageTime . "</div></li>";
+                $row['FromId'] == $user_id ? $contact = $row['ToId'] : $row['FromId'];
+                if (!in_array($contact, $list)) {
+                    array_push($list, $contact);
+                }
+            }
+            $i = 0;
+            foreach ($list as $item) {
+                if ($i++ < $msg_offset) continue;
+                $sql2 = "SELECT * FROM messages WHERE ( ToId = $item AND FromId = $user_id ) OR ( ToId = $user_id AND FromId = $item ) ORDER BY MessageTime DESC LIMIT 1 offset $msg_offset";
+                $result2 = $db->query($sql2);
+                while ($row2 = $result2->fetch_assoc()) {
+                    if ($item_count < $per_page) {
+                        $sql3 = "SELECT * FROM users WHERE UserId = $item";
+                        $result3 = $db->query($sql3);
+                        $row3 = $result3->fetch_assoc();
+                        $MessageText = $row2['MessageText'];
+                        $FromName = $row3['UserName'];
+                        $MessageTime = getTimes($row2['MessageTime']);
+                        $from = $row2['FromName'];
                         $item_count++;
-                        array_push($listed, $rec['UserId']);
+                        $content .= "<li class='message' id=$item ><div class='message-name'> $FromName : </div><div class='message-text'> $MessageText </div><div class='message-time'> $from  <br/> $MessageTime </div></li>";
                     }
                 }
             }
@@ -46,18 +53,32 @@ if (isset($_POST['req'])) {
         case "msg_fwd":
             $_SESSION['msg_offset'] < 0 ? $_SESSION['msg_offset'] = 0 : $_SESSION['msg_offset'] += 5;
             $msg_offset = $_SESSION['msg_offset'];
-            $sql = "SELECT FromId, MAX(MessageTime) AS last_sent FROM messages WHERE ToId = " . $user_id . " GROUP BY FromId ORDER BY last_sent DESC LIMIT 5 OFFSET " . $msg_offset;
+            $sql = "SELECT * FROM messages WHERE ToId = $user_id OR FromId = $user_id ORDER BY MessageTime DESC";
             $result = $db->query($sql);
+            $list = array();
             while ($row = $result->fetch_assoc()) {
-                $from = $row['FromId'];
-                $req = "SELECT * FROM messages WHERE ToId = " . $user_id . " AND FromId = " . $from . " ORDER BY MessageTime DESC LIMIT 1";
-                $res = $db->query($req);
-                while ($rec = $res->fetch_assoc() and ($item_count < $per_page)) {
-                    $MessageText = $rec['MessageText'];
-                    $FromName = $rec['FromName'];
-                    $MessageTime = getTimes($rec['MessageTime']);
-                    $content .= "<li class='message' id=" . $from . "><div class='message-name'>" . $FromName . " : </div><div class='message-text'>" . $MessageText . "</div><div class='message-time'>" . $MessageTime . "</div></li>";
-                    $item_count++;
+                $row['FromId'] == $user_id ? $contact = $row['ToId'] : $row['FromId'];
+                if (!in_array($contact, $list)) {
+                    array_push($list, $contact);
+                }
+            }
+            $i = 0;
+            foreach ($list as $item) {
+                if ($i++ < $msg_offset) continue;
+                $sql2 = "SELECT * FROM messages WHERE ( ToId = $item AND FromId = $user_id ) OR ( ToId = $user_id AND FromId = $item ) ORDER BY MessageTime DESC LIMIT 1 offset 0";
+                $result2 = $db->query($sql2);
+                while ($row2 = $result2->fetch_assoc()) {
+                    if ($item_count < $per_page) {
+                        $sql3 = "SELECT * FROM users WHERE UserId = $item";
+                        $result3 = $db->query($sql3);
+                        $row3 = $result3->fetch_assoc();
+                        $MessageText = $row2['MessageText'];
+                        $FromName = $row3['UserName'];
+                        $MessageTime = getTimes($row2['MessageTime']);
+                        $from = $row2['FromName'];
+                        $item_count++;
+                        $content .= "<li class='message' id=$item ><div class='message-name'> $FromName : </div><div class='message-text'> $MessageText </div><div class='message-time'> $from  <br/> $MessageTime </div></li>";
+                    }
                 }
             }
             break;
