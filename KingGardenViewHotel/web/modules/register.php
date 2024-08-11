@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $db->query($sql);
 
             $user_id = $db->insert_id;
-            $reg_no = date('Y') . date('m') . $user_id;
+            $reg_no = time(). "_" .$user_id;
             $token = md5(uniqid());
 
             $sql = "INSERT INTO `customers`(`FirstName`, `LastName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `Telephone`, `Mobile`, `Title`, `RegNo`,`ProfilePic`, `UserId`, `Token`, `CustomerStatus`) VALUES ('$first_name','$last_name','$address_1','$address_2','$address_3','$telephone','$mobile','$title','$reg_no','$full_path','$user_id','$token',0)";

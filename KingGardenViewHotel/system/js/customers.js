@@ -11,6 +11,12 @@ if (document.querySelector("#removed")) {
 
 back = document.getElementById("back");
 fwd = document.getElementById("fwd");
+search = document.getElementById("search");
+sort = document.getElementById("sort");
+order = document.getElementById("order");
+range = document.getElementById("range");
+min = document.getElementById("min");
+max = document.getElementById("max");
 
 window.onload = function () {
     back.click();
@@ -18,18 +24,42 @@ window.onload = function () {
 
 document.getElementById("back").addEventListener("click", function (event) {
     event.preventDefault();
-    ajax_call("customer_back", "tbl", fwd);
+    sql = '';
+    search.value != "" ? sql += ` WHERE '${search.value}' IN (u.UserId, u.UserName ,u.Email, c.FirstName, c.LastName, c.AddressLine1, c.AddressLine2, c.AddressLine3, c.Telephone, c.Mobile, c.RegNo)` : sql += "";
+    min.value != '' ? search.value != '' ? sql += ` AND ${range.value} > ${min.value} ` : sql += ` WHERE ${range.value} > ${min.value} ` : sql += '';
+    max.value != '' ? search.value != '' || min.value != '' ? sql += ` AND ${range.value} < ${max.value} ` : sql += ` WHERE ${range.value} < ${max.value} ` : sql += '';
+    sort.value != '' ? sql += ` ORDER BY ${sort.value} ${order.value} ` : sql += '';
+    console.log(sql);
+    ajax_call("customer_back", "tbl", fwd, sql);
 });
 
 document.getElementById("fwd").addEventListener("click", function (event) {
     event.preventDefault();
-    ajax_call("customer_fwd", "tbl", fwd);
+    sql = '';
+    search.value != "" ? sql += ` WHERE '${search.value}' IN (u.UserId, u.UserName ,u.Email, c.FirstName, c.LastName, c.AddressLine1, c.AddressLine2, c.AddressLine3, c.Telephone, c.Mobile, c.RegNo)` : sql += "";
+    min.value != '' ? search.value != '' ? sql += ` AND ${range.value} > ${min.value} ` : sql += ` WHERE ${range.value} > ${min.value} ` : sql += '';
+    max.value != '' ? search.value != '' || min.value != '' ? sql += ` AND ${range.value} < ${max.value} ` : sql += ` WHERE ${range.value} < ${max.value} ` : sql += '';
+    sort.value != '' ? sql += ` ORDER BY ${sort.value} ${order.value} ` : sql += '';
+    console.log(sql);
+    ajax_call("customer_fwd", "tbl", fwd, sql);
 });
 
-function ajax_call(request, list_name, fwd) {
+document.getElementById("filter_btn").addEventListener("click", function (event) {
+    event.preventDefault();
+    sql = '';
+    search.value != "" ? sql += ` WHERE '${search.value}' IN (u.UserId, u.UserName ,u.Email, c.FirstName, c.LastName, c.AddressLine1, c.AddressLine2, c.AddressLine3, c.Telephone, c.Mobile, c.RegNo)` : sql += "";
+    min.value != '' ? search.value != '' ? sql += ` AND ${range.value} > ${min.value} ` : sql += ` WHERE ${range.value} > ${min.value} ` : sql += '';
+    max.value != '' ? search.value != '' || min.value != '' ? sql += ` AND ${range.value} < ${max.value} ` : sql += ` WHERE ${range.value} < ${max.value} ` : sql += '';
+    sort.value != '' ? sql += ` ORDER BY ${sort.value} ${order.value} ` : sql += '';
+    console.log(sql);
+    ajax_call("customer", "tbl", fwd, sql);
+});
+
+function ajax_call(request, list_name, fwd, options = '') {
     $.ajax({
         data: {
-            req: request
+            req: request,
+            opt: options
         },
         type: 'POST',
         dataType: 'json',
@@ -37,7 +67,8 @@ function ajax_call(request, list_name, fwd) {
         success: function (response) {
             var content = response.content;
             let list = document.getElementById(list_name);
-            if (content == '') {
+            if (content.includes("id='end'")) {
+                list.innerHTML = content;
                 fwd.style.display = "none";
             } else {
                 list.innerHTML = content;

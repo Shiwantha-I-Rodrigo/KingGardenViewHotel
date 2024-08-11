@@ -372,3 +372,6 @@ INSERT INTO blogs (BlogText, BlogTitle, BlogPicture, BlogStatus) VALUES ("blog9.
 ALTER TABLE messages RENAME COLUMN Time to MessageTime;
 ALTER TABLE reservations ADD guests INT(11);
 ALTER TABLE reservations RENAME COLUMN guests to Guests;
+
+ALTER TABLE customers MODIFY COLUMN `RegNo` VARCHAR(5000);
+ALTER TABLE employees MODIFY COLUMN `RegNo` VARCHAR(5000);

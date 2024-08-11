@@ -40,7 +40,7 @@ ob_start();
 
 <section style="background-color:var(--shadow);">
     <div class="row" style="height:10vh;"></div>
-    <div class="row my-5 mx-5">
+    <div class="row mx-5">
         <div class="col-3">
             <div class="card mb-4">
                 <div class="card-body text-center">
@@ -57,38 +57,74 @@ ob_start();
             <div class="card mb-4">
                 <div class="card-body" style="min-height: 20vh;">
 
-                    <p class="mb-4"><span class="text-primary font-italic me-1">Table</span> Filters</p>
+                    <p class="mb-4"><span class="text-primary font-italic me-1">TABLE</span> FILTERS</p>
 
-                    <label for="sort">Sort By : </label>
-                    <select name="sort" id="sort">
-                        <option value="UserId">UserId</option>
-                        <option value="UserName">UserName</option>
-                        <option value="Role">Role</option>
-                        <option value="Status">Status</option>
-                        <option value="Name">Name</option>
-                    </select><br>
+                    <div class="row my-3 border border-2 border-white rounded-3 mb-3 p-2">
+                        <div class="col-3 d-flex justify-content-end">
+                            <label>Search :</label>
+                        </div>
+                        <div class="col-8 d-flex justify-content-end">
+                            <input name="search" id="search">
+                        </div>
+                    </div>
 
-                    <label for="order">Order : </label>
-                    <select name="order" id="order">
-                        <option value="0">Acending</option>
-                        <option value="1">Decending</option>
-                    </select><br>
+                    <div class="border border-2 border-white rounded-3 mb-3 p-2">
+                        <div class="row mb-3">
+                            <div class="col-3 d-flex justify-content-end">
+                                <label for="sort">Sort By : </label>
+                            </div>
+                            <div class="col-5 d-flex justify-content-center">
+                                <select name="sort" id="sort">
+                                    <option value="u.UserId">UserId</option>
+                                    <option value="u.UserName">UserName</option>
+                                    <option value="u.Role">Role</option>
+                                    <option value="u.UserStatus">Status</option>
+                                    <option value="c.FirstName">First Name</option>
+                                    <option value="c.LastName">Last Name</option>
+                                </select>
+                            </div>
+                            <div class="col-3 d-flex justify-content-center">
+                                <select name="order" id="order">
+                                    <option value="ASC">Acending</option>
+                                    <option value="DESC">Decending</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
-                    <label for="cars">Range : </label>
-                    <label for="cars">Min : </label>
-                    <input>
-                    <label for="cars">Max : </label>
-                    <input>
+                    <div class="border border-2 border-white rounded-3 mb-3 p-2">
+                        <div class="row mb-2">
+                            <div class="col-3 d-flex justify-content-center">
+                                <label>Range :</label>
+                            </div>
+                            <div class="col-5 d-flex justify-content-center">
+                                <select name="range" id="range">
+                                    <option value="u.UserId">UserId</option>
+                                </select>
+                            </div>
+                        </div>
 
-                    <label for="cars">Range : </label>
-                    <input>
+                        <div class="row">
+                            <div class="col-3 d-flex justify-content-end">
+                                <label>Min : </label>
+                            </div>
+                            <div class="col-3 d-flex justify-content-end">
+                                <input name="min" id="min">
+                            </div>
+                            <div class="col-3 d-flex justify-content-end">
+                                <label>Max : </label>
+                            </div>
+                            <div class="col-3 d-flex justify-content-end">
+                                <input name="max" id="max">
+                            </div>
+                        </div>
 
-                    <button class="success-btn px-3 py-2 mb-4" name="new_chat_btn" id="new_chat_btn"><i class="material-icons">filter_alt</i> Apply Filters</button>
+                    </div>
 
-                </div>
-                <div class="d-flex justify-content-between align-items-center p-3">
-                    <i class="material-icons" id="msg_back">arrow_back</i>
-                    <i class="material-icons" id="msg_fwd">arrow_forward</i>
+                    <div class="row">
+                        <button class="success-btn px-3 py-2" name="filter_btn" id="filter_btn"><i class="material-icons">filter_alt</i> Apply Filters</button>
+                    </div>
+
                 </div>
             </div>
         </div>

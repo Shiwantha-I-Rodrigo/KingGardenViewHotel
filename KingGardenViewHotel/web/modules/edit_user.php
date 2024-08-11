@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $sql = "UPDATE users SET `UserName`='$user_name', `Password`='$pw_hash',`Email`='$email' WHERE UserId=$user_id";
             $db->query($sql);
 
-            $reg_no = date('Y') . date('m') . $user_id;
+            $reg_no =  time(). "_" .$user_id;
             $token = md5(uniqid());
 
             $sql = "UPDATE customers SET `FirstName`='$first_name', `LastName`='$last_name', `AddressLine1`='$address_1', `AddressLine2`='$address_2', `AddressLine3`='$address_3', `Telephone`='$telephone', `Mobile`='$mobile', `Title`='$title', `RegNo`='$reg_no' $upload WHERE `UserId`='$user_id'";

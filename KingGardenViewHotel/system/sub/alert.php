@@ -25,7 +25,7 @@ $color = $_SESSION['alert_color'];
 
     <div class="container mt-1 p-5">
         <div class="card" style="background-color:<?= $color ?>;">
-            <a href="/index.php" class="pt-3 ps-3"><i class="material-icons">home</i>Back Home</a>
+            <a href="/system/index.php" class="pt-3 ps-3"><i class="material-icons">home</i>Back Home</a>
             <div class="row m-2">
                 <div class="col-12 d-flex justify-content-center">
                     <div class="col-2 m-0 p-0 d-flex justify-content-center" id="call"><i class="material-icons" style="font-size: 120px;"><?= $icon ?></i></div>
@@ -43,7 +43,7 @@ $color = $_SESSION['alert_color'];
             </div>
             <div class="row">
                 <div class="col-12 d-flex justify-content-center">
-                    <img src="<?= BASE_URL . '/img/common/mountains_4.png' ?>" alt="mountains_1" style="width:100%; border-radius: 10px;">
+                    <img src="<?= BASE_URL . '/img/common/mountains_5.png' ?>" alt="mountains_1" style="width:100%; border-radius: 10px;">
                 </div>
             </div>
         </div>
