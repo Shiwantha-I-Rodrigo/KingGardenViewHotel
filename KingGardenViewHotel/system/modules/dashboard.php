@@ -6,7 +6,7 @@ authorize($user_id, '1', 'web');
 $extra_js = '<script src="' . SYSTEM_BASE_URL . 'js/dashboard.js"></script>';
 $extra_css = '';
 $db = dbConn();
-$sql = "SELECT * FROM customers c INNER JOIN users u ON c.UserId = u.UserId WHERE u.UserId = $user_id";
+$sql = "SELECT * FROM employees c INNER JOIN users u ON c.UserId = u.UserId WHERE u.UserId = $user_id";
 $result = $db->query($sql);
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {

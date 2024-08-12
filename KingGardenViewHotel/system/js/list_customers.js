@@ -24,35 +24,21 @@ window.onload = function () {
 
 document.getElementById("back").addEventListener("click", function (event) {
     event.preventDefault();
-    sql = '';
-    search.value != "" ? sql += ` WHERE '${search.value}' IN (u.UserId, u.UserName ,u.Email, c.FirstName, c.LastName, c.AddressLine1, c.AddressLine2, c.AddressLine3, c.Telephone, c.Mobile, c.RegNo)` : sql += "";
-    min.value != '' ? search.value != '' ? sql += ` AND ${range.value} > ${min.value} ` : sql += ` WHERE ${range.value} > ${min.value} ` : sql += '';
-    max.value != '' ? search.value != '' || min.value != '' ? sql += ` AND ${range.value} < ${max.value} ` : sql += ` WHERE ${range.value} < ${max.value} ` : sql += '';
-    sort.value != '' ? sql += ` ORDER BY ${sort.value} ${order.value} ` : sql += '';
-    console.log(sql);
-    ajax_call("customer_back", "tbl", fwd, sql);
+    let query = gen_sql();
+    ajax_call("customer_back", "tbl", fwd, query);
 });
 
 document.getElementById("fwd").addEventListener("click", function (event) {
     event.preventDefault();
     sql = '';
-    search.value != "" ? sql += ` WHERE '${search.value}' IN (u.UserId, u.UserName ,u.Email, c.FirstName, c.LastName, c.AddressLine1, c.AddressLine2, c.AddressLine3, c.Telephone, c.Mobile, c.RegNo)` : sql += "";
-    min.value != '' ? search.value != '' ? sql += ` AND ${range.value} > ${min.value} ` : sql += ` WHERE ${range.value} > ${min.value} ` : sql += '';
-    max.value != '' ? search.value != '' || min.value != '' ? sql += ` AND ${range.value} < ${max.value} ` : sql += ` WHERE ${range.value} < ${max.value} ` : sql += '';
-    sort.value != '' ? sql += ` ORDER BY ${sort.value} ${order.value} ` : sql += '';
-    console.log(sql);
-    ajax_call("customer_fwd", "tbl", fwd, sql);
+    let query = gen_sql();
+    ajax_call("customer_fwd", "tbl", fwd, query);
 });
 
 document.getElementById("filter_btn").addEventListener("click", function (event) {
     event.preventDefault();
-    sql = '';
-    search.value != "" ? sql += ` WHERE '${search.value}' IN (u.UserId, u.UserName ,u.Email, c.FirstName, c.LastName, c.AddressLine1, c.AddressLine2, c.AddressLine3, c.Telephone, c.Mobile, c.RegNo)` : sql += "";
-    min.value != '' ? search.value != '' ? sql += ` AND ${range.value} > ${min.value} ` : sql += ` WHERE ${range.value} > ${min.value} ` : sql += '';
-    max.value != '' ? search.value != '' || min.value != '' ? sql += ` AND ${range.value} < ${max.value} ` : sql += ` WHERE ${range.value} < ${max.value} ` : sql += '';
-    sort.value != '' ? sql += ` ORDER BY ${sort.value} ${order.value} ` : sql += '';
-    console.log(sql);
-    ajax_call("customer", "tbl", fwd, sql);
+    let query = gen_sql();
+    ajax_call("customer", "tbl", fwd, query);
 });
 
 function ajax_call(request, list_name, fwd, options = '') {
@@ -96,4 +82,14 @@ function ajax_call(request, list_name, fwd, options = '') {
             alert(error);
         }
     });
+}
+
+function gen_sql() {
+    sql = '';
+    search.value != "" ? sql += ` WHERE CONCAT_WS("_",u.UserId,u.UserName,u.Email,c.FirstName,c.LastName,c.AddressLine1,c.AddressLine2,c.AddressLine3,c.Telephone,c.Mobile,c.RegNo) LIKE '%${search.value}%'` : sql += "";
+    min.value != '' ? search.value != '' ? sql += ` AND ${range.value} > ${min.value} ` : sql += ` WHERE ${range.value} > ${min.value} ` : sql += '';
+    max.value != '' ? search.value != '' || min.value != '' ? sql += ` AND ${range.value} < ${max.value} ` : sql += ` WHERE ${range.value} < ${max.value} ` : sql += '';
+    sort.value != '' ? sql += ` ORDER BY ${sort.value} ${order.value} ` : sql += '';
+    console.log(sql);
+    return sql;
 }

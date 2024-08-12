@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $message = array();
 
     $db = dbConn();
-    $sql = "SELECT * FROM users u INNER JOIN customers c ON u.UserId = c.UserId WHERE u.UserName='$user_name' OR u.Email='$user_name'";
+    $sql = "SELECT * FROM users u INNER JOIN employees c ON u.UserId = c.UserId WHERE u.UserName='$user_name' OR u.Email='$user_name'";
     $result = $db->query($sql);
     if ($result->num_rows == 1) {
         $row = $result->fetch_assoc();

@@ -37,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     extract($_POST);
 
-    $db = dbConn();
     $sql = "SELECT * FROM users WHERE Email='$email'";
     $result = $db->query($sql);
     $row = $result->fetch_assoc();

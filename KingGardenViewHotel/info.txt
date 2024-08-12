@@ -117,7 +117,7 @@ CREATE TABLE blogs (BlogId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, BlogText
     3 = rejected
     4 = refunded
     5 = cancelled
-    7 = partial
+    6 = partial
 
 - modules - ModuleClasses
     module icon name (google material icons)
@@ -213,7 +213,7 @@ CREATE TABLE blogs (BlogId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, BlogText
     ItemStatus INT(1)
     ItemDiscount INT(3)
     ItemComments VARCHAR(255)
-    ItemStatus INT(1)
+    Status INT(1)
 
 - reviews
     ReviewId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT
@@ -375,3 +375,15 @@ ALTER TABLE reservations RENAME COLUMN guests to Guests;
 
 ALTER TABLE customers MODIFY COLUMN `RegNo` VARCHAR(5000);
 ALTER TABLE employees MODIFY COLUMN `RegNo` VARCHAR(5000);
+
+SELECT r.ReservationId, r.GuestId, r.StaffId, r.RoomId, r.TimeSlotStart, r.TimeSlotEnd, r.Status,SUM(i.ItemPrice) AS TotalCostForItems FROM reservations r JOIN items i ON i.ReservationId = r.ReservationId GROUP BY r.ReservationId, r.GuestId, r.StaffId, r.RoomId, r.TimeSlotStart, r.TimeSlotEnd, r.Status LIMIT 5 OFFSET $offset;
+
+insert into items ( ReservationId ,ItemName ,ItemPrice ,ItemPaid ,ItemStatus ,ItemDiscount ,ItemComments ,Status ) values (32,"room rent",2000,2000,1,0,"",1);
+insert into items ( ReservationId ,ItemName ,ItemPrice ,ItemPaid ,ItemStatus ,ItemDiscount ,ItemComments ,Status ) values (32,"breakfast",1000,1000,1,0,"",1);
+insert into items ( ReservationId ,ItemName ,ItemPrice ,ItemPaid ,ItemStatus ,ItemDiscount ,ItemComments ,Status ) values (32,"lunch",1000,1000,1,0,"",1);
+insert into items ( ReservationId ,ItemName ,ItemPrice ,ItemPaid ,ItemStatus ,ItemDiscount ,ItemComments ,Status ) values (34,"room rent",2000,2000,1,0,"",1);
+insert into items ( ReservationId ,ItemName ,ItemPrice ,ItemPaid ,ItemStatus ,ItemDiscount ,ItemComments ,Status ) values (35,"room rent",2000,2000,1,0,"",1);
+insert into items ( ReservationId ,ItemName ,ItemPrice ,ItemPaid ,ItemStatus ,ItemDiscount ,ItemComments ,Status ) values (36,"room rent",2000,2000,1,0,"",1);
+insert into items ( ReservationId ,ItemName ,ItemPrice ,ItemPaid ,ItemStatus ,ItemDiscount ,ItemComments ,Status ) values (37,"room rent",2000,2000,1,0,"",1);
+insert into items ( ReservationId ,ItemName ,ItemPrice ,ItemPaid ,ItemStatus ,ItemDiscount ,ItemComments ,Status ) values (37,"laundry",500,500,1,0,"",1);
+insert into items ( ReservationId ,ItemName ,ItemPrice ,ItemPaid ,ItemStatus ,ItemDiscount ,ItemComments ,Status ) values (37,"lunch",2000,2000,1,0,"",1);
