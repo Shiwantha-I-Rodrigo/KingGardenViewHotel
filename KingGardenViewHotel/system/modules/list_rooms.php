@@ -3,7 +3,7 @@ session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
 isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : reDirect("/system/modules/login.php");
 authorize($user_id, '1', 'web');
-$extra_js = '<script src="' . SYSTEM_BASE_URL . 'js/invoices.js"></script>';
+$extra_js = '<script src="' . SYSTEM_BASE_URL . 'js/list_rooms.js"></script>';
 $extra_css = '';
 $db = dbConn();
 $sql = "SELECT * FROM employees c INNER JOIN users u ON c.UserId = u.UserId WHERE u.UserId = $user_id";
@@ -77,12 +77,13 @@ ob_start();
                             </div>
                             <div class="col-5 d-flex justify-content-center">
                                 <select name="sort" id="sort">
-                                    <option value="i.ItemId">Item Id</option>
-                                    <option value="i.ReservationId">Res. Id</option>
-                                    <option value="i.ItemName">Item Name</option>
-                                    <option value="i.ItemPrice">Item Price</option>
-                                    <option value="i.ItemPaid">Item Paid</option>
-                                    <option value="i.ItemDiscount">Item Discount</option>
+                                    <option value="i.RoomId">Room Id</option>
+                                    <option value="i.RoomName">Room Name</option>
+                                    <option value="i.RoomPrice">Room Price</option>
+                                    <option value="i.RoomAC">Room AC</option>
+                                    <option value="i.RoomWIFI">Room WIFI</option>
+                                    <option value="i.RoomCapacity">Room Capacity</option>
+                                    <option value="i.RoomStatus">Room Status</option>
                                 </select>
                             </div>
                             <div class="col-3 d-flex justify-content-center">
@@ -101,11 +102,10 @@ ob_start();
                             </div>
                             <div class="col-5 d-flex justify-content-center">
                                 <select name="range" id="range">
-                                    <option value="i.ItemId">Item Id</option>
-                                    <option value="i.ReservationId">Res. Id</option>
-                                    <option value="i.ItemPrice">Item Price</option>
-                                    <option value="i.ItemPaid">Item Paid</option>
-                                    <option value="i.ItemDiscount">Item Discount</option>
+                                    <option value="i.RoomId">Room Id</option>
+                                    <option value="i.RoomPrice">Room Price</option>
+                                    <option value="i.RoomCapacity">Room Capacity</option>
+                                    <option value="i.RoomStatus">Room Status</option>
                                 </select>
                             </div>
                         </div>
@@ -160,7 +160,7 @@ ob_start();
             <div class="card mb-4">
                 <div class="card-body">
 
-                    <div class="my-4 text-center"><label class="my-1" style="font-size : 2vh;">INVOICES</label></div>
+                    <div class="my-4 text-center"><label class="my-1" style="font-size : 2vh;">ROOMS</label></div>
 
                     <table id="tbl" name="tbl" class="table table-dark table-striped-columns table-hover">
 

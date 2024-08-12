@@ -3,7 +3,7 @@ session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
 isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : reDirect("/system/modules/login.php");
 authorize($user_id, '1', 'web');
-$extra_js = '<script src="' . SYSTEM_BASE_URL . 'js/customers.js"></script>';
+$extra_js = '<script src="' . SYSTEM_BASE_URL . 'js/list_customers.js"></script>';
 $extra_css = '';
 $db = dbConn();
 $sql = "SELECT * FROM employees c INNER JOIN users u ON c.UserId = u.UserId WHERE u.UserId = $user_id";

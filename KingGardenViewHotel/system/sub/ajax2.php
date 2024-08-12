@@ -33,8 +33,8 @@ if (isset($_POST['req'])) {
                 $content = " <tr id='end'><th>User name</th><th>Role</th><th>Status</th><th>Name</th><th>Address</th><th>Contacts</th><th>Actions</th></tr>";
             }
 
-            $i=0;
-            while (($row = $result->fetch_assoc()) ) {
+            $i = 0;
+            while (($row = $result->fetch_assoc())) {
                 if ($i++ >= $per_page) break;
 
                 $UserId = $row['UserId'];
@@ -58,7 +58,6 @@ if (isset($_POST['req'])) {
 
                 $content .= " <tr><td>$UserName</td><td>$Type</td><td>$UserStatus</td><td>$Title $FirstName $LastName</td><td>$AddressLine1<br/>$AddressLine2<br/>$AddressLine3</td><td>$Email<br/>$Telephone<br/>$Mobile</td>
                 <td><button class='success-btn m-1 edit' id='$UserId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$UserId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
-                
             }
             break;
 
@@ -72,9 +71,9 @@ if (isset($_POST['req'])) {
             } else if ($result->num_rows > 0) {
                 $content = " <tr id='end'><th>User name</th><th>Role</th><th>Status</th><th>Name</th><th>Address</th><th>Contacts</th><th>Actions</th></tr>";
             }
-            
-            $i=0;
-            while (($row = $result->fetch_assoc()) ) {
+
+            $i = 0;
+            while (($row = $result->fetch_assoc())) {
                 if ($i++ >= $per_page) break;
 
                 $UserId = $row['UserId'];
@@ -98,7 +97,6 @@ if (isset($_POST['req'])) {
 
                 $content .= " <tr><td>$UserName</td><td>$Type</td><td>$UserStatus</td><td>$Title $FirstName $LastName</td><td>$AddressLine1<br/>$AddressLine2<br/>$AddressLine3</td><td>$Email<br/>$Telephone<br/>$Mobile</td>
                     <td><button class='success-btn m-1 edit' id='$UserId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$UserId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
-                
             }
             break;
 
@@ -115,9 +113,9 @@ if (isset($_POST['req'])) {
             } else if ($result->num_rows > 0) {
                 $content = " <tr id='end'><th>User name</th><th>Role</th><th>Status</th><th>Name</th><th>Address</th><th>Contacts</th><th>Actions</th></tr>";
             }
-            
-            $i=0;
-            while (($row = $result->fetch_assoc()) ) {
+
+            $i = 0;
+            while (($row = $result->fetch_assoc())) {
                 if ($i++ >= $per_page) break;
 
                 $UserId = $row['UserId'];
@@ -139,7 +137,6 @@ if (isset($_POST['req'])) {
 
                 $content .= " <tr><td>$UserName</td><td>$Type</td><td>$EmployeeStatus</td><td>$Title $FirstName $LastName</td><td>$AddressLine1<br/>$AddressLine2<br/>$AddressLine3</td><td>$Email<br/>$Telephone<br/>$Mobile</td>
                     <td><button class='success-btn m-1 edit' id='$UserId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$UserId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
-                
             }
             break;
 
@@ -153,9 +150,9 @@ if (isset($_POST['req'])) {
             } else if ($result->num_rows > 0) {
                 $content = " <tr id='end'><th>User name</th><th>Role</th><th>Status</th><th>Name</th><th>Address</th><th>Contacts</th><th>Actions</th></tr>";
             }
-            
-            $i=0;
-            while (($row = $result->fetch_assoc()) ) {
+
+            $i = 0;
+            while (($row = $result->fetch_assoc())) {
                 if ($i++ >= $per_page) break;
 
                 $UserId = $row['UserId'];
@@ -177,7 +174,6 @@ if (isset($_POST['req'])) {
 
                 $content .= " <tr><td>$UserName</td><td>$Type</td><td>$EmployeeStatus</td><td>$Title $FirstName $LastName</td><td>$AddressLine1<br/>$AddressLine2<br/>$AddressLine3</td><td>$Email<br/>$Telephone<br/>$Mobile</td>
                     <td><button class='success-btn m-1 edit' id='$UserId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$UserId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
-                
             }
             break;
 
@@ -194,9 +190,9 @@ if (isset($_POST['req'])) {
             } else if ($result->num_rows > 0) {
                 $content .= " <tr id='end'><th>Reservation Id</th><th>Status</th><th>Room Id</th><th>Check In</th><th>Check Out</th><th>Total</th><th>Paid</th><th>Actions</th></tr>";
             }
-            
-            $i=0;
-            while (($row = $result->fetch_assoc()) ) {
+
+            $i = 0;
+            while (($row = $result->fetch_assoc())) {
                 if ($i++ >= $per_page) break;
 
                 $ReservationId = $row["ReservationId"];
@@ -211,7 +207,6 @@ if (isset($_POST['req'])) {
 
                 $content .= " <tr><td>$ReservationId</td><td>$ReservationStatus</td><td>$RoomId</td><td>$CheckIn</td><td>$CheckOut</td><td> Rs.$TotalPrice.00</td><td> Rs.$TotalPaid.00</td>
                         <td><button class='fail-btn m-1 delete' id='$ReservationId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
-                
             }
             break;
 
@@ -225,9 +220,9 @@ if (isset($_POST['req'])) {
             } else if ($result->num_rows > 0) {
                 $content .= " <tr id='end'><th>Reservation Id</th><th>Status</th><th>Room Id</th><th>Check In</th><th>Check Out</th><th>Total</th><th>Paid</th><th>Actions</th></tr>";
             }
-            
-            $i=0;
-            while (($row = $result->fetch_assoc()) ) {
+
+            $i = 0;
+            while (($row = $result->fetch_assoc())) {
                 if ($i++ >= $per_page) break;
 
                 $ReservationId = $row["ReservationId"];
@@ -242,7 +237,6 @@ if (isset($_POST['req'])) {
 
                 $content .= " <tr><td>$ReservationId</td><td>$ReservationStatus</td><td>$RoomId</td><td>$CheckIn</td><td>$CheckOut</td><td> Rs.$TotalPrice.00</td><td> Rs.$TotalPaid.00</td>
                         <td><button class='fail-btn m-1 delete' id='$ReservationId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
-                
             }
             break;
 
@@ -259,9 +253,9 @@ if (isset($_POST['req'])) {
             } else if ($result->num_rows > 0) {
                 $content .= " <tr id='end'><th>Item Id</th><th>Reservation Id</th><th>Item Name</th><th>Item Price</th><th>Item Paid</th><th>Item Status</th><th>Item Discount</th><th>Actions</th></tr>";
             }
-            
-            $i=0;
-            while (($row = $result->fetch_assoc()) ) {
+
+            $i = 0;
+            while (($row = $result->fetch_assoc())) {
                 if ($i++ >= $per_page) break;
 
                 $ItemId = $row["ItemId"];
@@ -275,7 +269,6 @@ if (isset($_POST['req'])) {
 
                 $content .= " <tr><td>$ItemId</td><td>$ReservationId</td><td>$ItemName</td><td>$ItemPrice</td><td>$ItemPaid</td><td> $ItemStatus</td><td> $ItemDiscount%</td>
                     <td><button class='success-btn m-1 edit' id='$ItemId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$ItemId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
-                
             }
             break;
 
@@ -289,9 +282,9 @@ if (isset($_POST['req'])) {
             } else if ($result->num_rows > 0) {
                 $content .= " <tr id='end'><th>Item Id</th><th>Reservation Id</th><th>Item Name</th><th>Item Price</th><th>Item Paid</th><th>Item Status</th><th>Item Discount</th><th>Actions</th></tr>";
             }
-            
-            $i=0;
-            while (($row = $result->fetch_assoc()) ) {
+
+            $i = 0;
+            while (($row = $result->fetch_assoc())) {
                 if ($i++ >= $per_page) break;
 
                 $ItemId = $row["ItemId"];
@@ -305,21 +298,25 @@ if (isset($_POST['req'])) {
 
                 $content .= " <tr><td>$ItemId</td><td>$ReservationId</td><td>$ItemName</td><td>$ItemPrice</td><td>$ItemPaid</td><td> $ItemStatus</td><td> $ItemDiscount%</td>
                     <td><button class='success-btn m-1 edit' id='$ItemId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$ItemId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
-                
             }
             break;
+
+        case "room":
+            $_SESSION['room_offset'] = 0;
 
         case "room_back":
             $_SESSION['room_offset'] >= 5 ? $_SESSION['room_offset'] -= 5 : $_SESSION['room_offset'] = 0;
             $offset = $_SESSION['room_offset'];
-            $sql = "SELECT * FROM rooms LIMIT 6 OFFSET $offset";
+            $sql = "SELECT * FROM rooms i $opt LIMIT 6 OFFSET $offset";
             $result = $db->query($sql);
-            if ($result->num_rows > 0) {
-                $content .= " <tr><th>Room Id</th><th>Status</th><th>Room Name</th><th>Room Price</th><th>Room AC</th><th>Room WIFI</th><th>Room Capacity</th><th>Actions</th></tr>";
+            if ($result->num_rows > 5) {
+                $content .= " <tr><th>Room Id</th><th>Status</th><th>Name</th><th>Price</th><th>AC</th><th>WIFI</th><th>Capacity</th><th>Actions</th></tr>";
+            } else if ($result->num_rows > 0) {
+                $content .= " <tr id='end'><th>Room Id</th><th>Status</th><th>Name</th><th>Price</th><th>AC</th><th>WIFI</th><th>Capacity</th><th>Actions</th></tr>";
             }
-            
-            $i=0;
-            while (($row = $result->fetch_assoc()) ) {
+
+            $i = 0;
+            while (($row = $result->fetch_assoc())) {
                 if ($i++ >= $per_page) break;
 
                 $RoomId = $row['RoomId'];
@@ -328,25 +325,26 @@ if (isset($_POST['req'])) {
                 $RoomAC = $row['RoomAC'];
                 $RoomWIFI = $row['RoomWIFI'];
                 $RoomCapacity = $row['RoomCapacity'];
-                $RoomStatus = getStatus($row['Status']);
+                $RoomStatus = getStatus($row['RoomStatus']);
 
                 $content .= " <tr><td>$RoomId</td><td>$RoomStatus</td><td>$RoomName</td><td>$RoomPrice</td><td>$RoomAC</td><td>$RoomWIFI</td><td>$RoomCapacity</td>
                             <td><button class='success-btn m-1 edit' id='$RoomId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$RoomId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
-                
             }
             break;
 
         case "room_fwd":
             $_SESSION['room_offset'] < 0 ? $_SESSION['room_offset'] = 0 : $_SESSION['room_offset'] += 5;
             $offset = $_SESSION['room_offset'];
-            $sql = "SELECT * FROM rooms LIMIT 6 OFFSET $offset";
+            $sql = "SELECT * FROM rooms i $opt LIMIT 6 OFFSET $offset";
             $result = $db->query($sql);
-            if ($result->num_rows > 0) {
-                $content .= " <tr><th>Emp Id</th><th>Status</th><th>Name</th><th>Address</th><th>Contacts</th><th>Actions</th></tr>";
+            if ($result->num_rows > 5) {
+                $content .= " <tr><th>Room Id</th><th>Status</th><th>Name</th><th>Price</th><th>AC</th><th>WIFI</th><th>Capacity</th><th>Actions</th></tr>";
+            } else if ($result->num_rows > 0) {
+                $content .= " <tr id='end'><th>Room Id</th><th>Status</th><th>Name</th><th>Price</th><th>AC</th><th>WIFI</th><th>Capacity</th><th>Actions</th></tr>";
             }
-            
-            $i=0;
-            while (($row = $result->fetch_assoc()) ) {
+
+            $i = 0;
+            while (($row = $result->fetch_assoc())) {
                 if ($i++ >= $per_page) break;
 
                 $RoomId = $row['RoomId'];
@@ -355,11 +353,10 @@ if (isset($_POST['req'])) {
                 $RoomAC = $row['RoomAC'];
                 $RoomWIFI = $row['RoomWIFI'];
                 $RoomCapacity = $row['RoomCapacity'];
-                $RoomStatus = getStatus($row['Status']);
+                $RoomStatus = getStatus($row['RoomStatus']);
 
                 $content .= " <tr><td>$RoomId</td><td>$RoomStatus</td><td>$RoomName</td><td>$RoomPrice</td><td>$RoomAC</td><td>$RoomWIFI</td><td>$RoomCapacity</td>
                             <td><button class='success-btn m-1 edit' id='$RoomId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$RoomId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
-                
             }
             break;
 
@@ -371,9 +368,9 @@ if (isset($_POST['req'])) {
             if ($result->num_rows > 0) {
                 $content .= " <tr><th>Review Id</th><th>Status</th><th>Reservation Id</th><th>Review Title</th><th>Review</th><th>Actions</th></tr>";
             }
-            
-            $i=0;
-            while (($row = $result->fetch_assoc()) ) {
+
+            $i = 0;
+            while (($row = $result->fetch_assoc())) {
                 if ($i++ >= $per_page) break;
 
                 $ReviewId = $row['ReviewId'];
@@ -384,7 +381,6 @@ if (isset($_POST['req'])) {
 
                 $content .= " <tr><td>$ReviewId</td><td>$ReviewStatus</td><td>$ReservationId</td><td>$ReviewTitle</td><td>$ReviewText</td>
                                 <td><button class='success-btn m-1 edit' id='$ReviewId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$ReviewId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
-                
             }
             break;
 
@@ -396,9 +392,9 @@ if (isset($_POST['req'])) {
             if ($result->num_rows > 0) {
                 $content .= " <tr><th>Review Id</th><th>Status</th><th>Reservation Id</th><th>Review Title</th><th>Review</th><th>Actions</th></tr>";
             }
-            
-            $i=0;
-            while (($row = $result->fetch_assoc()) ) {
+
+            $i = 0;
+            while (($row = $result->fetch_assoc())) {
                 if ($i++ >= $per_page) break;
 
                 $ReviewId = $row['ReviewId'];
@@ -409,7 +405,6 @@ if (isset($_POST['req'])) {
 
                 $content .= " <tr><td>$ReviewId</td><td>$ReviewStatus</td><td>$ReservationId</td><td>$ReviewTitle</td><td>$ReviewText</td>
                                 <td><button class='success-btn m-1 edit' id='$ReviewId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$ReviewId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
-                
             }
             break;
     }
