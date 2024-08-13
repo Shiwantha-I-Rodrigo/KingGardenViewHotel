@@ -387,3 +387,17 @@ insert into items ( ReservationId ,ItemName ,ItemPrice ,ItemPaid ,ItemStatus ,It
 insert into items ( ReservationId ,ItemName ,ItemPrice ,ItemPaid ,ItemStatus ,ItemDiscount ,ItemComments ,Status ) values (37,"room rent",2000,2000,1,0,"",1);
 insert into items ( ReservationId ,ItemName ,ItemPrice ,ItemPaid ,ItemStatus ,ItemDiscount ,ItemComments ,Status ) values (37,"laundry",500,500,1,0,"",1);
 insert into items ( ReservationId ,ItemName ,ItemPrice ,ItemPaid ,ItemStatus ,ItemDiscount ,ItemComments ,Status ) values (37,"lunch",2000,2000,1,0,"",1);
+
+insert into reviews (ReservationId,ReviewTitle,ReviewText,ReviewStatus) values (37, "Nice","very helpfull staff",1);
+
+CREATE TABLE destinations (DestinationId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, DestinationText VARCHAR(4095), DestinationTitle VARCHAR(255), DestinationPicture VARCHAR(255), DestinationStatus INT(1));
+
+insert into destinations (DestinationText,DestinationTitle,DestinationStatus) values ("Kithalawa","very beautiful place",1);
+
+SELECT * FROM destinations i ORDER BY i.DestinationId ASC LIMIT 6 OFFSET 0;
+
+ALTER TABLE blogs ADD BlogPicture2 VARCHAR(255);
+ALTER TABLE blogs ADD BlogPicture3 VARCHAR(255);
+ALTER TABLE blogs ADD BlogPicture4 VARCHAR(255);
+ALTER TABLE blogs ADD BlogPicture5 VARCHAR(255);
+ALTER TABLE blogs RENAME COLUMN BlogPicture to BlogPicture1;

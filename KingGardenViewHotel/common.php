@@ -58,6 +58,30 @@ function uploadFile($path = null, $files = null, $sys = null)
     return  $random . "." . $file_ext;
 }
 
+function uploadFiles($path = null, $files = null, $sys = null,$i = 0)
+{
+    $extensions = ['jpg', 'jpeg', 'png', 'gif'];
+
+    $file_name = $files['file_upload']['name'][$i];
+    $file_tmp = $files['file_upload']['tmp_name'][$i];
+    $file_size = $files['file_upload']['size'][$i];
+    $file_ext = strtolower(end(explode('.', $files['file_upload']['name'][$i])));
+    $random = substr(md5(time() . $file_name), 0, 128);
+    $file = $path . $random . "." . $file_ext;
+
+    if (!in_array($file_ext, $extensions)) {
+        reDirect('/' . $sys . '/sub/alert.php');
+    }
+
+    if ($file_size > 1500000) {
+        reDirect('/' . $sys . '/sub/alert.php');
+    }
+
+    move_uploaded_file($file_tmp, $file);
+
+    return  $random . "." . $file_ext;
+}
+
 //Title---------------------------------------------
 function getTitle($data = null)
 {

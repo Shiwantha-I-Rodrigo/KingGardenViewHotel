@@ -15,6 +15,8 @@ if (isset($_POST['req'])) {
     isset($_SESSION['invoice_offset']) ? null : $_SESSION['invoice_offset'] = 0;
     isset($_SESSION['room_offset']) ? null : $_SESSION['room_offset'] = 0;
     isset($_SESSION['review_offset']) ? null : $_SESSION['review_offset'] = 0;
+    isset($_SESSION['dest_offset']) ? null : $_SESSION['dest_offset'] = 0;
+    isset($_SESSION['blog_offset']) ? null : $_SESSION['blog_offset'] = 0;
     $db = dbConn();
 
     switch ($req) {
@@ -186,9 +188,9 @@ if (isset($_POST['req'])) {
             $sql = "SELECT * FROM reservations r JOIN (SELECT i.ReservationId, SUM(i.ItemPrice) AS Price, SUM(i.ItemPaid) AS Paid FROM reservations r JOIN items i on r.ReservationId=i.ReservationId GROUP BY r.ReservationId) AS t ON r.ReservationId=t.ReservationId $opt LIMIT 6 OFFSET $offset";
             $result = $db->query($sql);
             if ($result->num_rows > 5) {
-                $content .= " <tr><th>Reservation Id</th><th>Status</th><th>Room Id</th><th>Check In</th><th>Check Out</th><th>Total</th><th>Paid</th><th>Actions</th></tr>";
+                $content .= " <tr><th>Reservation Id</th><th>Status</th><th>Room Id</th><th>Check In</th><th>Check Out</th><th>Guests</th><th>Total</th><th>Paid</th><th>Actions</th></tr>";
             } else if ($result->num_rows > 0) {
-                $content .= " <tr id='end'><th>Reservation Id</th><th>Status</th><th>Room Id</th><th>Check In</th><th>Check Out</th><th>Total</th><th>Paid</th><th>Actions</th></tr>";
+                $content .= " <tr id='end'><th>Reservation Id</th><th>Status</th><th>Room Id</th><th>Check In</th><th>Check Out</th><th>Guests</th><th>Total</th><th>Paid</th><th>Actions</th></tr>";
             }
 
             $i = 0;
@@ -204,8 +206,9 @@ if (isset($_POST['req'])) {
                 $ReservationStatus = getStatus($row['ReservationStatus']);
                 $TotalPrice = $row["Price"];
                 $TotalPaid = $row["Paid"];
+                $Guests = $row["Guests"];
 
-                $content .= " <tr><td>$ReservationId</td><td>$ReservationStatus</td><td>$RoomId</td><td>$CheckIn</td><td>$CheckOut</td><td> Rs.$TotalPrice.00</td><td> Rs.$TotalPaid.00</td>
+                $content .= " <tr><td>$ReservationId</td><td>$ReservationStatus</td><td>$RoomId</td><td>$CheckIn</td><td>$CheckOut</td><td>$Guests</td><td> Rs.$TotalPrice.00</td><td> Rs.$TotalPaid.00</td>
                         <td><button class='fail-btn m-1 delete' id='$ReservationId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
             }
             break;
@@ -216,9 +219,9 @@ if (isset($_POST['req'])) {
             $sql = "SELECT * FROM reservations r JOIN (SELECT i.ReservationId, SUM(i.ItemPrice) AS Price, SUM(i.ItemPaid) AS Paid FROM reservations r JOIN items i on r.ReservationId=i.ReservationId GROUP BY r.ReservationId) AS t ON r.ReservationId=t.ReservationId opt LIMIT 6 OFFSET $offset";
             $result = $db->query($sql);
             if ($result->num_rows > 5) {
-                $content .= " <tr><th>Reservation Id</th><th>Status</th><th>Room Id</th><th>Check In</th><th>Check Out</th><th>Total</th><th>Paid</th><th>Actions</th></tr>";
+                $content .= " <tr><th>Reservation Id</th><th>Status</th><th>Room Id</th><th>Check In</th><th>Check Out</th><th>Guests</th><th>Total</th><th>Paid</th><th>Actions</th></tr>";
             } else if ($result->num_rows > 0) {
-                $content .= " <tr id='end'><th>Reservation Id</th><th>Status</th><th>Room Id</th><th>Check In</th><th>Check Out</th><th>Total</th><th>Paid</th><th>Actions</th></tr>";
+                $content .= " <tr id='end'><th>Reservation Id</th><th>Status</th><th>Room Id</th><th>Check In</th><th>Check Out</th><th>Guests</th><th>Total</th><th>Paid</th><th>Actions</th></tr>";
             }
 
             $i = 0;
@@ -234,8 +237,9 @@ if (isset($_POST['req'])) {
                 $ReservationStatus = getStatus($row['ReservationStatus']);
                 $TotalPrice = $row["Price"];
                 $TotalPaid = $row["Paid"];
+                $Guests = $row["Guests"];
 
-                $content .= " <tr><td>$ReservationId</td><td>$ReservationStatus</td><td>$RoomId</td><td>$CheckIn</td><td>$CheckOut</td><td> Rs.$TotalPrice.00</td><td> Rs.$TotalPaid.00</td>
+                $content .= " <tr><td>$ReservationId</td><td>$ReservationStatus</td><td>$RoomId</td><td>$CheckIn</td><td>$CheckOut</td><td>$Guests</td><td> Rs.$TotalPrice.00</td><td> Rs.$TotalPaid.00</td>
                         <td><button class='fail-btn m-1 delete' id='$ReservationId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
             }
             break;
@@ -328,7 +332,7 @@ if (isset($_POST['req'])) {
                 $RoomStatus = getStatus($row['RoomStatus']);
 
                 $content .= " <tr><td>$RoomId</td><td>$RoomStatus</td><td>$RoomName</td><td>$RoomPrice</td><td>$RoomAC</td><td>$RoomWIFI</td><td>$RoomCapacity</td>
-                            <td><button class='success-btn m-1 edit' id='$RoomId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$RoomId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
+                    <td><button class='success-btn m-1 edit' id='$RoomId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$RoomId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
             }
             break;
 
@@ -356,17 +360,75 @@ if (isset($_POST['req'])) {
                 $RoomStatus = getStatus($row['RoomStatus']);
 
                 $content .= " <tr><td>$RoomId</td><td>$RoomStatus</td><td>$RoomName</td><td>$RoomPrice</td><td>$RoomAC</td><td>$RoomWIFI</td><td>$RoomCapacity</td>
-                            <td><button class='success-btn m-1 edit' id='$RoomId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$RoomId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
+                    <td><button class='success-btn m-1 edit' id='$RoomId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$RoomId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
             }
             break;
+
+        case "dest":
+            $_SESSION['dest_offset'] = 0;
+
+        case "dest_back":
+            $_SESSION['dest_offset'] >= 5 ? $_SESSION['dest_offset'] -= 5 : $_SESSION['dest_offset'] = 0;
+            $offset = $_SESSION['dest_offset'];
+            $sql = "SELECT * FROM destinations i $opt LIMIT 6 OFFSET $offset";
+            $result = $db->query($sql);
+            if ($result->num_rows > 5) {
+                $content .= " <tr><th>Destination Id</th><th>Destination Title</th><th>Destination Text</th><th>Destination Status</th><th>Actions</th></tr>";
+            } else if ($result->num_rows > 0) {
+                $content .= " <tr id='end'><th>Destination Id</th><th>Destination Title</th><th>Destination Text</th><th>Destination Status</th><th>Actions</th></tr>";
+            }
+
+            $i = 0;
+            while (($row = $result->fetch_assoc())) {
+                if ($i++ >= $per_page) break;
+
+                $DestinationId = $row['DestinationId'];
+                $DestinationText = $row['DestinationText'];
+                $DestinationTitle = $row['DestinationTitle'];
+                $DestinationStatus = getStatus($row['DestinationStatus']);
+
+                $content .= " <tr><td>$DestinationId</td><td>$DestinationTitle</td><td>$DestinationText</td><td>$DestinationStatus</td>
+                   <td><button class='success-btn m-1 edit' id='$DestinationId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$DestinationId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
+            }
+            break;
+
+        case "dest_fwd":
+            $_SESSION['dest_offset'] < 0 ? $_SESSION['dest_offset'] = 0 : $_SESSION['dest_offset'] += 5;
+            $offset = $_SESSION['dest_offset'];
+            $sql = "SELECT * FROM destinations i $opt LIMIT 6 OFFSET $offset";
+            $result = $db->query($sql);
+            if ($result->num_rows > 5) {
+                $content .= " <tr><th>Destination Id</th><th>Destination Title</th><th>Destination Text</th><th>Destination Status</th><th>Actions</th></tr>";
+            } else if ($result->num_rows > 0) {
+                $content .= " <tr id='end'><th>Destination Id</th><th>Destination Title</th><th>Destination Text</th><th>Destination Status</th><th>Actions</th></tr>";
+            }
+
+            $i = 0;
+            while (($row = $result->fetch_assoc())) {
+                if ($i++ >= $per_page) break;
+
+                $DestinationId = $row['DestinationId'];
+                $DestinationText = $row['DestinationText'];
+                $DestinationTitle = $row['DestinationTitle'];
+                $DestinationStatus = getStatus($row['DestinationStatus']);
+
+                $content .= " <tr><td>$DestinationId</td><td>$DestinationTitle</td><td>$DestinationText</td><td>$DestinationStatus</td>
+                    <td><button class='success-btn m-1 edit' id='$DestinationId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$DestinationId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
+            }
+            break;
+
+        case "review":
+            $_SESSION['review_offset'] = 0;
 
         case "review_back":
             $_SESSION['review_offset'] >= 5 ? $_SESSION['review_offset'] -= 5 : $_SESSION['review_offset'] = 0;
             $offset = $_SESSION['review_offset'];
-            $sql = "SELECT * FROM reviews LIMIT 6 OFFSET $offset";
+            $sql = "SELECT * FROM reviews i $opt LIMIT 6 OFFSET $offset";
             $result = $db->query($sql);
-            if ($result->num_rows > 0) {
-                $content .= " <tr><th>Review Id</th><th>Status</th><th>Reservation Id</th><th>Review Title</th><th>Review</th><th>Actions</th></tr>";
+            if ($result->num_rows > 5) {
+                $content .= " <tr><th>Review Id</th><th>Review Status</th><th>Reservation Id</th><th>Review Title</th><th>Review Text</th><th>Actions</th></tr>";
+            } else if ($result->num_rows > 0) {
+                $content .= " <tr id='end'><th>Review Id</th><th>Review Status</th><th>Reservation Id</th><th>Review Title</th><th>Review Text</th><th>Actions</th></tr>";
             }
 
             $i = 0;
@@ -380,17 +442,19 @@ if (isset($_POST['req'])) {
                 $ReviewStatus = getStatus($row['Status']);
 
                 $content .= " <tr><td>$ReviewId</td><td>$ReviewStatus</td><td>$ReservationId</td><td>$ReviewTitle</td><td>$ReviewText</td>
-                                <td><button class='success-btn m-1 edit' id='$ReviewId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$ReviewId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
+                    <td><button class='success-btn m-1 edit' id='$ReviewId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$ReviewId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
             }
             break;
 
         case "review_fwd":
             $_SESSION['review_offset'] < 0 ? $_SESSION['review_offset'] = 0 : $_SESSION['review_offset'] += 5;
             $offset = $_SESSION['review_offset'];
-            $sql = "SELECT * FROM reviews LIMIT 6 OFFSET $offset";
+            $sql = "SELECT * FROM reviews i $opt LIMIT 6 OFFSET $offset";
             $result = $db->query($sql);
-            if ($result->num_rows > 0) {
-                $content .= " <tr><th>Review Id</th><th>Status</th><th>Reservation Id</th><th>Review Title</th><th>Review</th><th>Actions</th></tr>";
+            if ($result->num_rows > 5) {
+                $content .= " <tr><th>Review Id</th><th>Review Status</th><th>Reservation Id</th><th>Review Title</th><th>Review Text</th><th>Actions</th></tr>";
+            } else if ($result->num_rows > 0) {
+                $content .= " <tr id='end'><th>Review Id</th><th>Review Status</th><th>Reservation Id</th><th>Review Title</th><th>Review Text</th><th>Actions</th></tr>";
             }
 
             $i = 0;
@@ -404,7 +468,60 @@ if (isset($_POST['req'])) {
                 $ReviewStatus = getStatus($row['Status']);
 
                 $content .= " <tr><td>$ReviewId</td><td>$ReviewStatus</td><td>$ReservationId</td><td>$ReviewTitle</td><td>$ReviewText</td>
-                                <td><button class='success-btn m-1 edit' id='$ReviewId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$ReviewId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
+                    <td><button class='success-btn m-1 edit' id='$ReviewId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$ReviewId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
+            }
+            break;
+
+        case "blog":
+            $_SESSION['blog_offset'] = 0;
+
+        case "blog_back":
+            $_SESSION['blog_offset'] >= 5 ? $_SESSION['blog_offset'] -= 5 : $_SESSION['blog_offset'] = 0;
+            $offset = $_SESSION['blog_offset'];
+            $sql = "SELECT * FROM blogs i $opt LIMIT 6 OFFSET $offset";
+            $result = $db->query($sql);
+            if ($result->num_rows > 5) {
+                $content .= " <tr><th>Catelogue Id</th><th>Catelogue Title</th><th>Catelogue Text</th><th>Catelogue Status</th><th>Actions</th></tr>";
+            } else if ($result->num_rows > 0) {
+                $content .= " <tr id='end'><th>Catelogue Id</th><th>Catelogue Title</th><th>Catelogue Text</th><th>Catelogue Status</th><th>Actions</th></tr>";
+            }
+
+            $i = 0;
+            while (($row = $result->fetch_assoc())) {
+                if ($i++ >= $per_page) break;
+
+                $BlogId = $row['BlogId'];
+                $BlogText = $row['BlogText'];
+                $BlogTitle = $row['BlogTitle'];
+                $BlogStatus = getStatus($row['BlogStatus']);
+
+                $content .= " <tr><td>$BlogId</td><td>$BlogTitle</td><td>$BlogText</td><td>$BlogStatus</td>
+                       <td><button class='success-btn m-1 edit' id='$BlogId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$BlogId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
+            }
+            break;
+
+        case "blog_fwd":
+            $_SESSION['review_offset'] < 0 ? $_SESSION['review_offset'] = 0 : $_SESSION['review_offset'] += 5;
+            $offset = $_SESSION['blog_offset'];
+            $sql = "SELECT * FROM blogs i $opt LIMIT 6 OFFSET $offset";
+            $result = $db->query($sql);
+            if ($result->num_rows > 5) {
+                $content .= " <tr><th>Catelogue Id</th><th>Catelogue Title</th><th>Catelogue Text</th><th>Catelogue Status</th><th>Actions</th></tr>";
+            } else if ($result->num_rows > 0) {
+                $content .= " <tr id='end'><th>Catelogue Id</th><th>Catelogue Title</th><th>Catelogue Text</th><th>Catelogue Status</th><th>Actions</th></tr>";
+            }
+
+            $i = 0;
+            while (($row = $result->fetch_assoc())) {
+                if ($i++ >= $per_page) break;
+
+                $BlogId = $row['BlogId'];
+                $BlogText = $row['BlogText'];
+                $BlogTitle = $row['BlogTitle'];
+                $BlogStatus = getStatus($row['BlogStatus']);
+
+                $content .= " <tr><td>$BlogId</td><td>$BlogTitle</td><td>$BlogText</td><td>$BlogStatus</td>
+                       <td><button class='success-btn m-1 edit' id='$BlogId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$BlogId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
             }
             break;
     }
