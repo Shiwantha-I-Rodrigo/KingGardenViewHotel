@@ -14,3 +14,9 @@ function change() {
 }
 
 setInterval(change, 1000);
+
+document.getElementById("destinations_link").addEventListener("click", function (event) {
+    event.preventDefault();
+    sessionStorage.setItem("current_page", "about");
+    location.replace(window.location.origin + "/web/modules/destinations.php");
+});

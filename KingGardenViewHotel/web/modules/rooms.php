@@ -39,8 +39,14 @@ $result = $db->query($sql);
 while ($row = $result->fetch_assoc()) {
     if (!in_array($row['RoomId'], $rooms_list)) {
         $rooms_list2[] = array(
-            "RoomId" => $row['RoomId'], "RoomName" => $row['RoomName'], "RoomPrice" => $row['RoomPrice'], "RoomAC" => $row['RoomAC'], "RoomWIFI" => $row['RoomWIFI'],
-            "RoomCapacity" => $row['RoomCapacity'], "RoomPicture" => $row['RoomPicture'], "RoomStatus" => $row['RoomStatus']
+            "RoomId" => $row['RoomId'],
+            "RoomName" => $row['RoomName'],
+            "RoomPrice" => $row['RoomPrice'],
+            "RoomAC" => $row['RoomAC'],
+            "RoomWIFI" => $row['RoomWIFI'],
+            "RoomCapacity" => $row['RoomCapacity'],
+            "RoomPicture" => $row['RoomPicture'],
+            "RoomStatus" => $row['RoomStatus']
         );
     }
 }
@@ -65,7 +71,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         while ($n < $rooms) {
             $sql = "INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, ReservationStatus, Guests) VALUES ($user_id, $user_id, $iter[$n] , $TimeSlotStart, $TimeSlotEnd, 1, $guests)";
             $db->query($sql);
-            array_push($res_ids, $db->insert_id);
+            $res_id = $db->insert_id;
+            $room_array = $rooms_list2[array_search($iter[$n], array_column($rooms_list2, 'RoomId'))];
+            $price = $room_array['RoomPrice'];
+            $sql = "INSERT INTO items ( ReservationId ,ItemName ,ItemPrice ,ItemPaid ,ItemStatus ,ItemDiscount ,ItemComments ,Status ) values ($res_id,'room rent',$price,0,0,0,'',1)";
+            $db->query($sql);
+            array_push($res_ids, $res_id);
             $n++;
         }
 
@@ -78,16 +89,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         isset($res_ids[1]) ? $res_string .= " / " . $res_ids[1] : null;
         isset($res_ids[2]) ? $res_string .= " / " . $res_ids[2] : null;
 
-        $msg = "Dear ". $row['FirstName'] . ",<br/>Thank you for choosing King Garden View Hotel! Your reservation for " . $start . " is confirmed.<br/>" .
+        $msg = "Dear " . $row['FirstName'] . ",<br/>Thank you for choosing King Garden View Hotel! Your reservation for " . $start . " is confirmed.<br/>" .
             "We're thrilled to host you for a memorable stay. Please review your booking details below. If you have any questions or special requests, feel free to reach out.<br/>" .
             "start date : " . $start . "<br/>" .
             "end date : " . $end . "<br/>" .
-            "Room/s : " . $rooms_string. "<br/>" .
+            "Room/s : " . $rooms_string . "<br/>" .
             "Guests : " . $guests . "<br/>" .
             "Reservation Id/s : " . $res_string . "<br/>" .
             "We look forward to providing you with an exceptional experience. Safe travels!<br/>" .
             "Warm regards,<br/>" .
-            "Managing Director,<br/>".
+            "Managing Director,<br/>" .
             "King garden View Hotel";
 
         sendEmail($row['Email'], $row['FirstName'], "Your Reservation Is Confirmed!", $msg);
@@ -104,7 +115,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ob_start();
 ?>
 
-<div style="position:absolute; top:10vh; background-image: var(--background_img_03); min-height:100vh;">
+<div class="d-flex justify-content-around align-items-center text-center p-3 row" style="position:fixed; top:10vh; background-color:var(--secondary); z-index:95; width:100vw; ">
+    <div class="col-5">
+        <h4 style="font-size:3vh;">BOOK A ROOM</h4>
+    </div>
+</div>
+
+<div style="position:absolute; top:18vh; background-image: var(--background_img_03); min-height:100vh;">
     <?php
     echo '<div class="row my-5 px-5 d-flex justify-content-around" style="width:100vw;">';
     switch ($rooms) {

@@ -401,3 +401,12 @@ ALTER TABLE blogs ADD BlogPicture3 VARCHAR(255);
 ALTER TABLE blogs ADD BlogPicture4 VARCHAR(255);
 ALTER TABLE blogs ADD BlogPicture5 VARCHAR(255);
 ALTER TABLE blogs RENAME COLUMN BlogPicture to BlogPicture1;
+
+CREATE TABLE user_destinations (TransportId INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT, UserId INT(11) NOT NULL, DestinationId INT(11) NOT NULL, TransportPrice INT(11), Telephone VARCHAR(255), Chat VARCHAR(255), EntryTime INT(11),CONSTRAINT `UserIdTransport` FOREIGN KEY (UserId) REFERENCES users (UserId) ON DELETE CASCADE ON UPDATE RESTRICT, CONSTRAINT `DestinationTransport` FOREIGN KEY (DestinationId) REFERENCES destinations (DestinationId) ON DELETE CASCADE ON UPDATE RESTRICT)
+
+INSERT INTO user_destinations ( UserId, DestinationId, TransportPrice, Telephone, Chat, EntryTime) VALUES (4,1,1000,774635267,'user_4',1723543185);
+ALTER TABLE user_destinations ADD COLUMN Capacity INT(11);
+
+alter table reviews add column ReviewPicture VARCHAR(255);
+
+add reviews for each room and pass its id as id when guest request reviews.

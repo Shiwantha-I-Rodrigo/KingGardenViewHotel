@@ -20,9 +20,9 @@ document.getElementById("new_chat_btn").addEventListener("click", function (even
     let foot = document.getElementById('modal_foot');
 
     title.innerHTML = "New Chat";
-    list.innerHTML = '<form method="post" class="pe-5 ps-2"><input class="my-5" type="text" name="new_chat_id" id="new_chat_id" placeholder="Username or Email" />'+
-    '<input class="mb-5" type="text" name="new_chat_text" id="new_chat_text" placeholder="Message" />'+
-    '<button class="success-btn px-3 py-2 mb-2" name="new_chat_btn" id="new_chat_btn" type="submit" formmethod="post"><i class="material-icons">send</i> Send Message</button></form>';
+    list.innerHTML = '<form method="post" class="pe-5 ps-2"><input class="my-5" type="text" name="new_chat_id" id="new_chat_id" placeholder="Username or Email" />' +
+        '<input class="mb-5" type="text" name="new_chat_text" id="new_chat_text" placeholder="Message" />' +
+        '<button class="success-btn px-3 py-2 mb-2" name="new_chat_btn" id="new_chat_btn" type="submit" formmethod="post"><i class="material-icons">send</i> Send Message</button></form>';
     foot.innerHTML = '<button type="button" class="fail-btn px-3" data-bs-dismiss="modal">Close</button>';
 
     $('#Dash_Pop').modal('show');
@@ -117,6 +117,14 @@ function ajax_call(request, sub_request, list_name, fwd, heading) {
                                     $("#Confirm").modal("show");
                                     let input = document.getElementById("ReservationId");
                                     input.value = id;
+                                });
+                            }
+
+                            if (document.querySelector("#review")) {
+                                let review = document.getElementById("review");
+                                let id = review.getAttribute('data-id');
+                                review.addEventListener("click", function (event) {
+                                    location.replace(window.location.origin + "/web/modules/reviews.php?id=" + id);
                                 });
                             }
 

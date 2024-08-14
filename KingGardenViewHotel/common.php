@@ -13,7 +13,6 @@ function dbConn()
     } else {
         return $conn;
     }
-
 }
 
 //Redirect---------------------------------------------
@@ -58,7 +57,7 @@ function uploadFile($path = null, $files = null, $sys = null)
     return  $random . "." . $file_ext;
 }
 
-function uploadFiles($path = null, $files = null, $sys = null,$i = 0)
+function uploadFiles($path = null, $files = null, $sys = null, $i = 0)
 {
     $extensions = ['jpg', 'jpeg', 'png', 'gif'];
 
@@ -135,6 +134,36 @@ function getStatus($data = null)
             break;
         case 9:
             $status = "Forbidden";
+            break;
+    }
+
+    return $status;
+}
+
+function getItemStatus($data = null)
+{
+    $status = "";
+    switch ($data) {
+        case 0:
+            $status = "Unpaid";
+            break;
+        case 1:
+            $status = "Paid";
+            break;
+        case 2:
+            $status = "pending";
+            break;
+        case 3:
+            $status = "rejected";
+            break;
+        case 4:
+            $status = "refunded";
+            break;
+        case 5:
+            $status = "cancelled";
+            break;
+        case 6:
+            $status = "partial";
             break;
     }
 

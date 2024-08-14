@@ -1,44 +1,40 @@
-document.getElementById("booknow").addEventListener("click", function (event) {
-    event.preventDefault();
-    sessionStorage.setItem("current_page", "home");
-    location.replace(window.location.origin + "/web/index.php");
-});
+rev_back = document.getElementById("rev_back");
+rev_fwd = document.getElementById("rev_fwd");
 
-var i = 0;
-function change() {
-    var doc = document.getElementById("book_btn");
-    var color = ["#14a098", "#ffffff"];
-    doc.style.backgroundColor = color[i];
-    doc.style.color = color[(i + 1) % color.length];
-    i = (i + 1) % color.length;
+let review = document.getElementById("add_review");
+let user_id = review.getAttribute('data-id');
+let room_id = review.getAttribute('data-room');
+if(user_id == 0){
+    review.classList.add('d-none');
 }
 
-setInterval(change, 1000);
-
-blog_back = document.getElementById("blog_back");
-blog_fwd = document.getElementById("blog_fwd");
-
 window.onload = function () {
-    blog_back.click();
+    rev_back.click();
 };
 
-document.getElementById("blog_back").addEventListener("click", function (event) {
+document.getElementById("rev_back").addEventListener("click", function (event) {
     event.preventDefault();
     //$("#blogs div").remove();
-    ajax_call("blog_back", "", "blogs", blog_fwd, "");
+    ajax_call("rev_back", "", "view_review", rev_fwd, "");
 });
 
-document.getElementById("blog_fwd").addEventListener("click", function (event) {
+document.getElementById("rev_fwd").addEventListener("click", function (event) {
     event.preventDefault();
     //$("#blogs div").remove();
-    ajax_call("blog_fwd", "", "blogs", blog_fwd, "");
+    ajax_call("rev_fwd", "", "view_review", rev_fwd, "");
+});
+
+document.getElementById("submit_btn").addEventListener("click", function (event) {
+    event.preventDefault();
+    $("#Confirm").modal("show");
 });
 
 function ajax_call(request, sub_request, list_name, fwd, heading) {
 
     $.ajax({
         data: {
-            req: request
+            req: request,
+            inf: room_id
         },
         type: 'POST',
         dataType: 'json',

@@ -8,30 +8,33 @@ ob_start();
 
 <div class="row" style="position: absolute; top: 10vh;">
     <div class="col-12 p-0 m-0">
-        <img src="<?= BASE_URL . '/img/common/banner4.jpg' ?>" alt="" style="width: 100vw; height: 90vh; object-fit: cover;">
+        <img src="<?= BASE_URL . '/img/common/banner4.jpg' ?>" alt="" style="width: 100vw; height: 90vh; object-fit: cover;">  <!-- mask-image:linear-gradient( to top, transparent 5%, black 50%); -->
     </div>
-    <div class="col-8 p-5 m-0" style="background-color:var(--background_translucent);position:absolute;right:0;width: 66vw; height: 90vh;">
-        <h2 style="font-size:14vh;">welcome</h2>
-        <h2 style="font-size:4vh;">to a relaxing stay <br> at our humble abode</h2>
-        <h2 style="font-size:3vh; text-align: justify; text-justify: inter-word;" class="pt-5">
+    <div class="col-8 p-5 m-0" style="background-color:var(--background_translucent);position:absolute;right:0;width: 40vw; height: 90vh;">
+        <h2 style="font-size:10vh;">welcome</h2>
+        <h2 style="font-size:3vh;">to a relaxing stay <br> at our humble abode</h2>
+        <h4 style="font-size:2vh; text-align: justify; text-justify: inter-word; color:var(--primary_font);" class="pt-4">
             We at King Garden View conduct business in a sustainable manner
             and part of our focus remains on the experience of our guests and another
             important faculty is dedicated to being good citizens and to a great extent,
             ensuring our team's safety and mental wellbeing. We aim to engage in sustainable
             policies that aid and benefit both locals and guests in the hotel and in their lives.
-        </h2>
+        </h4>
+
+        <h2 class="my-5 py-4 text-center" id="destinations_link" style="font-size:3vh; border-bottom: 0.5vh solid; border-top: 0.5vh solid;">Checkout some of the wonderful destinations<br>you can explore while you are staying with us. </h2>
+
         <div class="btn-group-vertical">
-            <button type="button" class="clear_btn" data-bs-toggle="modal" data-bs-target="#Sustainability">
-                <h2 style="font-size:2vh;" class="pt-5">• View Sustainability Policy</h2>
+            <button type="button" class="clear_btn p-0 m-0" data-bs-toggle="modal" data-bs-target="#Sustainability">
+                <p style="font-size:2vh;" class="p-0 m-0">• View Sustainability Policy</p>
             </button>
-            <button type="button" class="clear_btn" data-bs-toggle="modal" data-bs-target="#Food">
-                <h2 style="font-size:2vh;">• View Food Safety Policy</h2>
+            <button type="button" class="clear_btn p-0 m-0" data-bs-toggle="modal" data-bs-target="#Food">
+                <p style="font-size:2vh;" class="p-0 m-0">• View Food Safety Policy</p>
             </button>
-            <button type="button" class="clear_btn" data-bs-toggle="modal" data-bs-target="#Environmental">
-                <h2 style="font-size:2vh;">• View Environmental Policy</h2>
+            <button type="button" class="clear_btn p-0 m-0" data-bs-toggle="modal" data-bs-target="#Environmental">
+                <p style="font-size:2vh;" class="p-0 m-0">• View Environmental Policy</p>
             </button>
-            <button type="button" class="clear_btn" data-bs-toggle="modal" data-bs-target="#Child">
-                <h2 style="font-size:2vh;">• View Child Protection Policy</h2>
+            <button type="button" class="clear_btn p-0 m-0" data-bs-toggle="modal" data-bs-target="#Child">
+                <p style="font-size:2vh;" class="p-0 m-0">• View Child Protection Policy</p>
             </button>
         </div>
     </div>

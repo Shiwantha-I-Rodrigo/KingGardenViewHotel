@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $db = dbConn();
     $text = "'Name_" . $name . "_Email_" . $email . "_Telephone_" . $telephone . "_Subject_" . $subject . "_Message_" . $message . "'"; 
     $time = time();
-    $sql = "INSERT INTO messages (MessageText, MessageTime, FromId, FromName, ToId, Thread, MessageStatus) VALUES ($text, $time, 22, 'guest',23, 22, 5)";
+    $sql = "INSERT INTO messages (MessageText, MessageTime, FromId, FromName, ToId, Thread, MessageStatus) VALUES ($text, $time, 4, 'guest',35, 0, 5)";
     $db->query($sql);
     $message_id = $db->insert_id;
     $_SESSION['alert_color'] = "var(--primary)";
@@ -24,7 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ob_start();
 ?>
 
-<div class="row pt-5" style="position:absolute; top:10vh; background-image: var(--background_img_03); width:100vw; height:100vh;">
+<div class="d-flex justify-content-around align-items-center text-center p-3 row" style="position:fixed; top:10vh; background-color:var(--secondary); z-index:95; width:100vw; ">
+    <div class="col-5">
+        <h4 style="font-size:3vh;">CONTACT US</h4>
+    </div>
+</div>
+
+<div class="row pt-5" style="position:absolute; top:18vh; background-image: var(--background_img_03); width:100vw; height:100vh;">
     <div class="col-6 ms-5 mt-5">
         <form id="contact_form" action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form" novalidate>
             <div class="row">
@@ -64,7 +70,7 @@ ob_start();
                     <label>Message</label>
                 </div>
                 <div class="col-8 m-0 p-0 pe-4 ps-1">
-                    <textarea id="message" name="message" rows="4" cols="50">Message</textarea>
+                    <textarea id="message" name="message" rows="4" cols="50"></textarea>
                 </div>
             </div>
             <div class="row">

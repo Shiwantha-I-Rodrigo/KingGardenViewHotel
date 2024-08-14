@@ -24,7 +24,7 @@ if (isset($_POST['req'])) {
             $result = $db->query($sql);
             $list = array();
             while ($row = $result->fetch_assoc()) {
-                $row['FromId'] == $user_id ? $contact = $row['ToId'] : $row['FromId'];
+                $row['FromId'] == $user_id ? $contact = $row['ToId'] : $contact = $row['FromId'];
                 if (!in_array($contact, $list)) {
                     array_push($list, $contact);
                 }
@@ -57,7 +57,7 @@ if (isset($_POST['req'])) {
             $result = $db->query($sql);
             $list = array();
             while ($row = $result->fetch_assoc()) {
-                $row['FromId'] == $user_id ? $contact = $row['ToId'] : $row['FromId'];
+                $row['FromId'] == $user_id ? $contact = $row['ToId'] : $contact = $row['FromId'];
                 if (!in_array($contact, $list)) {
                     array_push($list, $contact);
                 }

@@ -33,8 +33,8 @@ require_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
         <div class="col-3" id="logo"><img src="<?= BASE_URL . '/img/common/logo_white.png' ?>" alt="logo" style="width:50%;"></div>
         <div class="col-1 nav-item" id="home">Home</div>
         <div class="col-1 nav-item" id="about">About Us</div>
-        <div class="col-1 nav-item" id="rooms">Rooms</div>
-        <div class="col-1 nav-item" id="blog">Blog</div>
+        <div class="col-1 nav-item" id="rooms">Booking</div>
+        <div class="col-1 nav-item" id="blog">Rooms</div>
         <div class="col-1 nav-item" id="contact">Contact Us</div>
         <div class="col-2"></div>
 

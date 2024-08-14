@@ -216,7 +216,7 @@ if (isset($_POST['req'])) {
         case "res_fwd":
             $_SESSION['res_offset'] < 0 ? $_SESSION['res_offset'] = 0 : $_SESSION['res_offset'] += 5;
             $offset = $_SESSION['res_offset'];
-            $sql = "SELECT * FROM reservations r JOIN (SELECT i.ReservationId, SUM(i.ItemPrice) AS Price, SUM(i.ItemPaid) AS Paid FROM reservations r JOIN items i on r.ReservationId=i.ReservationId GROUP BY r.ReservationId) AS t ON r.ReservationId=t.ReservationId opt LIMIT 6 OFFSET $offset";
+            $sql = "SELECT * FROM reservations r JOIN (SELECT i.ReservationId, SUM(i.ItemPrice) AS Price, SUM(i.ItemPaid) AS Paid FROM reservations r JOIN items i on r.ReservationId=i.ReservationId GROUP BY r.ReservationId) AS t ON r.ReservationId=t.ReservationId $opt LIMIT 6 OFFSET $offset";
             $result = $db->query($sql);
             if ($result->num_rows > 5) {
                 $content .= " <tr><th>Reservation Id</th><th>Status</th><th>Room Id</th><th>Check In</th><th>Check Out</th><th>Guests</th><th>Total</th><th>Paid</th><th>Actions</th></tr>";
@@ -267,7 +267,7 @@ if (isset($_POST['req'])) {
                 $ItemName = $row["ItemName"];
                 $ItemPrice = $row["ItemPrice"];
                 $ItemPaid = $row["ItemPaid"];
-                $ItemStatus = getStatus($row["ItemStatus"]);
+                $ItemStatus = getItemStatus($row["ItemStatus"]);
                 $ItemDiscount = $row['ItemDiscount'];
                 $ItemComments = $row["ItemComments"];
 
@@ -296,7 +296,7 @@ if (isset($_POST['req'])) {
                 $ItemName = $row["ItemName"];
                 $ItemPrice = $row["ItemPrice"];
                 $ItemPaid = $row["ItemPaid"];
-                $ItemStatus = getStatus($row["ItemStatus"]);
+                $ItemStatus = getItemStatus($row["ItemStatus"]);
                 $ItemDiscount = $row['ItemDiscount'];
                 $ItemComments = $row["ItemComments"];
 

@@ -15,23 +15,23 @@ function change() {
 
 setInterval(change, 1000);
 
-blog_back = document.getElementById("blog_back");
-blog_fwd = document.getElementById("blog_fwd");
+dest_back = document.getElementById("dest_back");
+dest_fwd = document.getElementById("dest_fwd");
 
 window.onload = function () {
-    blog_back.click();
+    dest_back.click();
 };
 
-document.getElementById("blog_back").addEventListener("click", function (event) {
+document.getElementById("dest_back").addEventListener("click", function (event) {
     event.preventDefault();
-    //$("#blogs div").remove();
-    ajax_call("blog_back", "", "blogs", blog_fwd, "");
+    //$("#dests div").remove();
+    ajax_call("dest_back", "", "dests", dest_fwd, "");
 });
 
-document.getElementById("blog_fwd").addEventListener("click", function (event) {
+document.getElementById("dest_fwd").addEventListener("click", function (event) {
     event.preventDefault();
-    //$("#blogs div").remove();
-    ajax_call("blog_fwd", "", "blogs", blog_fwd, "");
+    //$("#dests div").remove();
+    ajax_call("dest_fwd", "", "dests", dest_fwd, "");
 });
 
 function ajax_call(request, sub_request, list_name, fwd, heading) {
@@ -59,6 +59,13 @@ function ajax_call(request, sub_request, list_name, fwd, heading) {
                     let text = item.innerHTML;
                     $("#room-details").html(text);
                     $('#Reservation').modal('show');
+                })
+            });
+
+            let transports = document.querySelectorAll('.transport');
+            document.getElementById("list_toggle").addEventListener("click", function (event) {
+                transports.forEach((item) => {
+                    item.classList.toggle('d-none');
                 })
             });
 

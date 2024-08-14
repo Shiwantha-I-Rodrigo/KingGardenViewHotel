@@ -53,11 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $upload = "";
     $i = 0;
     foreach ($_FILES['file_upload']['name'] as $file_name) {
-        $path =  $_SERVER['DOCUMENT_ROOT'] . '/img/blogs/';
-        $file = uploadFiles($path, $_FILES, "system", $i);
-        $i++;
-        $full_path = '/img/blogs/' . $file;
-        $upload .= ",`BlogPicture$i`='$full_path'";
+        if (!empty($_FILES['file_upload']['name'][$i])) {
+            $path =  $_SERVER['DOCUMENT_ROOT'] . '/img/blogs/';
+            $file = uploadFiles($path, $_FILES, "system", $i);
+            $i++;
+            $full_path = '/img/blogs/' . $file;
+            $upload .= ",`BlogPicture$i`='$full_path'";
+        }
     }
 
     $sql = "UPDATE blogs SET `BlogText`='$blog_text',`BlogTitle`='$blog_title', `BlogStatus`='$blog_status' $upload WHERE BlogId=$blog_id";
@@ -66,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['alert_color'] = "var(--primary)";
     $_SESSION['alert_icon'] = "task_alt";
     $_SESSION['alert_title'] = "Success !";
-    $_SESSION['alert_msg'] = $upload;//"The information was updated succesfully";
+    $_SESSION['alert_msg'] = $upload; //"The information was updated succesfully";
     reDirect('/system/sub/alert.php');
 }
 

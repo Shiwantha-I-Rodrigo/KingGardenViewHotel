@@ -196,6 +196,10 @@ select {
     border: none;
 }
 
+em {
+    color:var(--primary);
+}
+
 /* element id */
 
 #spinner {
@@ -568,5 +572,11 @@ input:focus {
     transform: scale(1.05);
     box-shadow: 0 0 20px var(--foreground);
     transition: ease-in 0.5s;
+    cursor: pointer;
+}
+
+#destinations_link:focus,
+#destinations_link:hover {
+    color: var(--primary);
     cursor: pointer;
 }
