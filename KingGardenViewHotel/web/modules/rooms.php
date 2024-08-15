@@ -38,6 +38,12 @@ $sql = "SELECT * FROM rooms $extra_args";
 $result = $db->query($sql);
 while ($row = $result->fetch_assoc()) {
     if (!in_array($row['RoomId'], $rooms_list)) {
+
+        $RoomId = $row['RoomId'];
+        $sql2 = "SELECT * FROM reservations r JOIN rooms m ON r.RoomId = m.RoomId WHERE r.RoomId = $RoomId LIMIT 1 OFFSET 0";
+        $result2 = $db->query($sql2);
+        $row2 = $result2->fetch_assoc();
+
         $rooms_list2[] = array(
             "RoomId" => $row['RoomId'],
             "RoomName" => $row['RoomName'],
@@ -46,7 +52,8 @@ while ($row = $result->fetch_assoc()) {
             "RoomWIFI" => $row['RoomWIFI'],
             "RoomCapacity" => $row['RoomCapacity'],
             "RoomPicture" => $row['RoomPicture'],
-            "RoomStatus" => $row['RoomStatus']
+            "RoomStatus" => $row['RoomStatus'],
+            "ReservationId" => $row2['ReservationId']
         );
     }
 }
@@ -154,7 +161,7 @@ ob_start();
                     if ($rooms_list2[$i]["RoomPrice"] < 4000) {
                         echo '<i class="material-icons">attach_money</i>';
                     }
-                    echo '</p></div></div>';
+                    echo '<br/><a href="/web/modules/reviews.php?id='.$rooms_list2[$i]["ReservationId"].'">Read Reviews</a></p></div></div>';
                 }
             }
             break;
@@ -194,6 +201,7 @@ ob_start();
                         if ($rooms_list2[$i]["RoomPrice"] < 4000) {
                             echo '<i class="material-icons">attach_money</i>';
                         }
+                        echo '<br/><a href="/web/modules/reviews.php?id='.$rooms_list2[$i]["ReservationId"].'">Read Reviews</a><br/>';
                         echo '<br/><label>' .  $rooms_list2[$j]["RoomName"] . '</label>';
                         if ($rooms_list2[$j]["RoomWIFI"] == 1) {
                             echo '<i class="material-icons">wifi</i>';
@@ -207,6 +215,7 @@ ob_start();
                         if ($rooms_list2[$j]["RoomPrice"] < 4000) {
                             echo '<i class="material-icons">attach_money</i>';
                         }
+                        echo '<br/><a href="/web/modules/reviews.php?id='.$rooms_list2[$j]["ReservationId"].'">Read Reviews</a>';
                         echo '</div></div>';
                     }
                 }
@@ -252,6 +261,7 @@ ob_start();
                             if ($rooms_list2[$i]["RoomPrice"] < 4000) {
                                 echo '<i class="material-icons">attach_money</i>';
                             }
+                            echo '<br/><a href="/web/modules/reviews.php?id='.$rooms_list2[$i]["ReservationId"].'">Read Reviews</a><br/>';
                             echo '<br/><label>' .  $rooms_list2[$j]["RoomName"] . '</label>';
                             if ($rooms_list2[$j]["RoomWIFI"] == 1) {
                                 echo '<i class="material-icons">wifi</i>';
@@ -265,6 +275,7 @@ ob_start();
                             if ($rooms_list2[$j]["RoomPrice"] < 4000) {
                                 echo '<i class="material-icons">attach_money</i>';
                             }
+                            echo '<br/><a href="/web/modules/reviews.php?id='.$rooms_list2[$j]["ReservationId"].'">Read Reviews</a><br/>';
                             echo '<br/><label>' .  $rooms_list2[$k]["RoomName"] . '</label>';
                             if ($rooms_list2[$k]["RoomWIFI"] == 1) {
                                 echo '<i class="material-icons">wifi</i>';
@@ -278,6 +289,7 @@ ob_start();
                             if ($rooms_list2[$k]["RoomPrice"] < 4000) {
                                 echo '<i class="material-icons">attach_money</i>';
                             }
+                            echo '<br/><a href="/web/modules/reviews.php?id='.$rooms_list2[$k]["ReservationId"].'">Read Reviews</a><br/>';
                             echo '</div></div>';
                         }
                     }
