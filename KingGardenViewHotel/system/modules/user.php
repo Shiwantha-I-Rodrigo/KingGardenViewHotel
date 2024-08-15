@@ -5,7 +5,9 @@ isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : reDirect("/syste
 authorize($user_id, '1', 'web');
 $extra_js = '<script src="' . SYSTEM_BASE_URL . 'js/user.js"></script>';
 $extra_css = '';
+
 $db = dbConn();
+
 $sql = "SELECT * FROM customers c INNER JOIN users u ON c.UserId = u.UserId WHERE u.UserId = $user_id";
 $result = $db->query($sql);
 if ($result->num_rows > 0) {
@@ -53,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             reDirect('/system/sub/alert.php');
         } else {
             $upload = "";
-
             if (isset($_FILES['file_upload'])) {
                 $path =  $_SERVER['DOCUMENT_ROOT'] . '/img/users/';
                 $file = uploadFile($path, $_FILES, "web");
@@ -91,6 +92,7 @@ ob_start();
             </div>
         </div>
         <h2 class="d-flex justify-content-center align-items-center my-4" style="font-size:3vh;">Update User Information</h2>
+
         <form id="reg_form" enctype="multipart/form-data" action="<?= htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post" role="form" novalidate>
 
             <div class="row mx-5">
@@ -231,7 +233,9 @@ ob_start();
                     <input type="text" name="mobile" id="mobile" value="<?= $mobile ?>" placeholder="Mobile" />
                 </div>
             </div>
+
         </form>
+
         <div class="row my-4 mx-5">
             <div class="col-12 d-flex justify-content-end">
                 <button class="success-btn px-5 mx-4" name="submit_btn" id="submit_btn" data-bs-toggle="modal" data-bs-target="#Confirm" disabled>Submit</button>

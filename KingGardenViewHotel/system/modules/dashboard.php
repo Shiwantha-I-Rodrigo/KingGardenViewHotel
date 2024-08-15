@@ -2,10 +2,12 @@
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
 isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : reDirect("/system/modules/login.php");
-authorize($user_id, '1', 'web');
+authorize($user_id, '1', 'system');
 $extra_js = '<script src="' . SYSTEM_BASE_URL . 'js/dashboard.js"></script>';
 $extra_css = '';
+
 $db = dbConn();
+
 $sql = "SELECT * FROM employees c INNER JOIN users u ON c.UserId = u.UserId WHERE u.UserId = $user_id";
 $result = $db->query($sql);
 if ($result->num_rows > 0) {
@@ -27,17 +29,16 @@ if ($result->num_rows > 0) {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     extract($_POST);
+
     if (isset($ReservationId)) {
         $sql = "DELETE FROM reservations WHERE ReservationId = $ReservationId";
         $result = $db->query($sql);
         if ($result) {
             echo '<div id="cancelled"></div>';
-
             $msg = "Dear " . $name2 . ",<br/>" .
                 "I hope this email finds you well. We would like to extend our sincerest appreciation for choosing King Garden View Hotel for your stay.<br/>" .
                 "The Reservation [ id : " . $ReservationId . "] is cancelled according to your request. If there is anything else we can assist you with or if you have any alternative requests, please do not hesitate to reach out to our front desk staff.<br/>" .
                 "Warm regards,<br/>Managing Director,<br/>King garden View Hotel";
-
             sendEmail($email, $name, "Your Reservation Is Cancelled!", $msg);
         }
     }
@@ -67,20 +68,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-$update = explode("_",$reg_no);
+$update = explode("_", $reg_no);
 
 ob_start();
 ?>
 
 <section style="background-color:var(--shadow);">
     <div class="row" style="height:10vh;"></div>
-    <div class="row my-5 mx-5">
+    <div class="row mx-5">
         <div class="col-3">
+
+            <!-- BIO Card-->
             <div class="card mb-4">
                 <div class="card-body text-center">
                     <img src="<?= $profile_pic ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
                     <h2 class="my-1" style="font-size : 4vh;"><?= $username ?></h2>
-                    <p class="mb-1">Last Update. : <?= date("Y-M-d H:i:s A",$update[0]) . "<br/>By : " . $update[1] . " ( User Id )" ?></p>
+                    <p class="mb-1">Last Update. : <?= date("Y-M-d H:i:s A", $update[0]) . "<br/>By : " . $update[1] . " ( User Id )" ?></p>
                     <p class="mb-4">Account Status : <?= $status ?></p>
                     <div class="d-flex justify-content-around mb-2">
                         <a href="user.php"><button type="button" class="success-btn px-3 py-2" style="width:8vw;">Edit</button></a>
@@ -88,19 +91,15 @@ ob_start();
                     </div>
                 </div>
             </div>
+
+            <!-- Message List -->
             <div class="card mb-4">
                 <div class="card-body" style="min-height: 20vh;">
-
                     <p class="mb-4"><span class="text-primary font-italic me-1">Recieved</span> Messages</p>
-
                     <button class="success-btn px-3 py-2 mb-4" name="new_chat_btn" id="new_chat_btn"><i class="material-icons">add</i> New Chat</button>
-
                     <ul class="list-group list-group-flush rounded-3 px-3" id="msg" style="list-style-type:none;">
-
                         <li>none</li>
-
                     </ul>
-
                 </div>
                 <div class="d-flex justify-content-between align-items-center p-3">
                     <i class="material-icons" id="msg_back">arrow_back</i>
@@ -109,6 +108,8 @@ ob_start();
             </div>
         </div>
         <div class="col-7">
+
+            <!-- User Information -->
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="row">
@@ -116,7 +117,7 @@ ob_start();
                             <p class="mb-0">Full Name</p>
                         </div>
                         <div class="col-9">
-                            <p class="text-muted mb-0"><?= $name ?></p>
+                            <p class="mb-0"><?= $name ?></p>
                         </div>
                     </div>
                     <hr>
@@ -125,7 +126,7 @@ ob_start();
                             <p class="mb-0">Email</p>
                         </div>
                         <div class="col-9">
-                            <p class="text-muted mb-0"><?= $email ?></p>
+                            <p class="mb-0"><?= $email ?></p>
                         </div>
                     </div>
                     <hr>
@@ -134,7 +135,7 @@ ob_start();
                             <p class="mb-0">Phone</p>
                         </div>
                         <div class="col-9">
-                            <p class="text-muted mb-0"><?= $telephone ?></p>
+                            <p class="mb-0"><?= $telephone ?></p>
                         </div>
                     </div>
                     <hr>
@@ -143,7 +144,7 @@ ob_start();
                             <p class="mb-0">Mobile</p>
                         </div>
                         <div class="col-9">
-                            <p class="text-muted mb-0"><?= $mobile ?></p>
+                            <p class="mb-0"><?= $mobile ?></p>
                         </div>
                     </div>
                     <hr>
@@ -152,24 +153,21 @@ ob_start();
                             <p class="mb-0">Address</p>
                         </div>
                         <div class="col-9">
-                            <p class="text-muted mb-0"><?= $address ?></p>
+                            <p class="mb-0"><?= $address ?></p>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-6">
+
+                    <!-- Past Reservations -->
                     <div class="card mb-4">
                         <div class="card-body" style="min-height: 30vh;">
-
                             <p class="mb-4"><span class="text-primary font-italic me-1">Past</span> Reservations</p>
-
                             <ul class="list-group list-group-flush rounded-3 px-3" id="past" style="list-style-type:none;">
-
                                 <li>none</li>
-
                             </ul>
-
                         </div>
                         <div class="d-flex justify-content-between align-items-center p-3">
                             <i class="material-icons" id="past_back">arrow_back</i>
@@ -178,17 +176,14 @@ ob_start();
                     </div>
                 </div>
                 <div class="col-md-6">
+
+                    <!-- Future Reservations -->
                     <div class="card mb-4">
                         <div class="card-body" style="min-height: 30vh;">
-
                             <p class="mb-4"><span class="text-primary font-italic me-1">Pending</span> Reservations</p>
-
                             <ul class="list-group list-group-flush rounded-3 px-3" id="comming" style="list-style-type:none;">
-
                                 <li>none</li>
-
                             </ul>
-
                         </div>
                         <div class="d-flex justify-content-between align-items-center p-3">
                             <i class="material-icons" id="comming_back">arrow_back</i>
@@ -198,28 +193,11 @@ ob_start();
                 </div>
             </div>
         </div>
-        <div class="col-2">
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="my-4 text-center"><label class="my-1" style="font-size : 2vh;">Modules</label></div>
-                    <div class="my-3"><a href="/system/index.php"><label class="my-1" style="font-size : 2vh;"><i class="material-icons mx-3">home</i>Home</label></a></div>
-                    <div class="my-3"><a href="/system/modules/list_customers.php"><label class="my-1" style="font-size : 2vh;"><i class="material-icons mx-3">portrait</i>Customers</label></a></div>
-                    <div class="my-3"><a href="/system/modules/list_employees.php"><label class="my-1" style="font-size : 2vh;"><i class="material-icons mx-3">badge</i>Employees</label></a></div>
-                    <div class="my-3"><a href="/system/modules/list_rooms.php"><label class="my-1" style="font-size : 2vh;"><i class="material-icons mx-3">apartment</i>Rooms</label></a></div>
-                    <div class="my-3"><a href="/system/modules/list_destinations.php"><label class="my-1" style="font-size : 2vh;"><i class="material-icons mx-3">terrain</i>Destinations</label></a></div>
-                    <div class="my-3"><a href="/system/modules/list_reservations.php"><label class="my-1" style="font-size : 2vh;"><i class="material-icons mx-3">book</i>Reservations</label></a></div>
-                    <div class="my-3"><a href="/system/modules/list_invoices.php"><label class="my-1" style="font-size : 2vh;"><i class="material-icons mx-3">request_quote</i>Invoice</label></a></div>
-                    <div class="my-3"><a href="/system/modules/list_blog.php"><label class="my-1" style="font-size : 2vh;"><i class="material-icons mx-3">edit_note</i>Catelogue</label></a></div>
-                    <div class="my-3"><a href="/system/modules/list_reviews.php"><label class="my-1" style="font-size : 2vh;"><i class="material-icons mx-3">star_half</i>Reviews</label></a></div>
-                    <div class="my-3"><a href="/system/modules/list_reports.php"><label class="my-1" style="font-size : 2vh;"><i class="material-icons mx-3">trending_up</i>Reports</label></a></div>
-                </div>
-            </div>
-        </div>
+    <?php include_once $_SERVER['DOCUMENT_ROOT'] . '/system/sub/sidebar.php'; ?>
     </div>
     <div class="row" style="height:10vh;"></div>
 </section>
 
-<!-- Message Modal -->
 <div class="modal fade" id="Dash_Pop" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content" style="background-color:var(--background);">

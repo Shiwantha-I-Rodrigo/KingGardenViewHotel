@@ -20,9 +20,9 @@ document.getElementById("new_chat_btn").addEventListener("click", function (even
     let foot = document.getElementById('modal_foot');
 
     title.innerHTML = "New Chat";
-    list.innerHTML = '<form method="post" class="pe-5 ps-2"><input class="my-5" type="text" name="new_chat_id" id="new_chat_id" placeholder="Username or Email" />'+
-    '<input class="mb-5" type="text" name="new_chat_text" id="new_chat_text" placeholder="Message" />'+
-    '<button class="success-btn px-3 py-2 mb-2" name="new_chat_btn" id="new_chat_btn" type="submit" formmethod="post"><i class="material-icons">send</i> Send Message</button></form>';
+    list.innerHTML = '<form method="post" class="pe-5 ps-2"><input class="my-5" type="text" name="new_chat_id" id="new_chat_id" placeholder="Username or Email" />' +
+        '<input class="mb-5" type="text" name="new_chat_text" id="new_chat_text" placeholder="Message" />' +
+        '<button class="success-btn px-3 py-2 mb-2" name="new_chat_btn" id="new_chat_btn" type="submit" formmethod="post"><i class="material-icons">send</i> Send Message</button></form>';
     foot.innerHTML = '<button type="button" class="fail-btn px-3" data-bs-dismiss="modal">Close</button>';
 
     $('#Dash_Pop').modal('show');
@@ -30,37 +30,31 @@ document.getElementById("new_chat_btn").addEventListener("click", function (even
 
 document.getElementById("msg_back").addEventListener("click", function (event) {
     event.preventDefault();
-    // $("#msg li").remove();
     ajax_call("msg_back", "msg_li", "msg", msg_fwd, "Messages");
 });
 
 document.getElementById("msg_fwd").addEventListener("click", function (event) {
     event.preventDefault();
-    // $("#msg li").remove();
     ajax_call("msg_fwd", "msg_li", "msg", msg_fwd, "Messages");
 });
 
 document.getElementById("past_back").addEventListener("click", function (event) {
     event.preventDefault();
-    // $("#past li").remove();
     ajax_call("past_back", "res_li", "past", past_fwd, "Reservation");
 });
 
 document.getElementById("past_fwd").addEventListener("click", function (event) {
     event.preventDefault();
-    // $("#past li").remove();
     ajax_call("past_fwd", "res_li", "past", past_fwd, "Reservation");
 });
 
 document.getElementById("comming_back").addEventListener("click", function (event) {
     event.preventDefault();
-    // $("#comming li").remove();
     ajax_call("comming_back", "res_li", "comming", comming_fwd, "Reservation");
 });
 
 document.getElementById("comming_fwd").addEventListener("click", function (event) {
     event.preventDefault();
-    // $("#comming li").remove();
     ajax_call("comming_fwd", "res_li", "comming", comming_fwd, "Reservation");
 });
 
@@ -82,7 +76,6 @@ function ajax_call(request, sub_request, list_name, fwd, heading) {
                 list.innerHTML = content;
                 fwd.style.display = "block";
             };
-
             const lists = document.querySelectorAll('#' + list_name + '>li');
             for (i = 0; i < lists.length; ++i) {
                 lists[i].addEventListener("click", function (event) {
@@ -108,7 +101,6 @@ function ajax_call(request, sub_request, list_name, fwd, heading) {
                                 '<button class="success-btn px-4 ms-3" type="submit" formmethod="post">Send</button></form>' :
                                 foot.innerHTML = '<button type="button" class="fail-btn px-3" data-bs-dismiss="modal">Close</button>';
                             $('#Dash_Pop').modal('show');
-
                             if (document.querySelector("#cancel")) {
                                 let cancel = document.getElementById("cancel");
                                 let id = cancel.getAttribute('data-id');
@@ -119,7 +111,6 @@ function ajax_call(request, sub_request, list_name, fwd, heading) {
                                     input.value = id;
                                 });
                             }
-
                         },
                         error: function (xhr, status, error) {
                             alert(error);
@@ -127,7 +118,6 @@ function ajax_call(request, sub_request, list_name, fwd, heading) {
                     });
                 });
             };
-
         },
         error: function (xhr, status, error) {
             alert(error);

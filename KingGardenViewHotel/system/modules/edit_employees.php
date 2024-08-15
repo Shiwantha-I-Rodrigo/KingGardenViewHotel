@@ -2,35 +2,38 @@
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
 isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : reDirect("/web/modules/login.php");
-authorize($user_id, '1', 'web');
+authorize($user_id, '4', 'system');
 $extra_js = '<script src="' . SYSTEM_BASE_URL . 'js/edit_employees.js"></script>';
 $extra_css = '';
 
 $url =  basename($_SERVER['REQUEST_URI']);
 $url_componenets = parse_url($url);
 parse_str($url_componenets['query'], $params);
-$employee_id = $params['id'];
+isset($params['id']) ? $employee_id = $params['id'] : $employee_id = 0;
 
 $db = dbConn();
-$sql = "SELECT * FROM employees c INNER JOIN users u ON c.UserId = u.UserId WHERE u.UserId = $employee_id";
-$result = $db->query($sql);
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $row['ProfilePic'] != "" ? $profile_pic = $row['ProfilePic'] : $profile_pic = "/img/users/default.png";
-        $title = $row['Title'];
-        $first_name = $row['FirstName'];
-        $last_name = $row['LastName'];
-        $telephone = $row['Telephone'];
-        $mobile = $row['Mobile'];
-        $address_1 = $row['AddressLine1'];
-        $address_2 =  $row['AddressLine2'];
-        $address_3 =  $row['AddressLine3'];
-        $reg_no = $row['RegNo'];
-        $status = $row['UserStatus'];
-        $email = $row['Email'];
-        $user_name = $row['UserName'];
-        $current_password = $row['Password'];
-        $type = $row['Type'];
+
+if ($employee_id != 0) {
+    $sql = "SELECT * FROM employees c INNER JOIN users u ON c.UserId = u.UserId WHERE u.UserId = $employee_id";
+    $result = $db->query($sql);
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $row['ProfilePic'] != "" ? $profile_pic = $row['ProfilePic'] : $profile_pic = "/img/users/default.png";
+            $title = $row['Title'];
+            $first_name = $row['FirstName'];
+            $last_name = $row['LastName'];
+            $telephone = $row['Telephone'];
+            $mobile = $row['Mobile'];
+            $address_1 = $row['AddressLine1'];
+            $address_2 =  $row['AddressLine2'];
+            $address_3 =  $row['AddressLine3'];
+            $reg_no = $row['RegNo'];
+            $status = $row['UserStatus'];
+            $email = $row['Email'];
+            $user_name = $row['UserName'];
+            $current_password = $row['Password'];
+            $type = $row['Type'];
+        }
     }
 }
 
@@ -38,7 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     extract($_POST);
 
-    $db = dbConn();
     $sql = "SELECT * FROM users WHERE Email='$email'";
     $result = $db->query($sql);
     $row = $result->fetch_assoc();
@@ -59,8 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['alert_msg'] =  'The username provided has an account associated,<br> please <a href="/web/modules/login.php">log in</a> to continue, or use another username.';
             reDirect('/web/sub/alert.php');
         } else {
-            $upload = "";
 
+            $upload = "";
             if (!empty($_FILES['file_upload']['name'])) {
                 $path =  $_SERVER['DOCUMENT_ROOT'] . '/img/users/';
                 $file = uploadFile($path, $_FILES, "system");
@@ -68,15 +70,59 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $upload = ",`ProfilePic`='$full_path'";
             }
 
-            isset($change_pw) && $password != '' ? $pw_hash = password_hash($password, PASSWORD_BCRYPT) : $pw_hash = $current_password;
-            $sql = "UPDATE users SET `UserName`='$user_name', `Password`='$pw_hash',`Email`='$email' , `Type`=$type WHERE UserId=$employee_id";
-            $db->query($sql);
+            if ($employee_id != 0) {
+                isset($change_pw) && $password != '' ? $pw_hash = password_hash($password, PASSWORD_BCRYPT) : $pw_hash = $current_password;
+                $sql = "UPDATE users SET `UserName`='$user_name', `Password`='$pw_hash',`Email`='$email' , `Type`=$type WHERE UserId=$employee_id";
+                $db->query($sql);
 
-            $reg_no = time(). "_" .$user_id;
-            $token = md5(uniqid());
+                $reg_no = time() . "_" . $user_id;
+                $token = md5(uniqid());
 
-            $sql = "UPDATE employees SET `FirstName`='$first_name', `LastName`='$last_name', `AddressLine1`='$address_1', `AddressLine2`='$address_2', `AddressLine3`='$address_3', `Telephone`='$telephone', `Mobile`='$mobile', `Title`='$title', `RegNo`='$reg_no' $upload WHERE `UserId`='$employee_id'";
-            $db->query($sql);
+                $sql = "UPDATE employees SET `FirstName`='$first_name', `LastName`='$last_name', `AddressLine1`='$address_1', `AddressLine2`='$address_2', `AddressLine3`='$address_3', `Telephone`='$telephone', `Mobile`='$mobile', `Title`='$title', `RegNo`='$reg_no' $upload WHERE `UserId`='$employee_id'";
+                $db->query($sql);
+
+                $sql = "DELETE FROM user_modules WHERE UserId = $employee_id";
+                $result = $db->query($sql);
+            } else {
+                $pw_hash = password_hash($password, PASSWORD_BCRYPT);
+                $sql = "INSERT INTO users (`UserName`, `Password`, `Email`, `Type`) VALUES (`$user_name`, `$pw_hash`, `$e_mail`, $type)";
+                $db->query($sql);
+
+                $reg_no = time() . "_" . $user_id;
+                $token = md5(uniqid());
+
+                $sql = "INSERT INTO employees (`FirstName`, `LastName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `Telephone`, `Mobile`, `Title`, `RegNo`, `ProfilePicture`) VALUES
+                 (`$first_name`,`$last_name`,`$address_1`, `$address_2`, `$address_3`, `$telephone`, `$mobile`, `$title`, `$reg_no`, `$full_path`)";
+                $db->query($sql);
+
+            }
+
+            $permissions = array();
+            switch ($type) {
+                case 1:
+                    $permissions = [1, 2];
+                    break;
+                case 2:
+                    $permissions = [1, 2, 6];
+                    break;
+                case 3:
+                    $permissions = [1, 2, 3, 4, 6, 7, 8, 11];
+                    break;
+                case 4:
+                    $permissions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+                    break;
+                case 5:
+                    $permissions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+                    break;
+                default:
+                    $permissions = [1, 2];
+                    break;
+            }
+
+            foreach ($permissions as $key) {
+                $sql = "INSERT INTO user_modules (UserId, ModuleId, User_ModuleStatus) VALUES ($employee_id, $key, 1)";
+                $result = $db->query($sql);
+            }
 
             $_SESSION['alert_color'] = "var(--primary)";
             $_SESSION['alert_icon'] = "task_alt";
@@ -98,7 +144,7 @@ ob_start();
             </div>
         </div>
         <h2 class="d-flex justify-content-center align-items-center my-4" style="font-size:3vh;">Update Employee Information</h2>
-        <form id="reg_form" enctype="multipart/form-data" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) . '?id=' . $employee_id ; ?>" method="post" role="form" novalidate>
+        <form id="reg_form" enctype="multipart/form-data" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) . '?id=' . $employee_id; ?>" method="post" role="form" novalidate>
 
             <div class="row mx-5">
                 <div class="col-6 d-flex justify-content-start align-items-bottom">
@@ -274,26 +320,8 @@ ob_start();
 </div>
 <div class="row" style="height:10vh;"></div>
 
-<!-- Modal -->
-<div class="modal fade" id="Confirm" tabindex="-1" aria-labelledby="Confirm" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content" style="background-color:var(--background);">
-            <div class="modal-header d-flex justify-content-between">
-                <img src="<?= BASE_URL . '/img/common/logo_logo.png' ?>" alt="" style="width: 3vw; height: 5vh; object-fit: cover;">
-                <label class="mx-3" style="font-size:3vh;">Confirmation</label>
-                <button type="button" class="clear_btn" data-bs-dismiss="modal"><i class="material-icons">cancel</i></button>
-            </div>
-            <div class="modal-body" style="font-weight: normal; color:var(--primary_font); text-align: justify; text-justify: inter-word;">
-                <p>Are you sure you want to submit the changes ?</p>
-            </div>
-            <div class="modal-footer">
-                <button class="success-btn px-3" type="submit" form="reg_form" formmethod="post">Confirm</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <?php
+require_once $_SERVER['DOCUMENT_ROOT'] . '/system/sub/modals.php';
 $page_content = ob_get_clean();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/system/layout.php';
 ?>

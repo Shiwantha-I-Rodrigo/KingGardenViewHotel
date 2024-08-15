@@ -17,6 +17,7 @@ $columns = 3;
 $extra_args = "";
 $rooms_list = array();
 $rooms_list2 = array();
+
 $db = dbConn();
 
 //construct filter arguments
@@ -33,6 +34,7 @@ $result = $db->query($sql);
 while ($row = $result->fetch_assoc()) {
     $rooms_list[] = $row['RoomId'];
 }
+
 // get all rooms except conflicting rooms
 $sql = "SELECT * FROM rooms $extra_args";
 $result = $db->query($sql);
@@ -53,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         setHome();
         reDirect("/system/index.php");
     } else {
+
         extract($_POST);
 
         $sql = "SELECT * FROM users u JOIN customers c ON c.UserId=c.UserId WHERE u.UserId=$user_id";
@@ -269,11 +272,6 @@ ob_start();
     }
     echo '</div><div class="row" style="height:10vh;"></div>';
     ?>
-</div>
-
-<!-- Book Now Button -->
-<div id="booknow">
-    <div class="success-btn" id="book_btn">Book Now!</div>
 </div>
 
 <!-- Reservation Modal -->
