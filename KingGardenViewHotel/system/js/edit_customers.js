@@ -28,8 +28,17 @@ addEventListener("DOMContentLoaded", (event) => {
 	var [t1, m1, a1, a2, a3] = [true, true, true, true, true];
 
 	const change_pw = document.getElementById("change_pw");
+	const change_pw_label = document.getElementById("change_pw_label");
 	const password_label = document.getElementById("password_label");
 	const confirm_password_label = document.getElementById("confirm_password_label");
+
+	if (email.value == '') {
+		change_pw.classList.add('d-none');
+		change_pw_label.classList.add('d-none');
+		f1, l1, u1, e1, p1, p2 = false , false, false , false, false , false;
+		sub_enable();
+		togglePassword();
+	}
 
 	function validatePassword() {
 		const value = password.value;

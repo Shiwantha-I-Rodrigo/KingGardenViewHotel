@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sql = "UPDATE blogs SET `BlogText`='$blog_text',`BlogTitle`='$blog_title', `BlogStatus`='$blog_status' $upload WHERE BlogId=$blog_id";
         $db->query($sql);
     }else{
-        $sql = "INSERT INTO blogs (`BlogText`, `BlogTitle`, `BlogStatus`,`BlogPicture`) VALUES (`$blog_text`, `$blog_title`, `$blog_status`, `$full_path`)";
+        $sql = "INSERT INTO blogs (`BlogText`, `BlogTitle`, `BlogStatus`,`BlogPicture`) VALUES ('$blog_text', '$blog_title', '$blog_status', '$full_path')";
         $db->query($sql);
     }
 

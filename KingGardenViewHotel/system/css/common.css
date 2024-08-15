@@ -281,7 +281,7 @@ select {
 }
 
 .nav-item {
-    color:var(--primary_font);
+    color: var(--primary_font);
     align-content: center;
     align-items: center;
     text-align: center;
@@ -403,7 +403,7 @@ select {
     font-size: large;
 }
 
-.message-time{
+.message-time {
     padding: 0;
     margin: 0;
     color: var(--success_font);
@@ -454,7 +454,7 @@ select {
 }
 
 .chat-form {
-    width : 100%;
+    width: 100%;
     align-content: center;
     align-items: center;
     text-align: center;

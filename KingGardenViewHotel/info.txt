@@ -152,6 +152,7 @@ modules>>>>>
     9-catelogue
     10-reviews
     11-reports
+    12-routes
 
 
 # columns

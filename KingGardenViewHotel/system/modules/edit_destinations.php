@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sql = "UPDATE destinations SET `DestinationText`='$destination_text',`DestinationTitle`='$destination_title', `DestinationStatus`='$destination_status' $upload WHERE DestinationId=$destination_id";
         $db->query($sql);
     } else {
-        $sql = "INSERT INTO destinations (`DestinationText`, `DestinationTitle`, `DestinationStatus`,`DestinationPicture`) VALUES (`$destination_text`, `$destination_title`, `$destination_status`, `$full_path`)";
+        $sql = "INSERT INTO destinations (`DestinationText`, `DestinationTitle`, `DestinationStatus`,`DestinationPicture`) VALUES ('$destination_text', '$destination_title', '$destination_status', '$full_path')";
         $db->query($sql);
     }
 

@@ -85,14 +85,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $result = $db->query($sql);
             } else {
                 $pw_hash = password_hash($password, PASSWORD_BCRYPT);
-                $sql = "INSERT INTO users (`UserName`, `Password`, `Email`, `Type`) VALUES (`$user_name`, `$pw_hash`, `$e_mail`, $type)";
+                $sql = "INSERT INTO users (`UserName`, `Password`, `Email`, `Type`) VALUES ('$user_name', '$pw_hash', '$e_mail', $type)";
                 $db->query($sql);
 
+                $employee_id = $db->insert_id;
                 $reg_no = time() . "_" . $user_id;
                 $token = md5(uniqid());
 
-                $sql = "INSERT INTO employees (`FirstName`, `LastName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `Telephone`, `Mobile`, `Title`, `RegNo`, `ProfilePicture`) VALUES
-                 (`$first_name`,`$last_name`,`$address_1`, `$address_2`, `$address_3`, `$telephone`, `$mobile`, `$title`, `$reg_no`, `$full_path`)";
+                $sql = "INSERT INTO employees (`FirstName`, `LastName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `Telephone`, `Mobile`, `Title`, `RegNo`, `ProfilePic`,`EmployeeStatus`,`UserId`) VALUES
+                 ('$first_name','$last_name','$address_1', '$address_2', '$address_3', '$telephone', '$mobile', '$title', '$reg_no', '$full_path',$employee_id)";
                 $db->query($sql);
 
             }
@@ -239,7 +240,7 @@ ob_start();
             <div class="row mx-5">
                 <div class="col-3 ms-3 my-3 d-flex justify-content-start align-items-bottom form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="change_pw">
-                    <label class="form-check-label ms-3 " for="change_pw">Change Password</label>
+                    <label class="form-check-label ms-3 " id="change_pw_label" for="change_pw">Change Password</label>
                 </div>
             </div>
             <div class="row mx-5">
@@ -262,7 +263,15 @@ ob_start();
                 <div class="col-6 d-flex justify-content-end align-items-center">
                     <input type="text" name="address_2" id="address_2" value="<?= $address_2 ?>" placeholder="City" />
                 </div>
-                <div class="col-1 d-flex justify-content-start align-items-center">
+            </div>
+            <div class="row mx-5">
+                <div class="col-6 d-flex justify-content-end align-items-center">
+                    <input type="text" name="address_3" id="address_3" value="<?= $address_3 ?>" placeholder="Province" />
+                </div>
+                <div class="col-2 d-flex justify-content-start align-items-center mb-4">
+                    <label>Employee Role &nbsp; &nbsp; ⇾  </label>
+                </div>
+                <div class="col-3 d-flex justify-content-start align-items-center mb-4">
                     <select name="type" id="type">
                         <option <?php echo ($type == 0) ? 'selected' : ''; ?> value="0">Guest</option>
                         <option <?php echo ($type == 1) ? 'selected' : ''; ?> value="1">Customer</option>
@@ -271,11 +280,6 @@ ob_start();
                         <option <?php echo ($type == 4) ? 'selected' : ''; ?> value="4">Manager</option>
                         <option <?php echo ($type == 5) ? 'selected' : ''; ?> value="5">Admin</option>
                     </select>
-                </div>
-            </div>
-            <div class="row mx-5">
-                <div class="col-6 d-flex justify-content-end align-items-center">
-                    <input type="text" name="address_3" id="address_3" value="<?= $address_3 ?>" placeholder="Province" />
                 </div>
             </div>
             <div class="row mx-5">
@@ -297,7 +301,7 @@ ob_start();
         </form>
         <div class="row my-4 mx-5">
             <div class="col-12 d-flex justify-content-end">
-                <button class="success-btn px-5 mx-4" name="submit_btn" id="submit_btn" data-bs-toggle="modal" data-bs-target="#Confirm" disabled>Submit</button>
+                <button class="success-btn px-5 mx-4" name="submit_btn" id="submit_btn" data-bs-toggle="modal" data-bs-target="#EditConfirm" disabled>Submit</button>
                 <button class="fail-btn px-5" id="cancel_btn">Cancel</button>
             </div>
         </div>

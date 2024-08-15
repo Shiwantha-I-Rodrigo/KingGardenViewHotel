@@ -1,4 +1,4 @@
-<div class="modal fade" id="EditConfirm" tabindex="-1" aria-labelledby="Confirm" aria-hidden="true">
+<div class="modal fade" id="EditConfirm" tabindex="-1" aria-labelledby="EditConfirm" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content" style="background-color:var(--background);">
             <div class="modal-header d-flex justify-content-between">

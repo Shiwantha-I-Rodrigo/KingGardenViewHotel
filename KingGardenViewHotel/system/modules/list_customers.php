@@ -42,10 +42,21 @@ ob_start();
         <div class="col-7">
             <div class="card mb-4">
                 <div class="card-body">
+                <div class="d-flex justify-content-between">
+                        <a class="success-btn p-2 m-0 align-items-center" id="print_btn"><i class="material-icons">print</i></a>
+                        <a href="/system/modules/edit_employees.php" class="success-btn p-2 m-0 align-items-center"><i class="material-icons">add</i></a>
+                    </div>
                     <div class="my-4 text-center"><label class="my-1" style="font-size : 2vh;">CUSTOMERS</label></div>
-                    <table id="tbl" name="tbl" class="table table-dark table-striped-columns table-hover">
+                    <div id="print_page">
+                        <div>
+                            <img class="d-none" style="height:8vh;" src="<?= BASE_URL . '/img/common/logo_logo.png' ?>" alt="logo">
+                            <p class="d-none" style="font-size:2vh;"> CUSTOMER REPORT</p>
+                            <p class="d-none" style="font-size:2vh;"> This report is generated on <?= getTimes(time()); ?> by user : <?= $user_id; ?> <nobr>on behalf of KING GARDEN VIEW HOTEL.</nobr></p>
+                        </div>
+                        <table id="tbl" name="tbl" class="table table-dark table-striped-columns table-hover">
 
-                    </table>
+                        </table>
+                    </div>
                     <div class="d-flex justify-content-between align-items-center p-3" style="width:100%;">
                         <i class="material-icons" id="back">arrow_back</i>
                         <i class="material-icons" id="fwd">arrow_forward</i>

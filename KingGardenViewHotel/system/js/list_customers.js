@@ -92,4 +92,12 @@ function gen_sql() {
     sort.value != '' ? sql += ` ORDER BY ${sort.value} ${order.value} ` : sql += '';
     console.log(sql);
     return sql;
-}
+};
+
+document.getElementById("print_btn").addEventListener("click", function (event) {
+    var page = document.getElementById("print_page");
+    newWin = window.open("");
+    newWin.document.write('<style> table, th, td {border:5px solid black; border-collapse : collapse;} th:last-child, td:last-child{ display: none; }</style>' + page.outerHTML);
+    newWin.print();
+    newWin.close();
+});

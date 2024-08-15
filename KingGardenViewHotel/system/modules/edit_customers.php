@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if ($customer_id != 0) {
                 isset($change_pw) && $password != '' ? $pw_hash = password_hash($password, PASSWORD_BCRYPT) : $pw_hash = $current_password;
-                $sql = "UPDATE users SET `UserName`='$user_name', `Password`='$pw_hash',`Email`='$email' , `Type`=$type WHERE UserId=$customer_id";
+                $sql = "UPDATE users SET `UserName`='$user_name', `Password`='$pw_hash',`Email`='$email' , `Type`= 1 WHERE UserId=$customer_id";
                 $db->query($sql);
 
                 $reg_no = time() . "_" . $user_id;
@@ -85,14 +85,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $result = $db->query($sql);
             } else {
                 $pw_hash = password_hash($password, PASSWORD_BCRYPT);
-                $sql = "INSERT INTO users (`UserName`, `Password`, `Email`, `Type`) VALUES (`$user_name`, `$pw_hash`, `$e_mail`, $type)";
+                $sql = "INSERT INTO users (`UserName`, `Password`, `Email`, `Type`, `UserStatus`) VALUES ('$user_name', '$pw_hash', '$email', 1, 0)";
                 $db->query($sql);
 
+                $customer_id = $db->insert_id;
                 $reg_no = time() . "_" . $user_id;
                 $token = md5(uniqid());
 
-                $sql = "INSERT INTO customers (`FirstName`, `LastName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `Telephone`, `Mobile`, `Title`, `RegNo`, `ProfilePicture`) VALUES
-                 (`$first_name`,`$last_name`,`$address_1`, `$address_2`, `$address_3`, `$telephone`, `$mobile`, `$title`, `$reg_no`, `$full_path`)";
+                $sql = "INSERT INTO customers (`FirstName`, `LastName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `Telephone`, `Mobile`, `Title`, `RegNo`, `ProfilePic`, `CustomerStatus`, `UserId`) VALUES
+                 ('$first_name','$last_name','$address_1', '$address_2', '$address_3', '$telephone', '$mobile', '$title', '$reg_no', '$full_path', 0,$customer_id)";
                 $db->query($sql);
 
             }
@@ -239,7 +240,7 @@ ob_start();
             <div class="row mx-5">
                 <div class="col-3 ms-3 my-3 d-flex justify-content-start align-items-bottom form-check form-switch">
                     <input class="form-check-input" type="checkbox" id="change_pw">
-                    <label class="form-check-label ms-3 " for="change_pw">Change Password</label>
+                    <label class="form-check-label ms-3 " id="change_pw_label" for="change_pw">Change Password</label>
                 </div>
             </div>
             <div class="row mx-5">
@@ -287,7 +288,7 @@ ob_start();
         </form>
         <div class="row my-4 mx-5">
             <div class="col-12 d-flex justify-content-end">
-                <button class="success-btn px-5 mx-4" name="submit_btn" id="submit_btn" data-bs-toggle="modal" data-bs-target="#Confirm" disabled>Submit</button>
+                <button class="success-btn px-5 mx-4" name="submit_btn" id="submit_btn" data-bs-toggle="modal" data-bs-target="#EditConfirm" disabled>Submit</button>
                 <button class="fail-btn px-5" id="cancel_btn">Cancel</button>
             </div>
         </div>

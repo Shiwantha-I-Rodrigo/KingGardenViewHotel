@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sql = "UPDATE rooms SET `RoomName`='$room_name',`RoomCapacity`='$room_capacity', `RoomPrice`='$room_price',`RoomAC`='$room_ac', `RoomWIFI`='$room_wifi',`RoomStatus`='$room_status'  $upload WHERE RoomId=$room_id";
         $db->query($sql);
     } else {
-        $sql = "INSERT INTO rooms (RoomName, RoomPrice, RoomAC, RoomWIFI, RoomCapacity, RoomPicture, RoomStatus) VALUES (`$room_name`, $room_price, $room_ac, $room_wifi, $room_capacity, `$full_path`, $room_status)";
+        $sql = "INSERT INTO rooms (RoomName, RoomPrice, RoomAC, RoomWIFI, RoomCapacity, RoomPicture, RoomStatus) VALUES ('$room_name', $room_price, $room_ac, $room_wifi, $room_capacity, '$full_path', $room_status)";
         $db->query($sql);
     }
 
