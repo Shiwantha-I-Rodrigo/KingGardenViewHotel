@@ -25,22 +25,22 @@ if (isset($_POST['req'])) {
             $_SESSION['customer_offset'] = 0;
         case "customer_back":
             $_SESSION['customer_offset'] >= 5 ? $_SESSION['customer_offset'] -= 5 : $_SESSION['customer_offset'] = 0;
-            $continue = customer($opt, $_SESSION['customer_offset'], $db, $per_page);
+            $content = customer($opt, $_SESSION['customer_offset'], $db, $per_page);
             break;
         case "customer_fwd":
             $_SESSION['customer_offset'] < 0 ? $_SESSION['customer_offset'] = 0 : $_SESSION['customer_offset'] += 5;
-            $continue = customer($opt, $_SESSION['customer_offset'], $db, $per_page);
+            $content = customer($opt, $_SESSION['customer_offset'], $db, $per_page);
             break;
 
         case "employee":
             $_SESSION['employee_offset'] = 0;
         case "employee_back":
             $_SESSION['employee_offset'] >= 5 ? $_SESSION['employee_offset'] -= 5 : $_SESSION['employee_offset'] = 0;
-            $continue = employee($opt, $_SESSION['employee_offset'], $db, $per_page);
+            $content = employee($opt, $_SESSION['employee_offset'], $db, $per_page);
             break;
         case "employee_fwd":
             $_SESSION['employee_offset'] < 0 ? $_SESSION['employee_offset'] = 0 : $_SESSION['employee_offset'] += 5;
-            $continue = employee($opt, $_SESSION['employee_offset'], $db, $per_page);
+            $content = employee($opt, $_SESSION['employee_offset'], $db, $per_page);
             break;
 
         case "res":
