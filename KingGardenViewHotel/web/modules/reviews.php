@@ -11,6 +11,7 @@ $url =  basename($_SERVER['REQUEST_URI']);
 $url_componenets = parse_url($url);
 parse_str($url_componenets['query'], $params);
 $reservation_id = $params['id'];
+isset($params['add']) ? $add = 1 : $add = 0;
 
 $sql = "SELECT * FROM reservations r JOIN rooms m ON r.RoomId=m.RoomId where r.ReservationId=$reservation_id";
 $result = $db->query($sql);
@@ -101,7 +102,7 @@ ob_start();
 
 <div class="row" style="height:20vh;"></div>
 
-<div class="" style="position:fixed; bottom:11vh;" data-id="<?= $user_id ?>" data-room="<?= $room_id ?>" name="add_review" id="add_review">
+<div class="" style="position:fixed; bottom:11vh;" data-id="<?= $user_id ?>" data-room="<?= $room_id ?>" data-tog="<?= $add ?>" name="add_review" id="add_review">
     <div class="row ps-5 py-0 my-0" style="width:100vw;">
         <div class="col-11 m-0 p-0" style="background-color:var(--background);border: 0.5vh solid var(--background);border-radius: 2vh;">
             <div class="row">

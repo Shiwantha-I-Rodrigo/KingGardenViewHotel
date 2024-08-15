@@ -4,7 +4,8 @@ rev_fwd = document.getElementById("rev_fwd");
 let review = document.getElementById("add_review");
 let user_id = review.getAttribute('data-id');
 let room_id = review.getAttribute('data-room');
-if(user_id == 0){
+let rev_tog = review.getAttribute('data-tog');
+if(user_id == 0 || rev_tog == '0'){
     review.classList.add('d-none');
 }
 
