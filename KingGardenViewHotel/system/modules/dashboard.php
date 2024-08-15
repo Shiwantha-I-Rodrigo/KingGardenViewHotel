@@ -23,6 +23,7 @@ if ($result->num_rows > 0) {
         $status = getStatus($row['UserStatus']);
         $email = $row['Email'];
         $username = $row['UserName'];
+        $type = getRole($row['Type']);
     }
 }
 
@@ -84,7 +85,7 @@ ob_start();
                     <img src="<?= $profile_pic ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
                     <h2 class="my-1" style="font-size : 4vh;"><?= $username ?></h2>
                     <p class="mb-1">Last Update. : <?= date("Y-M-d H:i:s A", $update[0]) . "<br/>By : " . $update[1] . " ( User Id )" ?></p>
-                    <p class="mb-4">Account Status : <?= $status ?></p>
+                    <p class="mb-4">Account : <?= $type ?></p>
                     <div class="d-flex justify-content-around mb-2">
                         <a href="user.php"><button type="button" class="success-btn px-3 py-2" style="width:8vw;">Edit</button></a>
                         <a href="../sub/logout.php"><button type="button" class="fail-btn px-3 py-2" style="width:8vw;">Logout</button></a>

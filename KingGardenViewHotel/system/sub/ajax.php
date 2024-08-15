@@ -29,32 +29,52 @@ if (isset($_POST['req'])) {
 
         case "past_back":
             $_SESSION['past_offset'] >= 5 ? $_SESSION['past_offset'] -= 5 : $_SESSION['past_offset'] = 0;
-            $content = res_p($past_offset, $user_id, $db);
+            $content = res_p($_SESSION['past_offset'], $per_page, $user_id, $db);
             break;
 
         case "past_fwd":
             $_SESSION['past_offset'] < 0 ? $_SESSION['past_offset'] = 0 : $_SESSION['past_offset'] += 5;
-            $content = res_p($past_offset, $user_id, $db);
+            $content = res_p($_SESSION['past_offset'], $per_page, $user_id, $db);
             break;
 
         case "comming_back":
             $_SESSION['comming_offset'] >= 5 ? $_SESSION['comming_offset'] -= 5 : $_SESSION['comming_offset'] = 0;
-            $content = res_f($comming_offset, $user_id, $db);
+            $content = res_f($_SESSION['comming_offset'], $per_page, $user_id, $db);
             break;
 
         case "comming_fwd":
             $_SESSION['comming_offset'] < 0 ? $_SESSION['comming_offset'] = 0 : $_SESSION['comming_offset'] += 5;
-            $content = res_f($comming_offset, $user_id, $db);
+            $content = res_f($_SESSION['comming_offset'], $per_page, $user_id, $db);
+            break;
+
+        case "past_backa":
+            $_SESSION['past_offset'] >= 5 ? $_SESSION['past_offset'] -= 5 : $_SESSION['past_offset'] = 0;
+            $content = res_pa($_SESSION['past_offset'], $per_page, $user_id, $db);
+            break;
+
+        case "past_fwda":
+            $_SESSION['past_offset'] < 0 ? $_SESSION['past_offset'] = 0 : $_SESSION['past_offset'] += 5;
+            $content = res_pa($_SESSION['past_offset'], $per_page, $user_id, $db);
+            break;
+
+        case "comming_backa":
+            $_SESSION['comming_offset'] >= 5 ? $_SESSION['comming_offset'] -= 5 : $_SESSION['comming_offset'] = 0;
+            $content = res_fa($_SESSION['comming_offset'], $per_page, $user_id, $db);
+            break;
+
+        case "comming_fwda":
+            $_SESSION['comming_offset'] < 0 ? $_SESSION['comming_offset'] = 0 : $_SESSION['comming_offset'] += 5;
+            $content = res_fa($_SESSION['comming_offset'], $per_page, $user_id, $db);
             break;
 
         case "blog_back":
             $_SESSION['blog_offset'] >= 5 ? $_SESSION['blog_offset'] -= 5 : $_SESSION['blog_offset'] = 0;
-            $content = blog($blog_offset, $db);
+            $content = blog($_SESSION['blog_offset'], $per_page, $db);
             break;
 
         case "blog_fwd":
             $_SESSION['blog_offset'] < 0 ? $_SESSION['blog_offset'] = 0 : $_SESSION['blog_offset'] += 5;
-            $content = blog($blog_offset, $db);
+            $content = blog($_SESSION['blog_offset'], $per_page, $db);
             break;
 
         case "msg_li":
@@ -127,6 +147,7 @@ function msg($msg_offset, $user_id, $item_count, $per_page, $db)
             array_push($list, $contact);
         }
     }
+    count($list) <= 5 ? $end = " id='end' " : $end = "";
     $i = 0;
     foreach ($list as $item) {
         if ($i++ < $msg_offset) continue;
@@ -142,59 +163,68 @@ function msg($msg_offset, $user_id, $item_count, $per_page, $db)
                 $MessageTime = getTimes($row2['MessageTime']);
                 $from = $row2['FromName'];
                 $item_count++;
-                $content .= "<li class='message' id=$item ><div class='message-name'> $FromName : </div><div class='message-text'> $MessageText </div><div class='message-time'> $from  <br/> $MessageTime </div></li>";
+                $content .= "<li class='message' id=$item ><div $end class='message-name'> $FromName : </div><div class='message-text'> $MessageText </div><div class='message-time'> $from  <br/> $MessageTime </div></li>";
             }
         }
     }
     return $content;
 }
 
-function res_p($past_offset, $user_id, $db)
+function res_p($past_offset, $per_page, $user_id, $db)
 {
     $content = "";
-    $sql = "SELECT * FROM (SELECT * FROM reservations WHERE GuestId = " . $user_id . " AND TimeSlotEnd <= " . time() . " ORDER BY TimeSlotEnd DESC LIMIT 5 OFFSET "
+    $sql = "SELECT * FROM (SELECT * FROM reservations WHERE GuestId = " . $user_id . " AND TimeSlotEnd <= " . time() . " ORDER BY TimeSlotEnd DESC LIMIT 6 OFFSET "
         . $past_offset . " ) s INNER JOIN rooms r ON s.RoomId = r.RoomId ORDER BY TimeSlotEnd DESC";
     $result = $db->query($sql);
+    $result->num_rows <= 5 ? $end = " id='end' " : $end = "";
+    $i = 0;
     while ($row = $result->fetch_assoc()) {
+        if ($i++ >= $per_page) break;
         $res_id = $row['ReservationId'];
         $RoomName = $row['RoomName'];
         $TimeSlotStart = getTime($row['TimeSlotStart']);
         $TimeSlotEnd = getTime($row['TimeSlotEnd']);
         $Status = getStatus($row['ReservationStatus']);
-        $content .= "<li class='reservation' id=" . $res_id . "><div class='reservation-name'>" . $RoomName . " - " . $res_id . "</div><div class='reservation-time'> From : " . $TimeSlotStart
+        $content .= "<li class='reservation' id=" . $res_id . "><div $end class='reservation-name'>" . $RoomName . " - " . $res_id . "</div><div class='reservation-time'> From : " . $TimeSlotStart
             . "</div><div class='reservation-time'> To : " . $TimeSlotEnd . "</div><div class='reservation-status'> Status : " . $Status . "</li>";
     }
     return $content;
 }
 
-function res_f($comming_offset, $user_id, $db)
+function res_f($comming_offset, $per_page, $user_id, $db)
 {
     $content = "";
-    $sql = "SELECT * FROM (SELECT * FROM reservations WHERE GuestId = " . $user_id . " AND TimeSlotEnd > " . time() . " ORDER BY TimeSlotEnd LIMIT 5 OFFSET "
+    $sql = "SELECT * FROM (SELECT * FROM reservations WHERE GuestId = " . $user_id . " AND TimeSlotEnd > " . time() . " ORDER BY TimeSlotEnd LIMIT 6 OFFSET "
         . $comming_offset . ") s INNER JOIN rooms r ON s.RoomId = r.RoomId ORDER BY TimeSlotEnd";
     $result = $db->query($sql);
+    $result->num_rows <= 5 ? $end = " id='end' " : $end = "";
+    $i = 0;
     while ($row = $result->fetch_assoc()) {
+        if ($i++ >= $per_page) break;
         $res_id = $row['ReservationId'];
         $RoomName = $row['RoomName'];
         $TimeSlotStart = getTime($row['TimeSlotStart']);
         $TimeSlotEnd = getTime($row['TimeSlotEnd']);
         $Status = getStatus($row['ReservationStatus']);
-        $content .= "<li class='reservation' id=" . $res_id . "><div class='reservation-name'>" . $RoomName . " - " . $res_id . "</div><div class='reservation-time'> From : " . $TimeSlotStart
+        $content .= "<li class='reservation' id=" . $res_id . "><div $end class='reservation-name'>" . $RoomName . " - " . $res_id . "</div><div class='reservation-time'> From : " . $TimeSlotStart
             . "</div><div class='reservation-time'> To : " . $TimeSlotEnd . "</div><div class='reservation-status'> Status : " . $Status . "</li>";
     }
     return $content;
 }
 
-function blog($blog_offset, $db)
+function blog($blog_offset, $per_page, $db)
 {
     $content = "";
-    $sql = "SELECT * FROM blogs LIMIT 5 OFFSET " . $blog_offset;
+    $sql = "SELECT * FROM blogs LIMIT 6 OFFSET " . $blog_offset;
     $result = $db->query($sql);
+    $result->num_rows <= 5 ? $end = " id='end' " : $end = "";
+    $i = 0;
     while ($row = $result->fetch_assoc()) {
+        if ($i++ >= $per_page) break;
         $BlogText = $row['BlogText'];
         $BlogTitle = $row['BlogTitle'];
         $BlogPicture = $row['BlogPicture'];
-        $content .= '<div class="row my-5 ps-5" style="width:100vw; height:30vh;">
+        $content .= '<div ' . $end . 'class="row my-5 ps-5" style="width:100vw; height:30vh;">
                     <div class="col-11 m-0 p-0" style="background-color:var(--background);border: 0.5vh solid var(--background);border-radius: 2vh;">
                         <div class="row m-0 p-0">
                             <div class="col-4 m-0 p-0" style="overflow: hidden;">
@@ -210,5 +240,47 @@ function blog($blog_offset, $db)
     }
     $content = json_encode($content, JSON_UNESCAPED_SLASHES);
     $content = trim($content, "\"");
+    return $content;
+}
+
+function res_pa($past_offset, $per_page, $user_id, $db)
+{
+    $content = "";
+    $sql = "SELECT * FROM (SELECT * FROM reservations WHERE TimeSlotEnd <= " . time() . " ORDER BY TimeSlotEnd DESC LIMIT 6 OFFSET "
+        . $past_offset . " ) s INNER JOIN rooms r ON s.RoomId = r.RoomId ORDER BY TimeSlotEnd DESC";
+    $result = $db->query($sql);
+    $result->num_rows <= 5 ? $end = " id='end' " : $end = "";
+    $i = 0;
+    while ($row = $result->fetch_assoc()) {
+        if ($i++ >= $per_page) break;
+        $res_id = $row['ReservationId'];
+        $RoomName = $row['RoomName'];
+        $TimeSlotStart = getTime($row['TimeSlotStart']);
+        $TimeSlotEnd = getTime($row['TimeSlotEnd']);
+        $Status = getStatus($row['ReservationStatus']);
+        $content .= "<li class='reservation' id=" . $res_id . "><div $end class='reservation-name'>" . $RoomName . " - " . $res_id . "</div><div class='reservation-time'> From : " . $TimeSlotStart
+            . "</div><div class='reservation-time'> To : " . $TimeSlotEnd . "</div><div class='reservation-status'> Status : " . $Status . "</li>";
+    }
+    return $content;
+}
+
+function res_fa($comming_offset, $per_page, $user_id, $db)
+{
+    $content = "";
+    $sql = "SELECT * FROM (SELECT * FROM reservations WHERE  TimeSlotEnd > " . time() . " ORDER BY TimeSlotEnd LIMIT 6 OFFSET "
+        . $comming_offset . ") s INNER JOIN rooms r ON s.RoomId = r.RoomId ORDER BY TimeSlotEnd";
+    $result = $db->query($sql);
+    $result->num_rows <= 5 ? $end = " id='end' " : $end = "";
+    $i = 0;
+    while ($row = $result->fetch_assoc()) {
+        if ($i++ >= $per_page) break;
+        $res_id = $row['ReservationId'];
+        $RoomName = $row['RoomName'];
+        $TimeSlotStart = getTime($row['TimeSlotStart']);
+        $TimeSlotEnd = getTime($row['TimeSlotEnd']);
+        $Status = getStatus($row['ReservationStatus']);
+        $content .= "<li class='reservation' id=" . $res_id . "><div $end class='reservation-name'>" . $RoomName . " - " . $res_id . "</div><div class='reservation-time'> From : " . $TimeSlotStart
+            . "</div><div class='reservation-time'> To : " . $TimeSlotEnd . "</div><div class='reservation-status'> Status : " . $Status . "</li>";
+    }
     return $content;
 }

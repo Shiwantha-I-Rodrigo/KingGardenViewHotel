@@ -40,22 +40,22 @@ document.getElementById("msg_fwd").addEventListener("click", function (event) {
 
 document.getElementById("past_back").addEventListener("click", function (event) {
     event.preventDefault();
-    ajax_call("past_back", "res_li", "past", past_fwd, "Reservation");
+    ajax_call("past_backa", "res_li", "past", past_fwd, "Reservation");
 });
 
 document.getElementById("past_fwd").addEventListener("click", function (event) {
     event.preventDefault();
-    ajax_call("past_fwd", "res_li", "past", past_fwd, "Reservation");
+    ajax_call("past_fwda", "res_li", "past", past_fwd, "Reservation");
 });
 
 document.getElementById("comming_back").addEventListener("click", function (event) {
     event.preventDefault();
-    ajax_call("comming_back", "res_li", "comming", comming_fwd, "Reservation");
+    ajax_call("comming_backa", "res_li", "comming", comming_fwd, "Reservation");
 });
 
 document.getElementById("comming_fwd").addEventListener("click", function (event) {
     event.preventDefault();
-    ajax_call("comming_fwd", "res_li", "comming", comming_fwd, "Reservation");
+    ajax_call("comming_fwda", "res_li", "comming", comming_fwd, "Reservation");
 });
 
 
@@ -70,7 +70,8 @@ function ajax_call(request, sub_request, list_name, fwd, heading) {
         success: function (response) {
             var content = response.content;
             let list = document.getElementById(list_name);
-            if (content == '') {
+            if (content.includes("id='end'")) {
+                list.innerHTML = content;
                 fwd.style.display = "none";
             } else {
                 list.innerHTML = content;

@@ -20,6 +20,7 @@ if ($result->num_rows > 0) {
         $email = $row['Email'];
         $username = $row['UserName'];
         $current_password = $row['Password'];
+        $type = getRole($row['Type']);
     }
 }
 $update = explode("_", $reg_no);
