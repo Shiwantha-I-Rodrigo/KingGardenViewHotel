@@ -124,7 +124,7 @@ function ajax_call(request, sub_request, list_name, fwd, heading) {
                                 let review = document.getElementById("review");
                                 let id = review.getAttribute('data-id');
                                 review.addEventListener("click", function (event) {
-                                    location.replace(window.location.origin + "/web/modules/reviews.php?id=" + id);
+                                    location.replace(window.location.origin + "/web/modules/reviews.php?id=" + id + "&add=1");
                                 });
                             }
 

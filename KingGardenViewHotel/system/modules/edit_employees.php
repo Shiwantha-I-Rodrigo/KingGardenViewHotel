@@ -13,6 +13,7 @@ isset($params['id']) ? $employee_id = $params['id'] : $employee_id = 0;
 
 $db = dbConn();
 
+$type = 0;
 if ($employee_id != 0) {
     $sql = "SELECT * FROM employees c INNER JOIN users u ON c.UserId = u.UserId WHERE u.UserId = $employee_id";
     $result = $db->query($sql);
@@ -85,15 +86,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $result = $db->query($sql);
             } else {
                 $pw_hash = password_hash($password, PASSWORD_BCRYPT);
-                $sql = "INSERT INTO users (`UserName`, `Password`, `Email`, `Type`) VALUES ('$user_name', '$pw_hash', '$e_mail', $type)";
+                $sql = "INSERT INTO users (`UserName`, `Password`, `Email`, `Type`, `UserStatus`) VALUES ('$user_name', '$pw_hash', '$email', '$type',1)";
                 $db->query($sql);
 
                 $employee_id = $db->insert_id;
                 $reg_no = time() . "_" . $user_id;
                 $token = md5(uniqid());
 
-                $sql = "INSERT INTO employees (`FirstName`, `LastName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `Telephone`, `Mobile`, `Title`, `RegNo`, `ProfilePic`,`EmployeeStatus`,`UserId`) VALUES
-                 ('$first_name','$last_name','$address_1', '$address_2', '$address_3', '$telephone', '$mobile', '$title', '$reg_no', '$full_path',$employee_id)";
+                $sql = "INSERT INTO employees (`FirstName`, `LastName`, `AddressLine1`, `AddressLine2`, `AddressLine3`, `Telephone`, `Mobile`, `Title`, `RegNo`, `ProfilePic`,`EmployeeStatus`,`UserId`,`Token`) VALUES
+                 ('$first_name','$last_name','$address_1', '$address_2', '$address_3', '$telephone', '$mobile', '$title', '$reg_no', '$full_path',0,$employee_id,'$token')";
                 $db->query($sql);
 
             }
@@ -107,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $permissions = [1, 2, 6];
                     break;
                 case 3:
-                    $permissions = [1, 2, 3, 4, 6, 7, 8, 11];
+                    $permissions = [1, 2, 3, 4, 6, 7, 8];
                     break;
                 case 4:
                     $permissions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
@@ -141,10 +142,10 @@ ob_start();
     <div class="card">
         <div class="row">
             <div class="col-12 d-flex justify-content-center mt-5">
-                <img src="<?= $profile_pic ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                <img src="<?= $profile_pic ?>" alt="_" class="rounded-circle img-fluid" style="width: 150px;">
             </div>
         </div>
-        <h2 class="d-flex justify-content-center align-items-center my-4" style="font-size:3vh;">Update Employee Information</h2>
+        <h2 class="d-flex justify-content-center align-items-center my-4" style="font-size:3vh;">Employee Information</h2>
         <form id="reg_form" enctype="multipart/form-data" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) . '?id=' . $employee_id; ?>" method="post" role="form" novalidate>
 
             <div class="row mx-5">

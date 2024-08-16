@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!isset($params['id']) && !isset($params['token']) && $password == '') {
         $id = $params['id'];
         $token = $params['id'];
-        $sql = "SELECT * FROM users u JOIN customers c ON u.UserId=c.UserId WHERE u.Email='$email'";
+        $sql = "SELECT * FROM users u JOIN employees c ON u.UserId=c.UserId WHERE u.Email='$email'";
         $result = $db->query($sql);
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     } else {
         echo $id .  "---" . $token;
-        $sql = "SELECT * FROM users u JOIN customers c ON u.UserId=c.UserId WHERE u.UserId=$id";
+        $sql = "SELECT * FROM users u JOIN employees c ON u.UserId=c.UserId WHERE u.UserId=$id";
         $result = $db->query($sql);
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();

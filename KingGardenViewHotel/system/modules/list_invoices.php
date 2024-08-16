@@ -2,7 +2,7 @@
 session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
 isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : reDirect("/system/modules/login.php");
-authorize($user_id, '9', 'system');
+authorize($user_id, '8', 'system');
 $extra_js = '<script src="' . SYSTEM_BASE_URL . 'js/list_invoices.js"></script>';
 $extra_css = '';
 

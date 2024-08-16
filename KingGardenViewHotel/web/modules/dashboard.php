@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     extract($_POST);
     if (isset($ReservationId)) {
-        $sql = "DELETE FROM reservations WHERE ReservationId = $ReservationId";
+        $sql = "UPDATE reservations SET ReservationStatus=7 WHERE ReservationId = $ReservationId";
         $result = $db->query($sql);
         if ($result) {
             echo '<div id="cancelled"></div>';

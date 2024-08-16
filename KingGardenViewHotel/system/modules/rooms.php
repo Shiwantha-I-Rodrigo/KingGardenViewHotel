@@ -32,7 +32,9 @@ if ($discounted == 1 || $ac == 1 || $wifi == 1) {
 $sql = "SELECT * FROM rooms r JOIN reservations s ON r.RoomId = s.RoomId WHERE ( TimeSlotStart BETWEEN $TimeSlotStart AND $TimeSlotEnd ) OR ( TimeSlotEnd BETWEEN $TimeSlotStart AND $TimeSlotEnd)";
 $result = $db->query($sql);
 while ($row = $result->fetch_assoc()) {
-    $rooms_list[] = $row['RoomId'];
+    if ($row['ReservationStatus'] != 7) {
+        $rooms_list[] = $row['RoomId'];
+    }
 }
 
 // get all rooms except conflicting rooms
@@ -41,8 +43,14 @@ $result = $db->query($sql);
 while ($row = $result->fetch_assoc()) {
     if (!in_array($row['RoomId'], $rooms_list)) {
         $rooms_list2[] = array(
-            "RoomId" => $row['RoomId'], "RoomName" => $row['RoomName'], "RoomPrice" => $row['RoomPrice'], "RoomAC" => $row['RoomAC'], "RoomWIFI" => $row['RoomWIFI'],
-            "RoomCapacity" => $row['RoomCapacity'], "RoomPicture" => $row['RoomPicture'], "RoomStatus" => $row['RoomStatus']
+            "RoomId" => $row['RoomId'],
+            "RoomName" => $row['RoomName'],
+            "RoomPrice" => $row['RoomPrice'],
+            "RoomAC" => $row['RoomAC'],
+            "RoomWIFI" => $row['RoomWIFI'],
+            "RoomCapacity" => $row['RoomCapacity'],
+            "RoomPicture" => $row['RoomPicture'],
+            "RoomStatus" => $row['RoomStatus']
         );
     }
 }
@@ -81,16 +89,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         isset($res_ids[1]) ? $res_string .= " / " . $res_ids[1] : null;
         isset($res_ids[2]) ? $res_string .= " / " . $res_ids[2] : null;
 
-        $msg = "Dear ". $row['FirstName'] . ",<br/>Thank you for choosing King Garden View Hotel! Your reservation for " . $start . " is confirmed.<br/>" .
+        $msg = "Dear " . $row['FirstName'] . ",<br/>Thank you for choosing King Garden View Hotel! Your reservation for " . $start . " is confirmed.<br/>" .
             "We're thrilled to host you for a memorable stay. Please review your booking details below. If you have any questions or special requests, feel free to reach out.<br/>" .
             "start date : " . $start . "<br/>" .
             "end date : " . $end . "<br/>" .
-            "Room/s : " . $rooms_string. "<br/>" .
+            "Room/s : " . $rooms_string . "<br/>" .
             "Guests : " . $guests . "<br/>" .
             "Reservation Id/s : " . $res_string . "<br/>" .
             "We look forward to providing you with an exceptional experience. Safe travels!<br/>" .
             "Warm regards,<br/>" .
-            "Managing Director,<br/>".
+            "Managing Director,<br/>" .
             "King garden View Hotel";
 
         sendEmail($row['Email'], $row['FirstName'], "Your Reservation Is Confirmed!", $msg);

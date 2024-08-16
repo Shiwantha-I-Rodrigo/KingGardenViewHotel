@@ -118,6 +118,8 @@ INSERT INTO user_destinations ( UserId, DestinationId, TransportPrice, Telephone
     4 = invalid
     5 = reserved
     6 = discounted
+    7 = cancelled
+    8 = noshow
     9 = forbidden
 
 - users - Type

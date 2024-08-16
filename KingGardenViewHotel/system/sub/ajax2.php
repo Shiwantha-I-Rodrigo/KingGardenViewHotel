@@ -108,6 +108,16 @@ if (isset($_POST['req'])) {
             $_SESSION['review_offset'] < 0 ? $_SESSION['review_offset'] = 0 : $_SESSION['review_offset'] += 5;
             $content = blog($opt, $_SESSION['blog_offset'], $db, $per_page);
             break;
+
+        case "daily":
+            $content = daily($opt, $db);
+            break;
+        case "monthly":
+            $content = monthly($opt, $db);
+            break;
+        case "yearly":
+            $content = yearly($opt, $db);
+            break;
     }
 
     $content = json_encode($content, JSON_UNESCAPED_SLASHES);
@@ -214,7 +224,7 @@ function reservation($opt, $offset, $db, $per_page)
         $TotalPaid = $row["Paid"];
         $Guests = $row["Guests"];
         $content .= " <tr><td>$ReservationId</td><td>$ReservationStatus</td><td>$RoomId</td><td>$CheckIn</td><td>$CheckOut</td><td>$Guests</td><td> Rs.$TotalPrice.00</td><td> Rs.$TotalPaid.00</td>
-        <td><button class='fail-btn m-1 delete' id='$ReservationId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
+        <td><button class='success-btn m-1 edit' id='$ReservationId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$ReservationId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
     }
     return $content;
 }
@@ -344,5 +354,68 @@ function blog($opt, $offset, $db, $per_page)
         $content .= " <tr><td>$BlogId</td><td>$BlogTitle</td><td>$BlogText</td><td>$BlogStatus</td>
         <td><button class='success-btn m-1 edit' id='$BlogId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$BlogId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
     }
+    return $content;
+}
+
+
+function daily($opt, $db)
+{
+    $content = "";
+    $sql = "SELECT * FROM reservations r JOIN rooms m ON r.RoomId=m.RoomId WHERE r.TimeSlotStart <= $opt AND r.TimeSlotEnd > $opt";
+    $result = $db->query($sql);
+    $content .= " <th colspan='4'>ROOM AVAILABILITY </th>";
+    $content .= " <tr><th>Room Id</th><th>Room Name</th><th>Room Status</th><th>Note</th></tr>";
+    while ($row = $result->fetch_assoc()) {
+        $RoomId = $row['RoomId'];
+        $RoomName = $row['RoomName'];
+        $RoomStatus = getStatus($row['RoomStatus']);
+        $content .= "<tr><td>$RoomId</td><td>$RoomName</td><td>$RoomStatus</td><td>Booked !</td></tr>";
+    }
+    $sql = "SELECT * FROM (SELECT * FROM reservations WHERE TimeSlotStart <= $opt AND TimeSlotEnd > $opt) AS r RIGHT JOIN rooms m ON r.RoomId=m.RoomId WHERE r.ReservationId IS NULL";
+    $result = $db->query($sql);
+    while ($row = $result->fetch_assoc()) {
+        $RoomId = $row['RoomId'];
+        $RoomName = $row['RoomName'];
+        $RoomStatus = getStatus($row['RoomStatus']);
+        ($row['RoomStatus'] == 1 || $row['RoomStatus'] == 6) ? $Availability = "Available" : $Availability = "Not Available";
+        $content .= "<tr><td>$RoomId</td><td>$RoomName</td><td>$RoomStatus</td><td>$Availability</td></tr>";
+    }
+
+    $checkin = 0;
+    $checkout = 0;
+    $cancelled = 0;
+    $noshow = 0;
+    $sql = "SELECT * FROM reservations WHERE TimeSlotStart <= $opt AND TimeSlotEnd > $opt";
+    $result = $db->query($sql);
+    $content .= " <th colspan='4'>TRANSACTION SUMMAARY</th>";
+    $content .= " <tr><th>Check Ins</th><th>Check Outs</th><th>Cancellations</th><th>No Shows</th></tr>";
+    while ($row = $result->fetch_assoc()) {
+        $row['ReservationStatus'] == 1 ? $checkin++ : null ;
+        $row['ReservationStatus'] == 0 ? $checkout++ : null ;
+        $row['ReservationStatus'] == 7 ? $cancelled++ : null ;
+        $row['ReservationStatus'] == 8 ? $noshow++ : null ;
+    }
+    $content .= "<tr><td>$checkin</td><td>$checkout</td><td>$cancelled</td><td>$noshow</td></tr>";
+
+    return $content;
+}
+
+
+function monthly($opt, $db)
+{
+    $content = "";
+    $sql = "SELECT * FROM blogs i $opt";
+    $result = $db->query($sql);
+    while (($row = $result->fetch_assoc())) {}
+    return $content;
+}
+
+
+function yearly($opt, $db)
+{
+    $content = "";
+    $sql = "SELECT * FROM blogs i $opt";
+    $result = $db->query($sql);
+    while (($row = $result->fetch_assoc())) {}
     return $content;
 }

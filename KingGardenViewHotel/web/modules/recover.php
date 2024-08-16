@@ -7,7 +7,8 @@ session_start();
 $url =  basename($_SERVER['REQUEST_URI']);
 $url_componenets = parse_url($url);
 parse_str($url_componenets['query'], $params);
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     extract($_POST);
@@ -22,12 +23,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             $user_id = $row['UserId'];
-            $token = $row['Token'];
             $first_name = $row['FirstName'];
+            $token = md5(uniqid());
+            $sql = "UPDATE customers SET `Token`='$token' WHERE UserId=$user_id";
+            echo $sql;
+            $result = $db->query($sql);
             $msg = "<h2>SUCCESS</h2>";
             $msg .= "<p>Hi, " . $first_name . "Your request has been successfully submitted</p>";
             $msg .= "Click the following link to reset your password:\n";
-            $msg .= $_SERVER['SERVER_NAME'] . "/web/modules/recover.php?id=$user_id&token=$token";
+            $msg .= "<a href='http://" . $_SERVER['SERVER_NAME'] . "/web/modules/recover.php?id=$user_id&token=$token'> Recovery Link <a/>";
             sendEmail($email, $first_name, "Password Recovery", $msg);
             $_SESSION['alert_color'] = "var(--primary)";
             $_SESSION['alert_icon'] = "task_alt";

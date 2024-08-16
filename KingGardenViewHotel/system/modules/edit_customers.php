@@ -141,10 +141,10 @@ ob_start();
     <div class="card">
         <div class="row">
             <div class="col-12 d-flex justify-content-center mt-5">
-                <img src="<?= $profile_pic ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                <img src="<?= $profile_pic ?>" alt="_" class="rounded-circle img-fluid" style="width: 150px;">
             </div>
         </div>
-        <h2 class="d-flex justify-content-center align-items-center my-4" style="font-size:3vh;">Update User Information</h2>
+        <h2 class="d-flex justify-content-center align-items-center my-4" style="font-size:3vh;">User Information</h2>
         <form id="reg_form" enctype="multipart/form-data" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) . '?id=' . $customer_id ; ?>" method="post" role="form" novalidate>
 
             <div class="row mx-5">

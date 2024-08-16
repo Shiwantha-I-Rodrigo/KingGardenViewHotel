@@ -76,11 +76,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
                 <div class="row">
                     <div class="col-10 d-flex justify-content-end">
-                        <p class=""> Don't have an account ? <a href="register.php"> Register here </a></p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-10 d-flex justify-content-end">
                         <p class=""> Forgot Password ? <a href="recover.php"> Recover password </a></p>
                     </div>
                 </div>

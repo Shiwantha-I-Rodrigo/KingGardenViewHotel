@@ -87,7 +87,7 @@ ob_start();
                     <p class="mb-1">Last Update. : <?= date("Y-M-d H:i:s A", $update[0]) . "<br/>By : " . $update[1] . " ( User Id )" ?></p>
                     <p class="mb-4">Account : <?= $type ?></p>
                     <div class="d-flex justify-content-around mb-2">
-                        <a href="user.php"><button type="button" class="success-btn px-3 py-2" style="width:8vw;">Edit</button></a>
+                        <a href="edit_employees.php?id=<?= $user_id ?>"><button type="button" class="success-btn px-3 py-2" style="width:8vw;">Edit</button></a>
                         <a href="../sub/logout.php"><button type="button" class="fail-btn px-3 py-2" style="width:8vw;">Logout</button></a>
                     </div>
                 </div>
@@ -165,7 +165,7 @@ ob_start();
                     <!-- Past Reservations -->
                     <div class="card mb-4">
                         <div class="card-body" style="min-height: 30vh;">
-                            <p class="mb-4"><span class="text-primary font-italic me-1">Past</span> Reservations</p>
+                            <p class="mb-4"><span class="text-primary font-italic me-1">Completed</span> Reservations</p>
                             <ul class="list-group list-group-flush rounded-3 px-3" id="past" style="list-style-type:none;">
                                 <li>none</li>
                             </ul>
@@ -181,7 +181,7 @@ ob_start();
                     <!-- Future Reservations -->
                     <div class="card mb-4">
                         <div class="card-body" style="min-height: 30vh;">
-                            <p class="mb-4"><span class="text-primary font-italic me-1">Pending</span> Reservations</p>
+                            <p class="mb-4"><span class="text-primary font-italic me-1">Upcomming</span> Reservations</p>
                             <ul class="list-group list-group-flush rounded-3 px-3" id="comming" style="list-style-type:none;">
                                 <li>none</li>
                             </ul>

@@ -188,13 +188,14 @@ if (isset($_POST['req'])) {
                 $Status = getStatus($row['ReservationStatus']);
                 $CancelTime = $row['TimeSlotEnd'];
                 $Guests = $row['Guests'];
+                $ReservationStatus = $row['ReservationStatus'];
             }
             $content .= '<li><img src=\"' . $RoomPicture . '\" alt=\"\" style=\"width:95%; border-radius: 1vh;\"/></li>';
             $content .= "<li class='reservation-name' >Room : " . $RoomName . " " . $RoomId . "</li><br/><li class='reservation-time'>From : " . $TimeSlotStart . " To : "
                 . $TimeSlotEnd . "</li><li class='reservation-time' >Reservation No : " . $ReservationId . "</li><li class='reservation-time' >Status : " . $Status . "</li>";
             if ($CancelTime > time()) {
                 $content .= "<br/><li><button data-id = " . $ReservationId . " id='cancel' class='fail-btn px-3'>Cancel Reservation</button></li>";
-            } else {
+            } else if ($ReservationStatus != 7) {
                 $content .= "<br/><li><button data-id = " . $ReservationId . " id='review' class='success-btn px-3'>Review Reservation</button></li>";
             }
             $req = "SELECT * FROM items WHERE ReservationId = " . $id;

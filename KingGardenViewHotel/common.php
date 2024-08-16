@@ -118,7 +118,7 @@ function getStatus($data = null)
     $status = "";
     switch ($data) {
         case 0:
-            $status = "Inactive";
+            $status = "Checked Out";
             break;
         case 1:
             $status = "Active";
@@ -130,7 +130,19 @@ function getStatus($data = null)
             $status = "Unauthorized";
             break;
         case 4:
-            $status = "invalid";
+            $status = "Invalid";
+            break;
+        case 5:
+            $status = "Checked In";
+            break;
+        case 6:
+            $status = "Discounted";
+            break;
+        case 7:
+            $status = "Cancelled";
+            break;
+        case 8:
+            $status = "No Show";
             break;
         case 9:
             $status = "Forbidden";
