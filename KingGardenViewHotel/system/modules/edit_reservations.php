@@ -22,6 +22,21 @@ if ($res_id != 0) {
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
 
+            $items = array();
+            $res_id = $row['ReservationId'];
+            $sql2 = "SELECT * FROM items Where ReservationId = $res_id";
+            $result2 = $db->query($sql2);
+            while ($row2 = $result2->fetch_assoc()) {
+                $items[] = array(
+                    "ItemId" => $row2['ItemId'],
+                    "ItemName" => $row2['ItemName'],
+                    "ItemPrice" => $row2['ItemPrice'],
+                    "ItemPaid" => $row2['ItemPaid'],
+                    "ItemStatus" => $row2['ItemStatus'],
+                    "ItemDiscount" => $row2['ItemDiscount']
+                );
+            }
+
             $reservations[] = array(
                 "ReservationId" => $row['ReservationId'],
                 "StaffId" => $row['StaffId'],
@@ -30,7 +45,8 @@ if ($res_id != 0) {
                 "TimeSlotStart" => $row['TimeSlotStart'],
                 "TimeSlotEnd" => $row['TimeSlotEnd'],
                 "Guests" => $row['Guests'],
-                "ReservationStatus" => $row['ReservationStatus']
+                "ReservationStatus" => $row['ReservationStatus'],
+                "Items" => $items
             );
         }
     }
@@ -62,75 +78,135 @@ ob_start();
             <?php require_once $_SERVER['DOCUMENT_ROOT'] . '/system/sub/edit_tools.php'; ?>
         </div>
         <div class="col-7">
-            <div class="card mb-4 pt-5">
-                <div class="row mx-5 mt-3">
-                    <div class="col-3 d-flex justify-content-start align-items-bottom">
-                        <label>Start date</label>
-                    </div>
-                    <div class="col-3 d-flex justify-content-start align-items-bottom">
-                        <label><?= $reservations[0]["TimeSlotStart"] ?></label>
-                    </div>
-                    <div class="col-3 d-flex justify-content-start align-items-bottom">
-                        <label>End date</label>
-                    </div>
-                    <div class="col-3 d-flex justify-content-start align-items-bottom">
-                        <label><?= $reservations[0]["TimeSlotEnd"] ?></label>
-                    </div>
-                </div>
-                <div class="row mx-5 mt-3">
-                    <div class="col-3 d-flex justify-content-start align-items-bottom">
-                        <label>Reserved User</label>
-                    </div>
-                    <div class="col-3 d-flex justify-content-start align-items-bottom">
-                        <label><?= $reservations[0]["StaffId"] ?></label>
-                    </div>
-                    <div class="col-3 d-flex justify-content-start align-items-bottom">
-                        <label>Guest Id</label>
-                    </div>
-                    <div class="col-3 d-flex justify-content-start align-items-bottom">
-                        <label><?= $reservations[0]["GuestId"] ?></label>
-                    </div>
+            <div class="card">
+                <div class="d-flex justify-content-between">
+                    <a class="success-btn p-2 m-2 align-items-center" id="print_btn"><i class="material-icons">print</i></a>
                 </div>
                 <div class="card-body">
-                    <form id="reg_form" enctype="multipart/form-data" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) . '?id=' . $res_id; ?>" method="post" role="form" novalidate>
-                        <?php
-                        for ($i = 0; $i < count($reservations); $i++) {
+                    <div id="print_page" class="d-flex justify-content-center">
+                        <table>
 
-                            $reservations[$i]["ReservationStatus"] == 0 ? $checkin = 'selected' : $checkin = '';
-                            $reservations[$i]["ReservationStatus"] == 5 ? $checkout = 'selected' : $checkout = '';
-                            $reservations[$i]["ReservationStatus"] == 7 ? $cancelled = 'selected' : $cancelled = '';
-                            $reservations[$i]["ReservationStatus"] == 8 ? $noshow = 'selected' : $noshow = '';
-                            $reservations[$i]["ReservationStatus"] == 1 ? $active = 'selected' : $active = '';
+                            <tr>
+                                <th align="center" colspan="4"><img class="d-none" style="height:8vh;" src="<?= BASE_URL . '/img/common/logo_logo.png' ?>" alt="logo"></th>
+                            </tr>
+                            <tr>
+                                <th align="center" colspan="4">
+                                    <p class="d-none" style="font-size:4vh;"> KING GARDEN VIEW HOTEL </p>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th align="center" colspan="4">
+                                    <p class="d-none" style="font-size:3vh;"> INVOICE</p>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th align="center" colspan="4">
+                                    <p class="d-none" style="font-size:2vh;"> This invoice is generated on <?= getTimes(time()); ?> by user : <?= $user_id; ?></p>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th align="center" colspan="4">
+                                    <div class="my-4 text-center"><label class="my-1" style="font-size : 2vh;">The reservation group contains [ <?= count($reservations) ?> ] associated reservations for a total of [ <?= $reservations[0]["Guests"] ?> ] guests.</label></div>
+                                </th>
+                            </tr>
 
-                            echo '
-                        <div class="my-4 text-center"><label class="my-1" style="font-size : 2vh; color : var(--fail)">RESERVATION NO.' . $reservations[$i]["ReservationId"] . '</label></div>
-                        <input type="text" name="reservation_id' . $i . '" id="reservation_id' . $i . '" value="' . $reservations[$i]["ReservationId"] . '" class="d-none" readonly />
-                        <div class="row mx-5">
-                            <div class="col-3 d-flex justify-content-start align-items-bottom">
-                                <label>Room Id</label>
-                            </div>
-                            <div class="col-3 d-flex justify-content-start align-items-bottom">
-                                <label>' . $reservations[$i]["RoomId"] . '</label>
-                            </div>
-                            <div class="col-3 d-flex justify-content-start align-items-bottom">
-                                <label>Reservation Status</label>
-                            </div>
-                            <div class="col-3 d-flex justify-content-start align-items-center">
-                                <select class="w-50" name="reservation_status' . $i . '" id="reservation_status' . $i . '">
-                                    <option ' . $checkin . 'value="0">Check out</option>
-                                    <option ' . $checkout . ' value="5">Check in</option>
-                                    <option ' . $cancelled . ' value="7">Cancelled</option>
-                                    <option ' . $noshow . '  value="8">No Show</option>
-                                    <option ' . $active . '  value="1">Active</option>
-                                </select>
-                            </div>
-                        </div>
-                        <input type="text" name="x" id="x" class="" readonly />
-                            ';
-                        }
-                        ?>
-                        <div class="my-4 text-center"><label class="my-1" style="font-size : 2vh;">This room reservation has [ <?= count($reservations) ?> ] associated reservations. intended is for [ <?= $reservations[0]["Guests"] ?> ] guests.</label></div>
-                    </form>
+                            <tr>
+                                <td>
+                                    <label>Start date</label>
+                                </td>
+                                <td>
+
+                                    <label><?= getTime($reservations[0]["TimeSlotStart"]) ?></label>
+                                </td>
+                                <td>
+                                    <label>End date</label>
+                                </td>
+                                <td>
+                                    <label><?= getTime($reservations[0]["TimeSlotEnd"]) ?></label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Booking User</label>
+                                </td>
+                                <td>
+                                    <label><?= $reservations[0]["StaffId"] ?></label>
+                                </td>
+                                <td>
+                                    <label>Guest Id</label>
+                                </td>
+                                <td>
+                                    <label><?= $reservations[0]["GuestId"] ?></label>
+                                </td>
+                            </tr>
+
+
+                            <form id="reg_form" enctype="multipart/form-data" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) . '?id=' . $res_id; ?>" method="post" role="form" novalidate>
+                                <?php
+                                for ($i = 0; $i < count($reservations); $i++) {
+
+                                    $reservations[$i]["ReservationStatus"] == 0 ? $checkin = 'selected' : $checkin = '';
+                                    $reservations[$i]["ReservationStatus"] == 5 ? $checkout = 'selected' : $checkout = '';
+                                    $reservations[$i]["ReservationStatus"] == 7 ? $cancelled = 'selected' : $cancelled = '';
+                                    $reservations[$i]["ReservationStatus"] == 8 ? $noshow = 'selected' : $noshow = '';
+                                    $reservations[$i]["ReservationStatus"] == 1 ? $active = 'selected' : $active = '';
+
+                                    echo '
+                                    <tr><th colspan="4">.</th></tr>
+                                    <tr><th colspan="4">.</th></tr>
+                                    <tr><th align="center" colspan="4">
+                                    <div class="my-4 text-center"><label class="my-1" style="font-size : 2vh; color : var(--fail)">RESERVATION NO.' . $reservations[$i]["ReservationId"] . '</label></div>
+                                    </th></tr>
+
+                                    <input type="text" name="reservation_id' . $i . '" id="reservation_id' . $i . '" value="' . $reservations[$i]["ReservationId"] . '" class="d-none" readonly />
+
+                                    <tr><th colspan="2">
+                                    <label>Room Id</label>
+                                    </th><th colspan="2">
+                                    <label>' . $reservations[$i]["RoomId"] . '</label>
+                                    </th></tr>
+                                    
+                                    <tr><th colspan="2">
+                                    <label>Reservation Status</label>
+                                    </th><th colspan="2">
+                                    <select class="w-50" name="reservation_status' . $i . '" id="reservation_status' . $i . '">
+                                        <option ' . $checkin . 'value="0">Check out</option>
+                                        <option ' . $checkout . ' value="5">Check in</option>
+                                        <option ' . $cancelled . ' value="7">Cancelled</option>
+                                        <option ' . $noshow . '  value="8">No Show</option>
+                                        <option ' . $active . '  value="1">Active</option>
+                                    </select>
+                                    </th></tr>
+                                    <tr><th colspan="4">.</th></tr>';
+
+                                    for ($j = 0; $j < count($reservations[$i]["Items"]); $j++) {
+
+                                        echo '
+                                        <tr><td>
+                                        <label>Item Name</label>
+                                        </td><td>
+                                        <label>' . $reservations[$i]["Items"][$j]["ItemName"] . '</label>
+                                        </td><td>
+                                        <label>Item Status</label>
+                                        </td><td>
+                                        <label>' . getItemStatus($reservations[$i]["Items"][$j]["ItemStatus"]) . '</label>
+                                        </td></tr>
+
+                                        <tr><td>
+                                        <label>Item Price</label>
+                                        </td><td>
+                                        <label>' . $reservations[$i]["Items"][$j]["ItemPrice"] . '</label>
+                                        </td><td>
+                                        <label>Item Paid</label>
+                                        </td><td>
+                                        <label>' . $reservations[$i]["Items"][$j]["ItemPaid"] . '</label>
+                                        </td></tr>';
+                                    }
+                                }
+                                ?>
+                            </form>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

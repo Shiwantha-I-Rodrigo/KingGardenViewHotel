@@ -19,6 +19,12 @@ if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $room_name = $row['RoomName'];
         $room_id = $row['RoomId'];
+        $room_price = $row['RoomPrice'];
+        $room_ac = $row['RoomAC'];
+        $room_wifi = $row['RoomWIFI'];
+        $room_capacity = $row['RoomCapacity'];
+        $room_picture = $row['RoomPicture'];
+        $room_status = $row['RoomStatus'];
         $guest_id = $row['GuestId'];
     }
 }
@@ -87,10 +93,36 @@ ob_start();
         <i class="material-icons" id="rev_back">arrow_back</i>
     </div>
     <div class="col-5">
-        <h4 style="font-size:3vh;">REVIEWS FOR <?= $room_name ?></h4>
+        <h4 style="font-size:3vh; text-transform:uppercase;">REVIEWS FOR <?= $room_name ?></h4>
     </div>
     <div class="col-2">
         <i class="material-icons" id="rev_fwd">arrow_forward</i>
+    </div>
+</div>
+
+<div class="row my-5 px-5 d-flex justify-content-around" style="width:100vw;">
+    <div class="col-3 m-0 p-0 room" style="background-color:var(--background);border: 0.5vh solid var(--background);border-radius: 2vh;">
+        <div class="row">
+            <img class="m-0 p-0" src="<?= $room_picture ?>" alt="" style="height: 25vh; object-fit: cover; border-radius: 2vh 2vh 0 0;">
+        </div>
+        <div class="p-2">
+            <label><?= $room_name ?></label>
+            <p>Occupancy : <?= $room_capacity ?><br>' ;
+                <?php
+                if ($room_wifi == 1) {
+                    echo '<i class="material-icons">wifi</i>';
+                }
+                if ($room_ac == 1) {
+                    echo '<i class="material-icons">ac_unit</i>';
+                }
+                if ($room_price >= 4000) {
+                    echo '<i class="material-icons">favorite</i>';
+                }
+                if ($room_price < 4000) {
+                    echo '<i class="material-icons">attach_money</i>';
+                }
+                ?>
+        </div>
     </div>
 </div>
 

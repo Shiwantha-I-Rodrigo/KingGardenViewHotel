@@ -41,8 +41,8 @@ ob_start();
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
-                        <a class="success-btn p-2 m-0 align-items-center" id="print_btn"><i class="material-icons" id="back">print</i></a>
-                        <a href="/system/modules/edit_blogs.php" class="success-btn p-2 m-0 align-items-center"><i class="material-icons" id="back">add</i></a>
+                        <a class="success-btn p-2 m-0 align-items-center" id="print_btn"><i class="material-icons">print</i></a>
+                        <a href="/system/modules/edit_blogs.php" class="success-btn p-2 m-0 align-items-center"><i class="material-icons">add</i></a>
                     </div>
                     <div class="my-4 text-center"><label class="my-1" style="font-size : 2vh;">CATELOGUE</label></div>
                     <div id="print_page">
