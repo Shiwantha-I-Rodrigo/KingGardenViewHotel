@@ -11,12 +11,17 @@ isset($_SESSION['rooms']) ? $rooms = $_SESSION['rooms'] : $rooms = 1;
 isset($_SESSION['discounted']) ? $discounted = $_SESSION['discounted'] : $discounted = 0;
 isset($_SESSION['ac']) ? $ac = $_SESSION['ac'] : $ac = 0;
 isset($_SESSION['wifi']) ? $wifi = $_SESSION['wifi'] : $wifi = 0;
+isset($_SESSION['guestid']) ? $guest_id = $_SESSION['guestid'] : $guest_id = 0;
 
 $total_days = ceil(abs($TimeSlotStart - $TimeSlotEnd) / 60 / 60 / 24);
 $columns = 3;
 $extra_args = "";
 $rooms_list = array();
 $rooms_list2 = array();
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+echo $guest_id;
 
 $db = dbConn();
 
@@ -66,7 +71,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         extract($_POST);
 
-        $sql = "SELECT * FROM users u JOIN customers c ON c.UserId=c.UserId WHERE u.UserId=$user_id";
+        $sql =  $sql = "SELECT * FROM users WHERE UserId=$guest_id";
+        $result = $db->query($sql);
+        if ($result->num_rows == 0) {
+            $_SESSION['alert_color'] = "var(--background)";
+            $_SESSION['alert_icon'] = "error";
+            $_SESSION['alert_title'] = "Error";
+            $_SESSION['alert_msg'] = "Guest Not Found !";
+            reDirect('/system/sub/alert.php');
+        }
+
+        $sql = "SELECT * FROM users u JOIN customers c ON u.UserId=c.UserId WHERE u.UserId=$user_id";
         $result = $db->query($sql);
         $row = $result->fetch_assoc();
 
@@ -74,7 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $res_ids = array();
         $n = 0;
         while ($n < $rooms) {
-            $sql = "INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, ReservationStatus, Guests) VALUES ($user_id, $user_id, $iter[$n] , $TimeSlotStart, $TimeSlotEnd, 1, $guests)";
+            $sql = "INSERT INTO reservations (GuestId, StaffId, RoomId, TimeSlotStart, TimeSlotEnd, ReservationStatus, Guests) VALUES ($guest_id, $user_id, $iter[$n] , $TimeSlotStart, $TimeSlotEnd, 1, $guests)";
+            echo $sql;
             $db->query($sql);
             array_push($res_ids, $db->insert_id);
             $n++;

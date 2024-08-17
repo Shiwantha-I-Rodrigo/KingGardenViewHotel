@@ -17,7 +17,7 @@ if ($result->num_rows == 1) {
         $req = "UPDATE users SET UserStatus = 1 WHERE UserId = $id";
         $res = $db->query($req);
         if ($res) {
-            $req = "INSERT INTO messages (MessageText, MessageTime, FromId, FromName, ToId, Thread, MessageStatus) VALUES ('Welcome to King garden View Hotel, please contact me for any inquiries.', time(), 9, 'anny',$id, 9, 1)";
+            $req = "INSERT INTO messages (MessageText, MessageTime, FromId, FromName, ToId, Thread, MessageStatus) VALUES ('Welcome to King garden View Hotel, please contact me for any inquiries.', time(), 62, 'King Garden View Hotel',$id, 62, 1)";
             $res = $db->query($req);
             $_SESSION['alert_color'] = "var(--primary)";
             $_SESSION['alert_icon'] = "task_alt";

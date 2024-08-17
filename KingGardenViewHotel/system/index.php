@@ -10,6 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $_SESSION['TimeSlotEnd'] = ($e_date/1000) + 43199;
     $_SESSION['guests'] = $guest_count;
     $_SESSION['rooms'] = $rooms_count;
+    $_SESSION['guestid'] = $guest_id;
     isset($_POST['discounted']) ? $_SESSION['discounted'] = 1 :  $_SESSION['discounted'] = 0;
     isset($_POST['ac']) ? $_SESSION['ac'] = 1 :  $_SESSION['ac'] = 0;
     isset($_POST['wifi']) ? $_SESSION['wifi'] = 1 :  $_SESSION['wifi'] = 0;
@@ -93,6 +94,11 @@ ob_start();
                         <div class="form-check form-check-inline col-2  p-0 m-0 d-flex justify-content-center">
                             <input class="form-check-input" type="checkbox" id="wifi" name="wifi" value="1">
                             <label class="form-check-label mx-3" for="wifi">WiFi</label>
+                        </div>
+                    </div>
+                    <div class="row py-4 px-5 border-bottom d-flex justify-content-around">
+                        <div class="form-check form-check-inline col-3  p-0 m-0 d-flex justify-content-center">
+                            <input type="number" name="guest_id" id="guest_id" placeholder="Guest Id" required />
                         </div>
                     </div>
                     <div class="row mt-3 pb-3">

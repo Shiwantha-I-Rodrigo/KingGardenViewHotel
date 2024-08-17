@@ -30,6 +30,11 @@ document.getElementById("submit_btn").addEventListener("click", function (event)
     $("#Confirm").modal("show");
 });
 
+document.getElementById("delete_btn").addEventListener("click", function (event) {
+    event.preventDefault();
+    $("#Delete").modal("show");
+});
+
 function ajax_call(request, sub_request, list_name, fwd, heading) {
 
     $.ajax({

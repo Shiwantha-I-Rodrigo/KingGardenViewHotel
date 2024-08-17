@@ -5,7 +5,8 @@ isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : reDirect("/syste
 authorize($user_id, '9', 'system');
 $extra_js = '<script src="' . SYSTEM_BASE_URL . 'js/edit_blogs.js"></script>';
 $extra_css = '';
-
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 $db = dbConn();
 
 require_once $_SERVER['DOCUMENT_ROOT'] . '/system/sub/user_info.php';
@@ -37,6 +38,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     extract($_POST);
 
     $upload = "";
+    $insert1 = "";
+    $insert2 = "";
     $i = 0;
     foreach ($_FILES['file_upload']['name'] as $file_name) {
         if (!empty($_FILES['file_upload']['name'][$i])) {
@@ -45,6 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $i++;
             $full_path = '/img/blogs/' . $file;
             $upload .= ",`BlogPicture$i`='$full_path'";
+            $insert1 .= ",'$full_path'";
+            $insert2 .= ",`BlogPicture$i`";
         }
     }
 
@@ -52,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sql = "UPDATE blogs SET `BlogText`='$blog_text',`BlogTitle`='$blog_title', `BlogStatus`='$blog_status' $upload WHERE BlogId=$blog_id";
         $db->query($sql);
     }else{
-        $sql = "INSERT INTO blogs (`BlogText`, `BlogTitle`, `BlogStatus`,`BlogPicture`) VALUES ('$blog_text', '$blog_title', '$blog_status', '$full_path')";
+        $sql = "INSERT INTO blogs (`BlogText`, `BlogTitle`, `BlogStatus` $insert2) VALUES ('$blog_text', '$blog_title', '$blog_status' $insert1)";
         $db->query($sql);
     }
 

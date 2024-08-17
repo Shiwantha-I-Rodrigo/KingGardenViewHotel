@@ -3,8 +3,8 @@ session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
 isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : reDirect("/system/modules/login.php");
 
-// $req = 'monthly';
-// $opt = 1724068800;
+// $req = 'res_back';
+// $opt = "";
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
 
@@ -74,11 +74,11 @@ if (isset($_POST['req'])) {
             $_SESSION['room_offset'] = 0;
         case "room_back":
             $_SESSION['room_offset'] >= 5 ? $_SESSION['room_offset'] -= 5 : $_SESSION['room_offset'] = 0;
-            $content = room($opt, $_SESSION['invoice_offset'], $db, $per_page);
+            $content = room($opt, $_SESSION['room_offset'], $db, $per_page);
             break;
         case "room_fwd":
             $_SESSION['room_offset'] < 0 ? $_SESSION['room_offset'] = 0 : $_SESSION['room_offset'] += 5;
-            $content = room($opt, $_SESSION['invoice_offset'], $db, $per_page);
+            $content = room($opt, $_SESSION['room_offset'], $db, $per_page);
             break;
 
         case "dest":
@@ -208,12 +208,12 @@ function employee($opt, $offset, $db, $per_page)
 function reservation($opt, $offset, $db, $per_page)
 {
     $content = "";
-    $sql = "SELECT * FROM reservations r JOIN (SELECT i.ReservationId, SUM(i.ItemPrice) AS Price, SUM(i.ItemPaid) AS Paid FROM reservations r JOIN items i on r.ReservationId=i.ReservationId GROUP BY r.ReservationId) AS t ON r.ReservationId=t.ReservationId $opt LIMIT 6 OFFSET $offset";
+    $sql = "SELECT * FROM reservations r $opt LIMIT 10 OFFSET $offset";
     $result = $db->query($sql);
     if ($result->num_rows > 5) {
-        $content .= " <tr><th>Reservation Id</th><th>Status</th><th>Room Id</th><th>Check In</th><th>Check Out</th><th>Guests</th><th>Total</th><th>Paid</th><th>Actions</th></tr>";
-    } else if ($result->num_rows > 0) {
-        $content .= " <tr id='end'><th>Reservation Id</th><th>Status</th><th>Room Id</th><th>Check In</th><th>Check Out</th><th>Guests</th><th>Total</th><th>Paid</th><th>Actions</th></tr>";
+        $content .= " <tr><th>Reservation Id</th><th>Status</th><th>Room Id</th><th>Check In</th><th>Check Out</th><th>Guests</th><th>Actions</th></tr>";
+    } else {
+        $content .= " <tr id='end'><th>Reservation Id</th><th>Status</th><th>Room Id</th><th>Check In</th><th>Check Out</th><th>Guests</th><th>Actions</th></tr>";
     }
     $i = 0;
     while (($row = $result->fetch_assoc())) {
@@ -225,10 +225,8 @@ function reservation($opt, $offset, $db, $per_page)
         $CheckIn = getTime($row["TimeSlotStart"]);
         $CheckOut = getTime($row["TimeSlotEnd"]);
         $ReservationStatus = getStatus($row['ReservationStatus']);
-        $TotalPrice = $row["Price"];
-        $TotalPaid = $row["Paid"];
         $Guests = $row["Guests"];
-        $content .= " <tr><td>$ReservationId</td><td>$ReservationStatus</td><td>$RoomId</td><td>$CheckIn</td><td>$CheckOut</td><td>$Guests</td><td> Rs.$TotalPrice.00</td><td> Rs.$TotalPaid.00</td>
+        $content .= " <tr><td>$ReservationId</td><td>$ReservationStatus</td><td>$RoomId</td><td>$CheckIn</td><td>$CheckOut</td><td>$Guests</td>
         <td><button class='success-btn m-1 edit' id='$ReservationId'><i class='material-icons p-2'>edit</i></button><button class='fail-btn m-1 delete' id='$ReservationId'><i class='material-icons p-2'>delete_forever</i></button></td></tr>";
     }
     return $content;

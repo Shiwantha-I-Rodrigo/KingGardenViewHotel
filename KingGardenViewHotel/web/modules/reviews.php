@@ -48,6 +48,7 @@ if ($user_id != 0) {
             while ($row = $result->fetch_assoc()) {
                 $ReviewTitle = $row['ReviewTitle'];
                 $ReviewText = $row['ReviewText'];
+                $ReviewId = $row['ReviewId'];
                 $update = true;
             }
         }
@@ -55,32 +56,45 @@ if ($user_id != 0) {
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-        if ($guest_id == $user_id) {
-            extract($_POST);
+        extract($_POST);
 
-            $full_path = "";
-            $update_picture = "";
-            if (!empty($_FILES['file_upload']['name'])) {
-                $path =  $_SERVER['DOCUMENT_ROOT'] . '/img/users/';
-                $file = uploadFile($path, $_FILES, "web");
-                $full_path = '/img/users/' . $file;
-                $update_picture = ", ReviewPicture=$full_path ";
-            }
+        if ($del_id != '') {
 
-            if ($update) {
-                $sql = "UPDATE reviews SET ReviewTitle='$title', ReviewText='$text' $update_picture WHERE ReservationId=$reservation_id";
-                $db->query($sql);
-            } else {
-                $full_path == "" ? $full_path = "/img/common/default.png" : null;
-                $sql = "INSERT INTO reviews (ReservationId,ReviewTitle,ReviewText,ReviewStatus,ReviewPicture) values ($reservation_id,'$title','$text',1,'$full_path')";
-                $db->query($sql);
-            }
-
+            $sql = "DELETE FROM reviews WHERE ReviewId = $del_id";
+            $db->query($sql);
             $_SESSION['alert_color'] = "var(--primary)";
             $_SESSION['alert_icon'] = "task_alt";
             $_SESSION['alert_title'] = "Success !";
-            $_SESSION['alert_msg'] = $sql; //"Hi, " . $user_name . " your information was added succesfully";
+            $_SESSION['alert_msg'] = "your review was removed succesfully";
             reDirect('/web/sub/alert.php');
+        } else {
+            if ($guest_id == $user_id) {
+                
+
+                $full_path = "";
+                $update_picture = "";
+                if (!empty($_FILES['file_upload']['name'])) {
+                    $path =  $_SERVER['DOCUMENT_ROOT'] . '/img/users/';
+                    $file = uploadFile($path, $_FILES, "web");
+                    $full_path = '/img/users/' . $file;
+                    $update_picture = ", ReviewPicture=$full_path ";
+                }
+
+                if ($update) {
+                    $sql = "UPDATE reviews SET ReviewTitle='$title', ReviewText='$text' $update_picture WHERE ReservationId=$reservation_id";
+                    $db->query($sql);
+                } else {
+                    $full_path == "" ? $full_path = "/img/common/default.png" : null;
+                    $sql = "INSERT INTO reviews (ReservationId,ReviewTitle,ReviewText,ReviewStatus,ReviewPicture) values ($reservation_id,'$title','$text',1,'$full_path')";
+                    $db->query($sql);
+                }
+
+                $_SESSION['alert_color'] = "var(--primary)";
+                $_SESSION['alert_icon'] = "task_alt";
+                $_SESSION['alert_title'] = "Success !";
+                $_SESSION['alert_msg'] = $del_id; //"your review was added succesfully";
+                reDirect('/web/sub/alert.php');
+            }
         }
     }
 }
@@ -97,32 +111,6 @@ ob_start();
     </div>
     <div class="col-2">
         <i class="material-icons" id="rev_fwd">arrow_forward</i>
-    </div>
-</div>
-
-<div class="row my-5 px-5 d-flex justify-content-around" style="width:100vw;">
-    <div class="col-3 m-0 p-0 room" style="background-color:var(--background);border: 0.5vh solid var(--background);border-radius: 2vh;">
-        <div class="row">
-            <img class="m-0 p-0" src="<?= $room_picture ?>" alt="" style="height: 25vh; object-fit: cover; border-radius: 2vh 2vh 0 0;">
-        </div>
-        <div class="p-2">
-            <label><?= $room_name ?></label>
-            <p>Occupancy : <?= $room_capacity ?><br>' ;
-                <?php
-                if ($room_wifi == 1) {
-                    echo '<i class="material-icons">wifi</i>';
-                }
-                if ($room_ac == 1) {
-                    echo '<i class="material-icons">ac_unit</i>';
-                }
-                if ($room_price >= 4000) {
-                    echo '<i class="material-icons">favorite</i>';
-                }
-                if ($room_price < 4000) {
-                    echo '<i class="material-icons">attach_money</i>';
-                }
-                ?>
-        </div>
     </div>
 </div>
 
@@ -190,6 +178,27 @@ ob_start();
             </div>
             <div class="modal-footer">
                 <button class="success-btn px-3" type="submit" form="reg_form" formmethod="post">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Delete" tabindex="-1" aria-labelledby="Confirm" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color:var(--background);">
+            <div class="modal-header d-flex justify-content-between">
+                <img src="<?= BASE_URL . '/img/common/logo_logo.png' ?>" alt="" style="width: 3vw; height: 5vh; object-fit: cover;">
+                <label class="mx-3" style="font-size:3vh;">Confirmation</label>
+                <button type="button" class="clear_btn" data-bs-dismiss="modal"><i class="material-icons">cancel</i></button>
+            </div>
+            <div class="modal-body" style="font-weight: normal; color:var(--primary_font); text-align: justify; text-justify: inter-word;">
+                <p>Are you sure you want to delete the review ?</p>
+            </div>
+            <div class="modal-footer">
+                <form id="del_form" enctype="multipart/form-data" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) . "?id=$reservation_id"; ?>" method="post" role="form" novalidate>
+                    <input id='del_id' name='del_id' value='<?= $ReviewId ?>' class="d-none"></input>
+                    <button class="success-btn px-3" type="submit" form="del_form" formmethod="post">Confirm</button>
+                </form>
             </div>
         </div>
     </div>

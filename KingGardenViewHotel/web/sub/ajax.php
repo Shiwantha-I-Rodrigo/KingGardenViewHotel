@@ -228,7 +228,7 @@ if (isset($_POST['req'])) {
                     <div class="col-11 m-0 p-0" style="background-color:var(--background);border: 0.5vh solid var(--background);border-radius: 2vh;">
                         <div class="row m-0 p-0">
                             <div class="col-4 m-0 p-0" style="overflow: hidden;">
-                                <img class="m-0 p-0" src="' . $BlogPicture1 . '" alt="" style="height:100%; object-fit: cover; border-radius: 2vh 0 0 2vh;">
+                                <img class="m-0 p-0" src="' . $BlogPicture1 . '" alt="" style="height:30vh; width:40vh; object-fit: cover; border-radius: 2vh 0 0 2vh;">
                             </div>
                             <div class="col-8 m-0 p-0">
                                 <div class="row m-0 p-0">
@@ -275,7 +275,7 @@ if (isset($_POST['req'])) {
                     <div class="col-11 m-0 p-0" style="background-color:var(--background);border: 0.5vh solid var(--background);border-radius: 2vh;">
                         <div class="row m-0 p-0">
                             <div class="col-4 m-0 p-0" style="overflow: hidden;">
-                                <img class="m-0 p-0" src="' . $BlogPicture1 . '" alt="" style="height:100%; object-fit: cover; border-radius: 2vh 0 0 2vh;">
+                                <img class="m-0 p-0" src="' . $BlogPicture1 . '" alt="" style="height:30vh; width:40vh; object-fit: cover; border-radius: 2vh 0 0 2vh;">
                             </div>
                             <div class="col-8 m-0 p-0">
                                 <div class="row m-0 p-0">
@@ -321,7 +321,7 @@ if (isset($_POST['req'])) {
                         <div class="col-11 m-0 p-0" style="background-color:var(--background);border: 0.5vh solid var(--background);border-radius: 2vh;">
                             <div class="row m-0 p-0">
                                 <div class="col-4 m-0 p-0 popup" style="overflow: hidden;">
-                                    <img class="m-0 p-0" src="' . $DestinationPicture . '" alt="" style="height:100%; object-fit: cover; border-radius: 2vh 0 0 2vh;">
+                                    <img class="m-0 p-0" src="' . $DestinationPicture . '" alt="" style="height:30vh; width:40vh; object-fit: cover; border-radius: 2vh 0 0 2vh;">
                                 </div>
                                 <div class="col-8 m-0 p-0">
                                     <div class="row m-0 p-0">
@@ -369,7 +369,7 @@ if (isset($_POST['req'])) {
                         <div class="col-11 m-0 p-0" style="background-color:var(--background);border: 0.5vh solid var(--background);border-radius: 2vh;">
                             <div class="row m-0 p-0">
                                 <div class="col-4 m-0 p-0 popup" style="overflow: hidden;">
-                                    <img class="m-0 p-0" src="' . $DestinationPicture . '" alt="" style="height:100%; object-fit: cover; border-radius: 2vh 0 0 2vh;">
+                                    <img class="m-0 p-0" src="' . $DestinationPicture . '" alt="" style="height:30vh; width:40vh; object-fit: cover; border-radius: 2vh 0 0 2vh;">
                                 </div>
                                 <div class="col-8 m-0 p-0">
                                     <div class="row m-0 p-0">

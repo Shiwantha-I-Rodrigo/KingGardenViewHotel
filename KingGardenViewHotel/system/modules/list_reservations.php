@@ -27,18 +27,14 @@ $sort_options = '<option value="r.ReservationId">Res. Id</option>
 <option value="r.RoomId">Room Id</option>
 <option value="r.TimeSlotStart">Check In</option>
 <option value="r.TimeSlotEnd">Check Out</option>
-<option value="r.ReservationStatus">Res. Status</option>
-<option value="t.Price">Price</option>
-<option value="t.Paid">Paid</option>';
+<option value="r.ReservationStatus">Res. Status</option>';
 
 $range_options = '<option value="r.ReservationId">Res. Id</option>
 <option value="r.GuestId">Guest Id</option>
 <option value="r.StaffId">Staff Id</option>
 <option value="r.RoomId">Room Id</option>
 <option value="r.TimeSlotStart">Check In</option>
-<option value="r.TimeSlotEnd">Check Out</option>
-<option value="t.Price">Price</option>
-<option value="t.Paid">Paid</option>';
+<option value="r.TimeSlotEnd">Check Out</option>';
 
 ob_start();
 ?>
@@ -54,7 +50,7 @@ ob_start();
                 <div class="card-body">
                 <div class="d-flex justify-content-between">
                         <a class="success-btn p-2 m-0 align-items-center" id="print_btn"><i class="material-icons">print</i></a>
-                        <a href="/system/modules/edit_reservations.php" class="success-btn p-2 m-0 align-items-center"><i class="material-icons">add</i></a>
+                        <a href="/system/index.php" class="success-btn p-2 m-0 align-items-center"><i class="material-icons">add</i></a>
                     </div>
                     <div class="my-4 text-center"><label class="my-1" style="font-size : 2vh;">RESERVATIONS</label></div>
                     <div id="print_page">
