@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             $upload = "";
 
-            if (isset($_FILES['file_upload'])) {
+            if (!empty($_FILES['file_upload']['name'])) {
                 $path =  $_SERVER['DOCUMENT_ROOT'] . '/img/users/';
                 $file = uploadFile($path, $_FILES, "web");
                 $full_path = '/img/users/' . $file;
