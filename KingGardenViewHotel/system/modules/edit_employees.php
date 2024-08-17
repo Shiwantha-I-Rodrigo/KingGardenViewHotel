@@ -108,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $permissions = [1, 2, 6];
                     break;
                 case 3:
-                    $permissions = [1, 2, 3, 4, 6, 7, 8];
+                    $permissions = [1, 2, 3, 6, 7, 8];
                     break;
                 case 4:
                     $permissions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
