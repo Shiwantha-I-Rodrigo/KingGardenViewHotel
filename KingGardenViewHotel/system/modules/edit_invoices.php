@@ -15,6 +15,7 @@ $url_componenets = parse_url($url);
 parse_str($url_componenets['query'], $params);
 isset($params['id']) ? $invoice_id = $params['id'] :  $invoice_id = 0;
 
+$item_status = 0;
 if ($invoice_id != 0) {
     $sql = "SELECT * FROM items WHERE ItemId = $invoice_id";
     $result = $db->query($sql);
@@ -39,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sql = "UPDATE items SET `ReservationId`='$reservation_id', `ItemStatus`='$item_status',`ItemName`='$item_name', `ItemDiscount`='$item_discount',`ItemPrice`='$item_price', `ItemPaid`='$item_paid',`ItemComments`='$item_comments'  WHERE ItemId=$invoice_id";
         $db->query($sql);
     } else {
-        $sql = "INSERT INTO items ( ReservationId ,ItemName ,ItemPrice ,ItemPaid ,ItemStatus ,ItemDiscount ,ItemComments ,Status ) VALUES ($reservation_id, $item_price, $item_paid, $item_status, $item_discount, '$item_comments' )";
+        $sql = "INSERT INTO items ( ReservationId ,ItemName ,ItemPrice ,ItemPaid ,ItemStatus ,ItemDiscount ,ItemComments ,Status ) VALUES ($reservation_id, '$item_name', $item_price, $item_paid, $item_status, $item_discount, '$item_comments', 0)";
         $db->query($sql);
     }
 

@@ -38,14 +38,30 @@ ob_start();
                     </div>
                     <div class="my-4 text-center"><label class="my-1" style="font-size : 2vh;">REPORT</label></div>
                     <div id="print_page">
-                        <div>
-                            <img class="d-none" style="height:8vh;" src="<?= BASE_URL . '/img/common/logo_logo.png' ?>" alt="logo">
-                            <p class="d-none" style="font-size:2vh;">REPORT</p>
-                            <p class="d-none" style="font-size:2vh;"> This report is generated on <?= getTimes(time()); ?> by user : <?= $user_id; ?> <nobr>on behalf of KING GARDEN VIEW HOTEL.</nobr>
-                            </p>
-                        </div>
-                        <table id="tbl" name="tbl" class="table table-dark table-striped-columns table-hover">
+                        <table width="100%">
+                            <tr>
+                                <th align="center" colspan="1">
+                                    <img class="d-none" style="height:8vh;" src="<?= BASE_URL . '/img/common/logo_logo.png' ?>" alt="logo">
+                                </th>
+                            </tr>
+                            <tr>
+                                <th align="center" colspan="1">
+                                    <p class="d-none" style="font-size:2vh;">REPORT</p>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th align="center" colspan="1">
+                                    <p class="d-none" style="font-size:2vh;"> This report is generated on <?= getTimes(time()); ?> by user : <?= $user_id; ?> <nobr>on behalf of KING GARDEN VIEW HOTEL.</nobr>
+                                    </p>
+                                </th>
+                            </tr>
+                            <tr>
+                                <td colspan="1">
+                                    <table id="tbl" name="tbl" class="table table-dark table-striped-columns table-hover" width="100%">
 
+                                    </table>
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>

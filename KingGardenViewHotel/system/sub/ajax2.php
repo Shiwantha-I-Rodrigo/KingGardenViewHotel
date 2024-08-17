@@ -361,15 +361,55 @@ function blog($opt, $offset, $db, $per_page)
 function daily($opt, $db)
 {
     $content = "";
+    $content .= " <tr><th colspan='4'>DAILY REPORT</th></tr>";
+
+    $checkin = 0;
+    $checkout = 0;
+    $cancelled = 0;
+    $noshow = 0;
+    $sql = "SELECT * FROM reservations WHERE TimeSlotStart <= $opt AND TimeSlotEnd > $opt";
+    $result = $db->query($sql);
+    $content .= " <th colspan='4'>TRANSACTION SUMMARY</th>";
+    $content .= " <tr><th>Check Ins</th><th>Check Outs</th><th>Cancellations</th><th>No Shows</th></tr>";
+    while ($row = $result->fetch_assoc()) {
+        $row['ReservationStatus'] == 1 ? $checkin++ : null;
+        $row['ReservationStatus'] == 0 ? $checkout++ : null;
+        $row['ReservationStatus'] == 7 ? $cancelled++ : null;
+        $row['ReservationStatus'] == 8 ? $noshow++ : null;
+    }
+    $content .= "<tr><td>$checkin</td><td>$checkout</td><td>$cancelled</td><td>$noshow</td></tr>";
+
+    $projected = 0;
+    $totalrevenue = 0;
+    $totalcancelled = 0;
+    $totalnoshow = 0;
+    $sql = "SELECT * FROM (SELECT * FROM reservations WHERE TimeSlotStart <= $opt AND TimeSlotEnd > $opt) AS r JOIN items i ON r.ReservationId=i.ReservationId";
+    $result = $db->query($sql);
+    $content .= " <tr><th>Expected Revenue</th><th>Recieved Revenue</th><th>Cancelled Revenue</th><th>No-Show Revenue</th></tr>";
+    while ($row = $result->fetch_assoc()) {
+        $projected = $projected + $row['ItemPrice'];
+        $totalrevenue = $totalrevenue + $row['ItemPaid'];
+        $row['ItemStatus'] == 7 ? $totalcancelled = $totalcancelled + $row['ItemPrice'] - $row['ItemPaid'] : null;
+        $row['ItemStatus'] == 8 ? $totalnoshow = $totalnoshow + $row['ItemPrice'] - $row['ItemPaid'] : null;
+    }
+    $content .= "<tr><td>$projected</td><td>$totalrevenue</td><td>$totalcancelled</td><td>$totalnoshow</td></tr>";
+
+
+    $sql = "SELECT * FROM rooms";
+    $result = $db->query($sql);
+    $RoomTotal = mysqli_num_rows($result);
+    $Occupied = 0;
+    
     $sql = "SELECT * FROM reservations r JOIN rooms m ON r.RoomId=m.RoomId WHERE r.TimeSlotStart <= $opt AND r.TimeSlotEnd > $opt";
     $result = $db->query($sql);
-    $content .= " <th colspan='4'>ROOM AVAILABILITY </th>";
+    $content .= " <th colspan='4'>ROOM AVAILABILITY</th>";
     $content .= " <tr><th>Room Id</th><th>Room Name</th><th>Room Status</th><th>Note</th></tr>";
     while ($row = $result->fetch_assoc()) {
         $RoomId = $row['RoomId'];
         $RoomName = $row['RoomName'];
         $RoomStatus = getStatus($row['RoomStatus']);
         $content .= "<tr><td>$RoomId</td><td>$RoomName</td><td>$RoomStatus</td><td>Booked !</td></tr>";
+        $Occupied++;
     }
     $sql = "SELECT * FROM (SELECT * FROM reservations WHERE TimeSlotStart <= $opt AND TimeSlotEnd > $opt) AS r RIGHT JOIN rooms m ON r.RoomId=m.RoomId WHERE r.ReservationId IS NULL";
     $result = $db->query($sql);
@@ -380,22 +420,9 @@ function daily($opt, $db)
         ($row['RoomStatus'] == 1 || $row['RoomStatus'] == 6) ? $Availability = "Available" : $Availability = "Not Available";
         $content .= "<tr><td>$RoomId</td><td>$RoomName</td><td>$RoomStatus</td><td>$Availability</td></tr>";
     }
-
-    $checkin = 0;
-    $checkout = 0;
-    $cancelled = 0;
-    $noshow = 0;
-    $sql = "SELECT * FROM reservations WHERE TimeSlotStart <= $opt AND TimeSlotEnd > $opt";
-    $result = $db->query($sql);
-    $content .= " <th colspan='4'>TRANSACTION SUMMAARY</th>";
-    $content .= " <tr><th>Check Ins</th><th>Check Outs</th><th>Cancellations</th><th>No Shows</th></tr>";
-    while ($row = $result->fetch_assoc()) {
-        $row['ReservationStatus'] == 1 ? $checkin++ : null ;
-        $row['ReservationStatus'] == 0 ? $checkout++ : null ;
-        $row['ReservationStatus'] == 7 ? $cancelled++ : null ;
-        $row['ReservationStatus'] == 8 ? $noshow++ : null ;
-    }
-    $content .= "<tr><td>$checkin</td><td>$checkout</td><td>$cancelled</td><td>$noshow</td></tr>";
+    $occupancy = ($Occupied/$RoomTotal)*100;
+    $content .= "<tr><td colspan='4'>Room occupancy rate : $occupancy %</td></tr>";
+    $content .= "<tr><td colspan='2'>Total Rooms : $RoomTotal </td><td colspan='2'>Occupied Rooms : $Occupied </td></tr>";
 
     return $content;
 }
@@ -406,7 +433,8 @@ function monthly($opt, $db)
     $content = "";
     $sql = "SELECT * FROM blogs i $opt";
     $result = $db->query($sql);
-    while (($row = $result->fetch_assoc())) {}
+    while (($row = $result->fetch_assoc())) {
+    }
     return $content;
 }
 
@@ -416,6 +444,7 @@ function yearly($opt, $db)
     $content = "";
     $sql = "SELECT * FROM blogs i $opt";
     $result = $db->query($sql);
-    while (($row = $result->fetch_assoc())) {}
+    while (($row = $result->fetch_assoc())) {
+    }
     return $content;
 }
