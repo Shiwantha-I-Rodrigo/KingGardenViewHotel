@@ -106,9 +106,6 @@ INSERT INTO reviews (ReservationId,ReviewTitle,ReviewText,ReviewStatus,ReviewPic
 INSERT INTO destinations (DestinationText,DestinationTitle,DestinationStatus,DestinationPicture) VALUES ("Kithalawa","very beautiful place",1,"/img/rooms/6777afef167aa44cfa29532a6c3596e3.jpg");
 INSERT INTO user_destinations ( UserId, DestinationId, TransportPrice, Telephone, Chat, EntryTime, Capacity) VALUES (4,1,1000,774635267,'user_4',1723543185, 3);
 
-!!! add reviews for each room and pass its id as id when guest request reviews.
-
-
 # INT codes
 - all - Status
     0 = inactive

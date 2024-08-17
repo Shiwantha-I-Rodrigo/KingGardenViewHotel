@@ -45,6 +45,11 @@ ob_start();
                                 </th>
                             </tr>
                             <tr>
+                                <th align="center" colspan="4">
+                                    <p class="d-none" style="font-size:4vh;"> KING GARDEN VIEW HOTEL </p>
+                                </th>
+                            </tr>
+                            <tr>
                                 <th align="center" colspan="1">
                                     <p class="d-none" style="font-size:2vh;">REPORT</p>
                                 </th>

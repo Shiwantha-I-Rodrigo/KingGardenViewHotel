@@ -3,6 +3,11 @@ session_start();
 require_once $_SERVER['DOCUMENT_ROOT'] . '/common.php';
 isset($_SESSION['user_id']) ? $user_id = $_SESSION['user_id'] : reDirect("/system/modules/login.php");
 
+// $req = 'monthly';
+// $opt = 1724068800;
+// error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+
 if (isset($_POST['req'])) {
     $req = $_POST['req'];
     isset($_POST['opt']) ? $opt = $_POST['opt'] : $opt = '';
@@ -362,6 +367,7 @@ function daily($opt, $db)
 {
     $content = "";
     $content .= " <tr><th colspan='4'>DAILY REPORT</th></tr>";
+    $content .= " <tr><th colspan='4'>For " . getTime($opt) . "</th></tr>";
 
     $checkin = 0;
     $checkout = 0;
@@ -399,7 +405,7 @@ function daily($opt, $db)
     $result = $db->query($sql);
     $RoomTotal = mysqli_num_rows($result);
     $Occupied = 0;
-    
+
     $sql = "SELECT * FROM reservations r JOIN rooms m ON r.RoomId=m.RoomId WHERE r.TimeSlotStart <= $opt AND r.TimeSlotEnd > $opt";
     $result = $db->query($sql);
     $content .= " <th colspan='4'>ROOM AVAILABILITY</th>";
@@ -420,7 +426,7 @@ function daily($opt, $db)
         ($row['RoomStatus'] == 1 || $row['RoomStatus'] == 6) ? $Availability = "Available" : $Availability = "Not Available";
         $content .= "<tr><td>$RoomId</td><td>$RoomName</td><td>$RoomStatus</td><td>$Availability</td></tr>";
     }
-    $occupancy = ($Occupied/$RoomTotal)*100;
+    $occupancy = ($Occupied / $RoomTotal) * 100;
     $content .= "<tr><td colspan='4'>Room occupancy rate : $occupancy %</td></tr>";
     $content .= "<tr><td colspan='2'>Total Rooms : $RoomTotal </td><td colspan='2'>Occupied Rooms : $Occupied </td></tr>";
 
@@ -431,10 +437,76 @@ function daily($opt, $db)
 function monthly($opt, $db)
 {
     $content = "";
-    $sql = "SELECT * FROM blogs i $opt";
+    $content .= " <tr><th colspan='4'>MONTHLY REPORT</th></tr>";
+    $start = $opt - 2419200;
+    $content .= " <tr><th colspan='4'>From : " . getTime($start) . " To : " . getTime($opt) . "</th></tr>";
+    
+
+    $sql = "SELECT * FROM rooms";
     $result = $db->query($sql);
-    while (($row = $result->fetch_assoc())) {
+    $RoomTotal = mysqli_num_rows($result);
+    $Occupied = 0;
+
+    $checkin = 0;
+    $checkout = 0;
+    $cancelled = 0;
+    $noshow = 0;
+    $sql = "SELECT * FROM reservations WHERE TimeSlotEnd > $start AND TimeSlotEnd < $opt";
+    $result = $db->query($sql);
+    $content .= " <tr><th colspan='4'>TRANSACTION SUMMARY</th></tr>";
+    while ($row = $result->fetch_assoc()) {
+        $row['ReservationStatus'] == 1 ? $checkin++ : null;
+        $row['ReservationStatus'] == 0 ? $checkout++ : null;
+        $row['ReservationStatus'] == 7 ? $cancelled++ : null;
+        $row['ReservationStatus'] == 8 ? $noshow++ : null;
+        $Occupied++;
     }
+    $content .= "<tr><th colspan='2'>Total reservations : </th><th colspan='2'>$Occupied</th></tr>";
+    $content .= "<tr><th>Check Ins</th><th>Check Outs</th><th>Cancellations</th><th>No Shows</th></tr>";
+    $content .= "<tr><td>$checkin</td><td>$checkout</td><td>$cancelled</td><td>$noshow</td></tr>";
+
+    $projected = 0;
+    $totalrevenue = 0;
+    $totalcancelled = 0;
+    $totalnoshow = 0;
+    $sql = "SELECT * FROM (SELECT * FROM reservations WHERE TimeSlotEnd > $start AND TimeSlotEnd < $opt) AS r JOIN items i ON r.ReservationId=i.ReservationId";
+    $result = $db->query($sql);
+    $content .= " <tr><th>Expected Revenue</th><th>Actual Revenue</th><th>Cancelled Revenue</th><th>No-Show Revenue</th></tr>";
+    while ($row = $result->fetch_assoc()) {
+        $projected = $projected + $row['ItemPrice'];
+        $totalrevenue = $totalrevenue + $row['ItemPaid'];
+        $row['ItemStatus'] == 7 ? $totalcancelled = $totalcancelled + $row['ItemPrice'] - $row['ItemPaid'] : null;
+        $row['ItemStatus'] == 8 ? $totalnoshow = $totalnoshow + $row['ItemPrice'] - $row['ItemPaid'] : null;
+    }
+    $content .= "<tr><td>$projected</td><td>$totalrevenue</td><td>$totalcancelled</td><td>$totalnoshow</td></tr>";
+
+    $sql = "SELECT SUM(ItemPaid) FROM items WHERE ItemName LIKE '%room rent%'";
+    $result = $db->query($sql);
+    $row = $result->fetch_assoc();
+    $RoomRent = $row[0];
+    $content .= "<tr><th colspan='2'>Total Room Revenue : </th><th colspan='2'>$RoomRent</th></tr>";
+    $content .= "<tr><th colspan='2'>Total Extra Services Revenue : </th><th colspan='2'>" . $totalrevenue - $RoomRent. " </th></tr>";
+
+    $sql = "SELECT RoomId, TimeSlotEnd, COUNT(*) AS `Amount` FROM reservations WHERE TimeSlotEnd > $start AND TimeSlotEnd < $opt GROUP BY RoomID";
+    $result = $db->query($sql);
+    $content .= " <th colspan='4'>ROOM OCCUPANCY</th>";
+    $content .= " <tr><th>Room Id</th><th>Room Name</th><th>Reservations</th><th>Percentage</th></tr>";
+    while ($row = $result->fetch_assoc()) {
+        $RoomId = $row['RoomId'];
+        $Amount = $row['Amount'];
+        $Percentage = ($Amount / $Occupied) * 100;
+        $sql2 = "SELECT * FROM rooms WHERE RoomId = $RoomId";
+        $result2 = $db->query($sql2);
+        $row2 = $result2->fetch_assoc();
+        $RoomName = $row2["RoomName"];
+
+        $content .= "<tr><td>$RoomId</td><td>$RoomName</td><td>$Amount</td><td>$Percentage %</td></tr>";
+    }
+
+    $occupancy = ($Occupied / ($RoomTotal * 30)) * 100;
+    $content .= "<tr><td colspan='4'>Room occupancy rate : $occupancy %</td></tr>";
+    $content .= "<tr><td colspan='2'>Total Rooms : $RoomTotal </td><td colspan='2'>Occupied Rooms : $Occupied </td></tr>";
+
     return $content;
 }
 
